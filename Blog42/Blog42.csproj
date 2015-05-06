@@ -175,7 +175,11 @@
     <Compile Include="App_Start\FilterConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="App_Start\WebApiConfig.cs" />
+    <Compile Include="Controllers\CommentController.cs" />
+    <Compile Include="Controllers\ErrorController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
+    <Compile Include="Controllers\PostController.cs" />
+    <Compile Include="Controllers\UserController.cs" />
     <Compile Include="DataAccess\UserDAO.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
@@ -205,6 +209,7 @@
     <Compile Include="Models\User.cs">
       <DependentUpon>Blog42Model.tt</DependentUpon>
     </Compile>
+    <Compile Include="Models\UserModels.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Security\PermissionFilter.cs" />
     <Compile Include="Security\PermissionProvider.cs" />
@@ -333,6 +338,22 @@
     <Content Include="Views\Web.config" />
     <Content Include="Views\Home\Contato.cshtml" />
     <Content Include="Views\Home\Sobre.cshtml" />
+    <Content Include="Views\Comment\All.cshtml" />
+    <Content Include="Views\Comment\Delete.cshtml" />
+    <Content Include="Views\Post\All.cshtml" />
+    <Content Include="Views\Post\Delete.cshtml" />
+    <Content Include="Views\Post\Edit.cshtml" />
+    <Content Include="Views\Post\New.cshtml" />
+    <Content Include="Views\Post\Show.cshtml" />
+    <Content Include="Views\User\All.cshtml" />
+    <Content Include="Views\User\Delete.cshtml" />
+    <Content Include="Views\User\Edit.cshtml" />
+    <Content Include="Views\User\Login.cshtml" />
+    <Content Include="Views\User\Logout.cshtml" />
+    <Content Include="Views\User\New.cshtml" />
+    <Content Include="Views\User\ResetPassword.cshtml" />
+    <Content Include="Views\Shared\_PanelTabs.cshtml" />
+    <Content Include="Views\Shared\_PanelTitle.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />

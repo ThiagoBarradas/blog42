@@ -1,0 +1,19 @@
+﻿@{
+    var ctrl = ViewContext.RouteData.GetRequiredString("controller"); // Captura o controle para verificar o menu ativo
+    var isAdmin = Roles.GetRolesForUser().Contains("Admin"); // Verifica se é administrador para mostrar todos menus
+}
+
+@if (Request.IsAuthenticated)
+{
+    <div role="tabpanel">
+        <!-- Nav tabs -->
+        <ul class="nav nav-tabs" id="controlpaneltabs" role="tablist">
+            <li @if(ctrl=="Post")    {<text>class="active"</text>}> @Html.ActionLink("Postagens", "All", "Post")</li>
+            <li @if(ctrl=="Comment") {<text>class="active"</text>}> @Html.ActionLink("Comentários", "All", "Comment")</li>
+            @if (isAdmin)
+            {
+                <li @if(ctrl=="User") {<text>class="active"</text>}>  @Html.ActionLink("Usuários", "All", "User")</li>
+            }
+        </ul>
+    </div><!-- /tabpanel -->
+}

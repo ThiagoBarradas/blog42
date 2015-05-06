@@ -1,0 +1,17 @@
+﻿@{
+    ViewBag.Title = "Você saiu!";
+}
+
+<div class="jumbotron">
+    <div class="box-title">
+        <h2 class="title">@ViewBag.Title</h2>
+    </div>
+    <div class="content">
+        <h3>Sua nave decolou e seu logout foi feito.</h3>
+        <br />
+        @Html.ActionLink("Acessar novamente a galáxia administrativa", "Login", "User")
+        <br />
+        @Html.ActionLink("Acessar a página inicial do Blog", "Index", "Home")
+
+    </div><!-- /.content -->
+</div><!-- /.jumbotron -->

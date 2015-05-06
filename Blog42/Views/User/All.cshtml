@@ -1,0 +1,22 @@
+﻿@{
+    ViewBag.Title = "Usuários";
+}
+
+<div class="jumbotron">
+    
+    <!-- Titulo e Menu -->
+    @Html.Partial("_PanelTitle")
+    @Html.Partial("_PanelTabs")
+    
+    <div class="tab-content">
+    <!-- Início Conteúdo da página -->
+    
+            Todos os Usuários
+            <br /><br /><br />
+            @Html.ActionLink("Novo Usuário", "New", "User")<br />
+            @Html.ActionLink("Editar Usuário 1", "Edit", "User", new { Id = 1 }, null)<br />
+            @Html.ActionLink("Excluir Usuário 1", "Delete", "User", new { Id = 1 }, null)<br />
+    
+    <!-- Fim Conteúdo da página -->
+    </div>
+</div><!-- /.jumbotron -->

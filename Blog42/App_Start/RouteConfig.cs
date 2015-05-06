@@ -14,6 +14,12 @@ namespace Blog42
             routes.IgnoreRoute("{resource}.axd/{*pathInfo}");
 
             routes.MapRoute(
+                name: "Error",
+                url: "Error",
+                defaults: new { controller = "Error", action = "Index" }
+            );
+
+            routes.MapRoute(
                 name: "Home",
                 url: "{action}",
                 defaults: new { controller = "Home", action = "Index" }

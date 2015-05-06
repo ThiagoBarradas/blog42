@@ -1,0 +1,17 @@
+﻿@{
+    var isFirstEntry = Roles.GetRolesForUser().Contains("FirstEntry"); // verifica se é primeiro acesso para exibir opção de edição de dados
+}
+@if (Request.IsAuthenticated)
+{
+    <div class="box-title-admin col-md-1">
+        <span>
+            Bem vindo, @User.Identity.Name. 
+            ( 
+                @if(!isFirstEntry){ 
+                    @Html.ActionLink("editar", "Edit", "User") <text>|</text>
+                }
+                @Html.ActionLink("sair", "Logout", "User") 
+            )
+        </span>
+    </div>
+}

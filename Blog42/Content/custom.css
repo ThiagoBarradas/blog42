@@ -2,6 +2,13 @@
  * CSS customizado para completação do bootstrap e layout
  */
 
+/*
+ * Define o tamanho mínimo para layout responsivo
+ */
+html, body {
+    min-width: 320px;
+}
+
 /* 
  * Espaçamento no body para menu não sobrescrever conteúdo inicial
  */
@@ -36,6 +43,9 @@ footer {
   padding-bottom: 20px;
 }
 
+
+
+
 /*
  * Estilo para cada postagem
  */
@@ -67,6 +77,53 @@ footer {
 }
 
 /*
+ * Mensagem de erros de validação no input
+ */
+.field-validation-error {
+    color: #e40b0b;
+    font-size: 0.8em;
+}
+.input-validation-error {
+    border-color: #e40b0b;
+    background-color: #ffeeee;
+}
+
+/*
+ * Mensagem de erros de validação no sumário (lista)
+ */
+.validation-summary-errors ul {
+    padding-left: 0.5em;
+}
+.validation-summary-errors ul li {
+    padding-left: 1em;
+    display: block;
+    position: relative;
+}
+.validation-summary-errors ul li:before {
+    font-family: 'Glyphicons Halflings';
+    position: absolute;
+    left: 0px;
+    top: 0.2em;
+    font-size:80%;
+    content: '\e014';
+}
+.validation-summary-errors ul li {
+    color: #e40b0b;
+}
+
+/*
+ * Form de login
+ */
+#box-login {
+    min-width: 280px;
+    width: 70%;
+    margin: 1.5em auto;
+}
+#box-login .btn {
+    width: 100%;
+}
+
+/*
  * Estilo para página Sobre
  */
 .box-about {
@@ -91,3 +148,54 @@ footer {
     font-weight: bold;
 }
 
+/*
+ * Painel Administrativo
+ */
+#controlpaneltabs li {
+    font-size: 0.7em;
+    padding: 0;
+}
+#controlpaneltabs li.active a:hover  {
+    color: #428bca;
+    cursor: pointer;
+}
+.tab-content {
+    background-color: #fff;
+    border: 1px solid #DDD;
+    border-top-width: 0;
+    padding: 0.7em;
+    font-size: 1em;
+}
+.box-title-admin {
+    margin-bottom: -1.5em;
+    width: 100%;
+    text-align: right;
+    font-size: 0.7em;
+}
+
+/*
+ * Espaçamento entre grupo de botões
+ */
+.buttons button {
+    margin: 0.2em 0;
+}
+
+/* 
+ * Responsivo 
+ */
+@media screen and (max-width: 640px) {
+   
+   /*
+    * Painel Administrativo
+    */ 
+   .box-title-admin {
+      margin-bottom: 0.8em;
+      text-align: center;
+   }
+   #controlpaneltabs li a {
+      margin:0;
+      padding: 0.5em;
+      font-size: 0.9em;
+   }
+
+}
