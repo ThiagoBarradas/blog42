@@ -20,11 +20,45 @@ namespace Blog42
             );
 
             routes.MapRoute(
+                name: "User",
+                url: "Admin/User/{action}/{id}",
+                defaults: new { controller = "User", action = "All", id = 0 },
+                constraints: new { id = @"\d+" }
+            );
+
+            routes.MapRoute(
+                 name: "NewComment",
+                 url: "NewComment/{id}",
+                 defaults: new { controller = "Comment", action = "New", id = 0 },
+                 constraints: new { id = @"\d+" }
+             );
+
+            routes.MapRoute(
+                name: "Comment",
+                url: "Admin/Comment/{action}/{id}",
+                defaults: new { controller = "Comment", action = "All", id = 0 },
+                constraints: new { id = @"\d+" }
+            );
+
+            routes.MapRoute(
+                 name: "ShowPost",
+                 url: "Post/{id}",
+                 defaults: new { controller = "Post", action = "Show", id = 0 },
+                 constraints: new { id = @"\d+" }
+             );
+
+            routes.MapRoute(
+                name: "Post",
+                url: "Admin/Post/{action}/{id}",
+                defaults: new { controller = "Post", action = "All", id = 0 },
+                constraints: new { id = @"\d+" }
+            );
+
+            routes.MapRoute(
                 name: "Default",
                 url: "{controller}/{action}/{id}",
                 defaults: new { controller = "Home", action = "Index", id = UrlParameter.Optional }
             );
-
         }
     }
 }
