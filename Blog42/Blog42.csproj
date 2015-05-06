@@ -44,6 +44,8 @@
     <Reference Include="System.Data" />
     <Reference Include="System.Data.Entity" />
     <Reference Include="System.Drawing" />
+    <Reference Include="System.Runtime.Serialization" />
+    <Reference Include="System.Security" />
     <Reference Include="System.Web.DynamicData" />
     <Reference Include="System.Web.Entity" />
     <Reference Include="System.Web.ApplicationServices" />
@@ -185,7 +187,30 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
-    <Compile Include="Models\AccountModels.cs" />
+    <Compile Include="Models\Blog42Model.Context.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Blog42Model.Context.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\Blog42Model.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Blog42Model.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\Blog42Model.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Blog42Model.edmx</DependentUpon>
+    </Compile>
+    <Compile Include="Models\Comment.cs">
+      <DependentUpon>Blog42Model.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\Post.cs">
+      <DependentUpon>Blog42Model.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\User.cs">
+      <DependentUpon>Blog42Model.tt</DependentUpon>
+    </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -258,6 +283,23 @@
     <Content Include="fonts\glyphicons-halflings-regular.woff" />
     <Content Include="fonts\glyphicons-halflings-regular.ttf" />
     <Content Include="fonts\glyphicons-halflings-regular.eot" />
+    <EntityDeploy Include="Models\Blog42Model.edmx">
+      <Generator>EntityModelCodeGenerator</Generator>
+      <LastGenOutput>Blog42Model.Designer.cs</LastGenOutput>
+    </EntityDeploy>
+    <Content Include="Models\Blog42Model.Context.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <DependentUpon>Blog42Model.edmx</DependentUpon>
+      <LastGenOutput>Blog42Model.Context.cs</LastGenOutput>
+    </Content>
+    <Content Include="Models\Blog42Model.edmx.diagram">
+      <DependentUpon>Blog42Model.edmx</DependentUpon>
+    </Content>
+    <Content Include="Models\Blog42Model.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <DependentUpon>Blog42Model.edmx</DependentUpon>
+      <LastGenOutput>Blog42Model.cs</LastGenOutput>
+    </Content>
     <None Include="Scripts\jquery-1.9.0.intellisense.js" />
     <Content Include="Images\logo_blog.png" />
     <Content Include="Images\profile.jpg" />
@@ -296,7 +338,9 @@
     <Content Include="Views\Home\Contato.cshtml" />
     <Content Include="Views\Home\Sobre.cshtml" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
+  </ItemGroup>
   <ItemGroup>
     <Content Include="packages.config" />
   </ItemGroup>
