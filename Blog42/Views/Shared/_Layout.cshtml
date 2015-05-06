@@ -1,48 +1,54 @@
 ﻿<!DOCTYPE html>
-<html lang="en">
+<html lang="pt-br">
     <head>
         <meta charset="utf-8" />
-        <title>@ViewBag.Title - My ASP.NET MVC Application</title>
+        <title>@ViewBag.Title - Blog 42</title>
         <link href="~/favicon.ico" rel="shortcut icon" type="image/x-icon" />
         <meta name="viewport" content="width=device-width" />
-        @Styles.Render("~/Content/css")
+        <meta author="Thiago Barradas" />
+        @Styles.Render("~/Content/bootstrap.min.css")
+        @Styles.Render("~/Content/custom.css")
         @Scripts.Render("~/bundles/modernizr")
     </head>
     <body>
-        <header>
-            <div class="content-wrapper">
-                <div class="float-left">
-                    <p class="site-title">@Html.ActionLink("your logo here", "Index", "Home")</p>
+
+        <nav class="navbar navbar-default navbar-fixed-top">
+            <div class="container">
+                <div class="navbar-header">
+
+                    <!-- Menu responsivo -->
+                    <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+                        <span class="sr-only">Navegação pelo menu</span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                    </button>
+
+                    @Html.ActionLink("Blog 42", "Index", "Home", null, new { @class = "logo" })
                 </div>
-                <div class="float-right">
-                    <section id="login">
-                        @Html.Partial("_LoginPartial")
-                    </section>
-                    <nav>
-                        <ul id="menu">
-                            <li>@Html.ActionLink("Home", "Index", "Home")</li>
-                            <li>@Html.ActionLink("About", "About", "Home")</li>
-                            <li>@Html.ActionLink("Contact", "Contact", "Home")</li>
-                        </ul>
-                    </nav>
-                </div>
+                
+                <!-- menu principal -->
+                <div id="navbar" class="navbar-collapse collapse">
+                    <ul class="nav navbar-nav navbar-right">
+                        <li>@Html.ActionLink("Início", "Index", "Home")</li>
+                        <li>@Html.ActionLink("Sobre", "Sobre", "Home")</li>
+                        <li>@Html.ActionLink("Contato", "Contato", "Home")</li>
+                    </ul>
+                </div><!-- /navbar -->
             </div>
-        </header>
-        <div id="body">
-            @RenderSection("featured", required: false)
-            <section class="content-wrapper main-content clear-fix">
-                @RenderBody()
-            </section>
-        </div>
+        </nav>
+
+        <div class="container">
+            @RenderBody()      
+        </div> <!-- /container -->
+
         <footer>
-            <div class="content-wrapper">
-                <div class="float-left">
-                    <p>&copy; @DateTime.Now.Year - My ASP.NET MVC Application</p>
-                </div>
-            </div>
+            <p>&copy; @DateTime.Now.Year - Blog 42. @Html.ActionLink("Administração do Blog","Login","User").</p> 
         </footer>
 
-        @Scripts.Render("~/bundles/jquery")
-        @RenderSection("scripts", required: false)
-    </body>
+         @Scripts.Render("~/bundles/jquery")
+         @Scripts.Render("~/Scripts/bootstrap.min.js")
+         @Scripts.Render("~/Scripts/jquery.scripts.js")
+         @RenderSection("scripts", required: false)
+</body>
 </html>

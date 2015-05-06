@@ -8,24 +8,30 @@ namespace Blog42.Controllers
 {
     public class HomeController : Controller
     {
+        /*
+         * Página inicial
+         * GET: / 
+         */
         public ActionResult Index()
         {
-            ViewBag.Message = "Modify this template to jump-start your ASP.NET MVC application.";
-
             return View();
         }
 
-        public ActionResult About()
+        /*
+         * Página Sobre
+         * GET: /Sobre 
+         */
+        public ActionResult Sobre()
         {
-            ViewBag.Message = "Your app description page.";
-
             return View();
         }
 
-        public ActionResult Contact()
+        /*
+         * Página de Contatos
+         * GET: /Contato
+         */
+        public ActionResult Contato()
         {
-            ViewBag.Message = "Your contact page.";
-
             return View();
         }
     }
