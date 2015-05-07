@@ -3,7 +3,7 @@
  */
 
 /*
- * Define o tamanho mínimo para layout responsivo
+ * Define tamanho mínimo para layout responsivo
  */
 html, body {
     min-width: 320px;
@@ -43,9 +43,6 @@ footer {
   padding-bottom: 20px;
 }
 
-
-
-
 /*
  * Estilo para cada postagem
  */
@@ -74,6 +71,17 @@ footer {
     padding: 1em 1em 0.5em 1em;
     margin-bottom: 1em;
     font-size: 0.9em;
+}
+
+/*
+ * Mensagem de sucesso
+ */
+.div-success {
+    text-align: center;
+    width: 100%;
+}
+.msg-success {
+    color: #2dbd22;
 }
 
 /*
