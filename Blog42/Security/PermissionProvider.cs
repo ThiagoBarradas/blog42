@@ -20,7 +20,7 @@ namespace Blog42.Security
         {
             // Cria objeto de acesso aos dados e recebe usuário de acordo com o seu username
             UserDAO dao = new UserDAO();
-            User user = dao.getUser(username);
+            User user = dao.GetUser(username);
 
             // cria variável local para as permissões
             string[] role;

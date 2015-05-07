@@ -39,7 +39,7 @@ namespace Blog42.DataAccess
          * Caso não possua nenhum usuário com username, o retorno é null.
          * 
          */
-        public User getUser(string username)
+        public User GetUser(string username)
         {
             // captura os dados do usuário e retorna
             User user =  (from u in entities.User
@@ -53,7 +53,7 @@ namespace Blog42.DataAccess
          * Caso não possua nenhum usuário com esse id, o retorno é null.
          * 
          */
-        public User getUser(int id)
+        public User GetUser(int id)
         {
             // captura os dados do usuário e retorna
             var user = entities.User.Find(id);
@@ -63,7 +63,7 @@ namespace Blog42.DataAccess
         /*
          * Cria um nova registro de usuário
          */
-        public bool createUser(User user)
+        public bool CreateUser(User user)
         {
             try
             {
@@ -83,7 +83,7 @@ namespace Blog42.DataAccess
         /*
          * Atualiza um registro de usuário
          */
-        public bool updateUser(User user)
+        public bool UpdateUser(User user)
         {
             try
             {
@@ -120,7 +120,7 @@ namespace Blog42.DataAccess
         /*
          * Deleta um registro de usuário
          */
-        public bool deleteUser(int id)
+        public bool DeleteUser(int id)
         {
             try
             {
@@ -137,6 +137,16 @@ namespace Blog42.DataAccess
                 // Caso ocorra algum problema retorna false
                 return false;
             }
+        }
+
+        /*
+         * Seleciona todos os usuários
+         */
+        public List<User> SelectAllUsers()
+        {
+            // Recebe todos os usuários ordenados pelo nome e retorna em lista
+            var users = entities.User.OrderBy(m => m.Name).ToList<User>();
+            return users;
         }
 
     }

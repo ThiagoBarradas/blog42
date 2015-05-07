@@ -172,7 +172,8 @@ footer {
     border: 1px solid #DDD;
     border-top-width: 0;
     padding: 0.7em;
-    font-size: 1em;
+    margin-bottom: 1em;
+    font-size: 0.8em;
 }
 .box-title-admin {
     margin-bottom: -1.5em;
@@ -187,6 +188,23 @@ footer {
 .buttons button {
     margin: 0.2em 0;
 }
+
+/*
+ * Grid de listagem no painel administrativo
+ */
+.grid-action {
+    text-align: right;
+}
+.grid-table {
+    border-bottom: 1px solid #DDD;
+}
+.grid-table tbody tr td .th {
+    display: none;
+}
+.grid-table tbody tr td, .grid-table thead tr th {
+    vertical-align: middle;
+}
+
 
 /* 
  * Responsivo 
@@ -205,5 +223,26 @@ footer {
       padding: 0.5em;
       font-size: 0.9em;
    }
+
+   /*
+    * Grid Painel Administrativo
+    */
+    .grid-table thead tr th {
+        display: none;
+    } 
+    .grid-table tbody tr td {
+        display: block;
+        text-align: center;
+        font-size: 0.8em;
+        padding-left: 2px ;
+        padding-right: 2px ;
+    }
+    .grid-table tbody tr td .th {
+        color: #555;
+        display: inline;
+    }
+    .grid-action {
+        text-align: center;
+    }
 
 }

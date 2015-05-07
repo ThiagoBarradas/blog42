@@ -17,7 +17,7 @@ namespace Blog42.Controllers
         private UserDAO userDAO = new UserDAO();
 
         //
-        // GET: /Account/Login
+        // GET: /Admin/User/Login
         public ActionResult Login()
         {
             //Se existe algum usuário já logado, redireciona 
@@ -29,8 +29,7 @@ namespace Blog42.Controllers
         }
 
         //
-        // POST: /Account/Login
-        //
+        // POST: /Admin/User/Login
         [HttpPost]
         [ValidateInput(true)]
         public ActionResult Login(UserLogin user)
@@ -55,7 +54,7 @@ namespace Blog42.Controllers
         }
 
         //
-        // GET: /Account/Logout
+        // GET: /Admin/User/Logout
         public ActionResult Logout()
         {
             // Remove a autenticação do usuário
@@ -63,9 +62,15 @@ namespace Blog42.Controllers
             return View();
         }
 
+        //
+        // GET: /Admin/User/
         [PermissionFilter(Roles = "Admin")]
         public ActionResult All()
         {
+            // Recebe todos os usuários
+            var users = userDAO.SelectAllUsers();
+            // Passa para view
+            ViewBag.Users = users;
             return View();
         }
 
@@ -104,7 +109,7 @@ namespace Blog42.Controllers
         public ActionResult ResetPassword(UserResetPassword passwords)
         {
             // Recupera informações originais
-            User user = userDAO.getUser(System.Web.HttpContext.Current.User.Identity.Name);
+            User user = userDAO.GetUser(System.Web.HttpContext.Current.User.Identity.Name);
 
             // verifica se não conseguiu receber usuário
             if (user == null)
@@ -130,7 +135,7 @@ namespace Blog42.Controllers
                     user.IsFirstEntry = false;
 
                     // tenta atualizar, se não conseguir informa erro 
-                    if (userDAO.updateUser(user))
+                    if (userDAO.UpdateUser(user))
                         ViewBag.Success = true;
                     else
                         ModelState.AddModelError("", "Ops! Ocorreu um erro durante o processamento. Tente novamente.");

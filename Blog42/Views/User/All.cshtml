@@ -10,12 +10,49 @@
     
     <div class="tab-content">
     <!-- Início Conteúdo da página -->
+
+    <table class="table table-striped grid-table">
+        @if (@ViewBag.Users.Count == 0)
+        {
+            <thead>
+                <tr>
+                    <td>Nenhum usuário encontrado.</td>
+                </tr>
+            </thead>
+        }
+        else
+        {
+            <thead>
+                <tr>
+                    <th>Nome</th>
+                    <th>Usuário</th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var user in @ViewBag.Users)
+                {
+                    <tr>
+                        <td><b class="th">Nome:</b> @user.Name</td>
+                        <td><b class="th">Usuário:</b> @user.Username</td>
+                        <td class="grid-action">
+                            <button type="button" class="btn btn-default" onclick="location.href = '@Url.Action("Edit", "User", new { Id = user.Id })'">
+                                <span class="glyphicon glyphicon-pencil"></span>
+                            </button>
+                            <button type="button" class="btn btn-default" onclick="location.href = '@Url.Action("Delete", "User", new { Id = user.Id })'">
+                                <span class="glyphicon glyphicon-trash"></span>
+                            </button>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        }
+       
+    </table>
     
-            Todos os Usuários
-            <br /><br /><br />
-            @Html.ActionLink("Novo Usuário", "New", "User")<br />
-            @Html.ActionLink("Editar Usuário 1", "Edit", "User", new { Id = 1 }, null)<br />
-            @Html.ActionLink("Excluir Usuário 1", "Delete", "User", new { Id = 1 }, null)<br />
+    <button type="button" class="btn btn-default" onclick="location.href = '@Url.Action("Edit", "User")'">
+        <span class="glyphicon glyphicon-plus"></span> Criar Usuário
+    </button>
     
     <!-- Fim Conteúdo da página -->
     </div>
