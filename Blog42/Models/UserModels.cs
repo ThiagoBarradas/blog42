@@ -87,6 +87,43 @@ namespace Blog42.Models
     }
 
     /*
+     * Modelo para edição de Usuário
+     */
+    public class UserEdit
+    {
+        public int Id { get; set; }
+
+        [Display(Name = "Usuário")]
+        [StringLength(20, ErrorMessage = "O campo Usuário deve conter entre 3 e 20 caracteres.", MinimumLength = 3)]
+        public string Username { get; set; }
+
+        [Display(Name = "Nova Senha (opcional)")]
+        [StringLength(20, ErrorMessage = "O campo Nova Senha deve conter entre 6 e 20 caracteres.", MinimumLength = 6)]
+        public string Password { get; set; }
+
+        [Display(Name = "Confirmar Nova Senha")]
+        [Compare("Password", ErrorMessage = "O campo Confirmar Nova Senha deve ser igual ao campo Senha.")]
+        public string ConfirmPassword { get; set; }
+
+        [Required]
+        [Display(Name = "Nome")]
+        [StringLength(100, ErrorMessage = "O campo Nome deve conter entre 3 e 100 caracteres.", MinimumLength = 3)]
+        public string Name { get; set; }
+
+        [Required]
+        [Display(Name = "E-mail")]
+        [EmailAddress(ErrorMessage = "Email inválido!")]
+        [StringLength(100, ErrorMessage = "O campo Email deve conter entre 5 e 100 caracteres.", MinimumLength = 5)]
+        public string Email { get; set; }
+
+        [Display(Name = "Administrador?")]
+        public bool IsAdmin { get; set; }
+
+        [Display(Name = "Ativo?")]
+        public bool IsActive { get; set; }
+    }
+
+    /*
      * Modelo completo de Usuário
      */
     public class UserFull

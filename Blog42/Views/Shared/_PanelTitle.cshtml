@@ -8,7 +8,7 @@
             Bem vindo, @User.Identity.Name. 
             ( 
                 @if(!isFirstEntry){ 
-                    @Html.ActionLink("editar", "Edit", "User") <text>|</text>
+                    @Html.ActionLink("editar", "Edit", "User", new { Id = 0 }, null) <text>|</text>
                 }
                 @Html.ActionLink("sair", "Logout", "User") 
             )

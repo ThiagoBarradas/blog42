@@ -124,8 +124,106 @@ namespace Blog42.Controllers
         [PermissionFilter(Roles = "Author, Admin")]
         public ActionResult Edit(int id)
         {
-            ViewBag.Id = id;
-            return View();
+            // Declara usuário e modelo local
+            User user;
+            UserEdit userEdit = new UserEdit();
+
+            // inicializa user, se usuário não for admin, pode apenas editar a si mesmo, recupera pelo proprio username
+            if(!Roles.GetRolesForUser().Contains("Admin") || id==0)
+                user = userDAO.GetUser(User.Identity.Name);
+            else // senão recupera usuário pelo id recebido
+                user = userDAO.GetUser(id);
+            
+            //Se ocorreu algum problema ao recuperar o usuário, pagina de erro
+            if(user==null) 
+                return RedirectToAction("Index","Error");
+            else 
+            {
+                // Senão atribui valores ao modelo que será passado a view
+                userEdit.Id = user.Id;
+                userEdit.Username = user.Username;
+                userEdit.Name = user.Name;
+                userEdit.Email = user.Email;
+                userEdit.IsActive = user.IsActive;
+                userEdit.IsAdmin = user.IsAdmin;
+            }
+
+            //Se estiver editando ele mesmo, sinaliza a view
+            if (userEdit.Username == User.Identity.Name) {
+                ViewBag.EditMyself = true;
+            }
+             
+            // retorna view passando valores carregados
+            return View(userEdit);
+        }
+
+        //
+        // POST: /Admin/User/Edit/{id}
+        [HttpPost]
+        [ValidateAntiForgeryToken()]
+        [PermissionFilter(Roles = "Author, Admin")]
+        public ActionResult Edit(UserEdit userEdit)
+        {
+            // Verifica se é o proprio usuario e sinaliza
+            if(User.Identity.Name==userEdit.Username)
+                    ViewBag.EditMyself = true;
+
+            // se dados não forem válidos, retorna
+            if (!ModelState.IsValid)
+                return View(userEdit);
+            
+            // Declara usuário e modelo local
+            User user;
+
+            // inicializa user, se usuário não for admin, pode apenas editar a si mesmo, recupera pelo proprio username e sinaliza
+            if (!Roles.GetRolesForUser().Contains("Admin") || userEdit.Id==0)
+            {
+                user = userDAO.GetUser(User.Identity.Name);
+            }
+            else // senão recupera usuário pelo id recebido
+                user = userDAO.GetUser(userEdit.Id);
+
+            //Se ocorreu algum problema ao recuperar o usuário, pagina de erro
+            if (user == null)
+                return RedirectToAction("Index", "Error");
+            else // se estiver tudo ok
+            {
+                user.Name = userEdit.Name;
+                user.Email = userEdit.Email;
+                // verifica se é para alterar senha
+                if (userEdit.Password != null && userEdit.Password != "")
+                {
+                    // se for, verifica se a senha não é a mesma
+                    string newpassword = CryptHelper.CryptPassword(userEdit.Password);
+                    // se for igual, retorna erro
+                    if (newpassword == user.Password)
+                    {
+                        ModelState.AddModelError("", "Você deve cadastrar uma senha diferente da atual.");
+                        return View(userEdit);
+                    }
+                    //senão altera a senha
+                    user.Password = newpassword;
+                }
+
+                // se não for o próprio alterando, altera propriedade avançadas
+                if (user.Username != User.Identity.Name)
+                {
+                    user.IsActive = userEdit.IsActive;
+                    user.IsAdmin = userEdit.IsAdmin;
+                    // se alterou senha de outra pessoa, reseta primeiro acesso
+                    if (userEdit.Password != null && userEdit.Password != "")
+                        user.IsFirstEntry = true;
+                }
+
+                // verifica se foi possivel atualizar registro e sinaliza, senão informa mensagem de erro
+                if(userDAO.UpdateUser(user))
+                    ViewBag.Success = true;
+                else
+                    ModelState.AddModelError("", "Ops! Ocorreu um erro durante o processamento. Tente novamente.");
+            }            
+            
+            //retorna view passando modelo
+            return View(userEdit);
         }
 
         //
