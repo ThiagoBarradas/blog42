@@ -20,7 +20,7 @@ body {
  * Estilo para Logo 
  */
 .logo {
-  background: url(../Images/logo_blog.png) no-repeat top left;
+  background: url(/Images/logo_blog.png) no-repeat top left;
   background-size: contain;
   display: block;
   width: 230px;
@@ -85,6 +85,22 @@ footer {
 }
 
 /*
+ * Pagina de Erro
+ */
+#div-error {
+    width: 100%;
+    height: 100%;
+}
+#img-error {
+    background-image: url("/Images/error.png");
+    background-repeat: no-repeat;
+    display: block;
+    width: 553px;
+    height: 343px;
+    margin: 0 auto;
+}
+
+/*
  * Mensagem de erros de validação no input
  */
 .field-validation-error {
@@ -120,14 +136,17 @@ footer {
 }
 
 /*
- * Form de login
+ * Forms inputs
  */
-#box-login {
-    min-width: 280px;
+#box-login, #box-reset {
     width: 70%;
     margin: 1.5em auto;
 }
-#box-login .btn {
+#box-default {
+    width: 100%;
+    margin: 0;
+}
+#box-login .btn, #box-reset .btn, #box-default .btn {
     width: 100%;
 }
 
@@ -154,6 +173,18 @@ footer {
  */
 .b {
     font-weight: bold;
+}
+.p {
+    margin-left: 1em;
+}
+.center {
+    text-align: center;
+}
+.left {
+    text-align: left;
+}
+.right {
+    text-align: right;
 }
 
 /*
@@ -245,4 +276,18 @@ footer {
         text-align: center;
     }
 
+  /*
+   * Pagina de Erro
+   */
+  #div-error {
+      width: 100%;
+      margin: -78px -20px -8px;
+  }
+  #img-error {
+      background-image: url("/Images/error-responsive.png");
+      background-size: 280px 350px;
+      width: 280px;
+      height: 350px;
+      margin: 0 auto;
+  }
 }

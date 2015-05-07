@@ -4,8 +4,19 @@
     Layout = null;
     ViewBag.Title = "Erro";
 }
-
-<hgroup class="title">
-    <h1 class="error">Erro.</h1>
-    <h2 class="error">Ocorreu um erro durante o processamento da sua requisição.</h2>
-</hgroup>
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="utf-8" />
+    <title>Erro - Blog 42</title>
+    <link href="~/favicon.ico" rel="shortcut icon" type="image/x-icon" />
+    <meta name="viewport" content="width=device-width" />
+    <meta author="Thiago Barradas" />
+    @Styles.Render("~/Content/custom.css")
+</head>
+<body>
+    <div id="div-error">
+        <div id="img-error"></div>
+    </div>
+</body>
+</html>

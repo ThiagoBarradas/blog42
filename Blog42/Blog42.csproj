@@ -288,6 +288,8 @@
       <Generator>EntityModelCodeGenerator</Generator>
       <LastGenOutput>Blog42Model.Designer.cs</LastGenOutput>
     </EntityDeploy>
+    <Content Include="Images\error-responsive.png" />
+    <Content Include="Images\error.png" />
     <Content Include="Models\Blog42Model.Context.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
       <DependentUpon>Blog42Model.edmx</DependentUpon>

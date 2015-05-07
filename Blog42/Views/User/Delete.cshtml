@@ -1,5 +1,7 @@
-﻿@{
-    ViewBag.Title = "Deletar Usuário";
+﻿@model Blog42.Models.UserDelete
+@{
+    // Titulo, caso formulário "deletar senha", caso sucesso ao resetar "Usuário deletado"
+    ViewBag.Title = (@ViewBag.Success == null) ? "Deletar Usuário" : "Usuário Deletado";
 }
 
 <div class="jumbotron">
@@ -10,11 +12,52 @@
 
     <div class="tab-content">
         <!-- Início Conteúdo da página -->
-        
-        Deletar Usuário
-        <br /><br /><br />
-        @ViewBag.Id
+        <div class="box-title">
+            <h2 class="title">@ViewBag.Title</h2>
+        </div>
+        <div class="content ">
 
-        <!-- Fim Conteúdo da página -->
-    </div>
+        @using (Html.BeginForm())
+            {
+            @Html.AntiForgeryToken()
+
+                if (@ViewBag.Success != null) // Se obtive sucesso, exibe mensagem
+                {
+                    <div class="div-success">
+                        <h2 class="msg-success">
+                            <span class="glyphicon glyphicon-ok" aria-hidden="true"></span> Usuário excluído com sucesso!
+                        </h2>
+                        <br />
+                        @Html.ActionLink("Voltar para listagem de Usuários", "All", "User")
+                    </div>
+                }
+                else // Exibe formulário
+                {
+                    <h4>Você está preste a deletar o usuário <b>@Html.ValueFor(m => m.Username) (@Html.ValueFor(m => m.Name))</b>. <br />&nbsp;</h4>
+                    <h4> O que deseja fazer com suas publicações? </h4>
+
+                    @Html.HiddenFor(m => m.Id)
+                    @Html.HiddenFor(m => m.Name)
+                    @Html.HiddenFor(m => m.Username)
+                    <div class="row p">
+                        @Html.RadioButtonFor(m => m.Delete, "false", new { @checked="checked" }) Tornar-me autor das suas publicações.
+                    </div>
+                    <div class="row p">
+                        @Html.RadioButtonFor(m => m.Delete, "true") Excluir todas as publicações.
+                    </div>
+                    <br />
+
+                    <div class="row buttons" id="box-default">
+                        <div class="col-md-6">
+                            <button type="submit" class="btn btn-success"><span class="glyphicon glyphicon-ok"></span> Excluir este usuário.</button>
+                        </div>
+                        <div class="col-md-6">
+                            <button type="button" onclick="location.href='@Url.Action("All","User")'" class="btn btn-danger"><span class="glyphicon glyphicon-remove"></span> Decidir depois.</button>
+                        </div>
+                    </div>
+                }
+            }
+
+            <!-- Fim Conteúdo da página -->
+        </div>
 </div><!-- /.jumbotron -->

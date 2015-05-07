@@ -21,7 +21,7 @@ namespace Blog42.Controllers
         public ActionResult Login()
         {
             //Se existe algum usuário já logado, redireciona 
-            if (System.Web.HttpContext.Current.User.Identity.Name != "")
+            if (User.Identity.Name != "")
                 return RedirectLogged();
 
             // Retorna view de login
@@ -57,7 +57,7 @@ namespace Blog42.Controllers
         // GET: /Admin/User/Logout
         public ActionResult Logout()
         {
-            // Remove a autenticação do usuário
+            // Remove a autenticação e sessão do usuário
             FormsAuthentication.SignOut();
             return View();
         }
@@ -67,8 +67,9 @@ namespace Blog42.Controllers
         [PermissionFilter(Roles = "Admin")]
         public ActionResult All()
         {
-            // Recebe todos os usuários
-            var users = userDAO.SelectAllUsers();
+            // Recebe todos os usuários, menos o atual
+            List<User> users = userDAO.SelectAllUsers().Where(u => u.Username != User.Identity.Name).ToList();
+
             // Passa para view
             ViewBag.Users = users;
             return View();
@@ -87,11 +88,57 @@ namespace Blog42.Controllers
             return View();
         }
 
+        //
+        // GET: /Admin/User/Delete/{id}
         [PermissionFilter(Roles = "Admin")]
         public ActionResult Delete(int id)
         {
-            ViewBag.Id = id;
-            return View();
+            // recupera dados do usuário
+            User user = userDAO.GetUser(id);
+            
+            // Passa as informações que serão usadas na view para o modelo
+            UserDelete userDelete = new UserDelete();
+            userDelete.Id = user.Id;
+            userDelete.Name = user.Name;
+            userDelete.Username = user.Username;
+            
+            // Se usuário não encontrado, pagina de erro
+            if (user == null)
+                return RedirectToAction("Index", "Error");
+
+            // Se o próprio usuário tentar deletar ele mesmo, redireciona para listagem de usuários
+            if (user.Username == User.Identity.Name)
+                return RedirectToAction("All","User");
+
+            // Passa modelo de usuário de deleção para view
+            return View(userDelete);
+        }
+
+        //
+        // POST: /Admin/User/Delete/{id}
+        [HttpPost]
+        [PermissionFilter(Roles = "Admin")]
+        public ActionResult Delete(UserDelete userDelete)
+        {
+            // recupera dados do usuário
+            User user = userDAO.GetUser(userDelete.Id);
+
+            // Se usuário não encontrado, pode ser um refresh, pagina de erro
+            if (user == null)
+                return RedirectToAction("Index", "Error");
+
+            // Se o próprio usuário tentar deletar ele mesmo, redireciona para listagem de usuários
+            if (user.Username == User.Identity.Name)
+                return RedirectToAction("All", "User");
+            
+            // Tenta deletar, se conseguir, sinaliza sucesso, senão, mensagem de erro.
+            if (userDAO.DeleteUser(userDelete.Id))
+                @ViewBag.Success = true;
+            else
+                ModelState.AddModelError("", "Ops! Ocorreu um erro durante o processamento. Tente novamente.");
+
+            // Retorna view e modelo
+            return View(userDelete);
         }
 
         //
@@ -109,7 +156,7 @@ namespace Blog42.Controllers
         public ActionResult ResetPassword(UserResetPassword passwords)
         {
             // Recupera informações originais
-            User user = userDAO.GetUser(System.Web.HttpContext.Current.User.Identity.Name);
+            User user = userDAO.GetUser(User.Identity.Name);
 
             // verifica se não conseguiu receber usuário
             if (user == null)

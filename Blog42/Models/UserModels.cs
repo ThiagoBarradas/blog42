@@ -40,6 +40,17 @@ namespace Blog42.Models
     }
 
     /*
+    * Modelo para view de deleção de usuário
+    */
+    public class UserDelete
+    {
+        public int Id { get; set; }
+        public string Name { get; set; }
+        public string Username { get; set; }
+        public bool Delete { get; set; }
+    }
+
+    /*
      * Modelo completo de Usuário
      */
     public class UserFull
