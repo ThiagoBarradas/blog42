@@ -1,5 +1,8 @@
-﻿@{
-    ViewBag.Title = "Cadastrar Usuário";
+﻿@model Blog42.Models.UserNew
+
+@{
+    // Titulo, caso formulário "Cadastrar Usuário", caso sucesso ao resetar "Usuário Cadastrado"
+    ViewBag.Title = (@ViewBag.Success == null) ? "Cadastrar Usuário" : "Usuário Cadastrado";
 }
 
 <div class="jumbotron">
@@ -9,11 +12,80 @@
     @Html.Partial("_PanelTabs")
 
     <div class="tab-content">
-        <!-- Início Conteúdo da página -->
-        Deletar Usuário
-        <br /><br /><br />
-        @ViewBag.Id
+    <!-- Início Conteúdo da página -->
 
-        <!-- Fim Conteúdo da página -->
+        <!-- Início Conteúdo da página -->
+        <div class="box-title">
+            <h2 class="title">@ViewBag.Title</h2>
+        </div>
+        <div class="content ">
+            @using (Html.BeginForm())
+            {
+                @Html.AntiForgeryToken()
+
+                if (@ViewBag.Success != null) // Se obtive sucesso, exibe mensagem
+                {
+                    <div class="div-success">
+                        <h2 class="msg-success">
+                            <span class="glyphicon glyphicon-ok" aria-hidden="true"></span> Usuário cadastrado com sucesso!
+                        </h2>
+                        <br />
+                        @Html.ActionLink("Voltar para listagem de Usuários", "All", "User")
+                    </div>
+                }
+                else // Exibe formulário
+                {
+                    @Html.ValidationSummary(true)
+                    <div class="row">
+                        <div class="col-md-4">
+                            @Html.LabelFor(m => m.Username)
+                            @Html.TextBoxFor(m => m.Username, new { @class = "form-control input-lg" })
+                            @Html.ValidationMessageFor(m => m.Username)
+                        </div>
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                @Html.LabelFor(m => m.Password)
+                                @Html.PasswordFor(m => m.Password, new { @class = "form-control input-lg" })
+                                @Html.ValidationMessageFor(m => m.Password)
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                @Html.LabelFor(m => m.ConfirmPassword)
+                                @Html.PasswordFor(m => m.ConfirmPassword, new { @class = "form-control input-lg" })
+                                @Html.ValidationMessageFor(m => m.ConfirmPassword)
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6">
+                            @Html.LabelFor(m => m.Name)
+                            @Html.TextBoxFor(m => m.Name, new { @class = "form-control input-lg" })
+                            @Html.ValidationMessageFor(m => m.Name)
+                        </div>
+                        <div class="col-md-6">
+                            @Html.LabelFor(m => m.Email)
+                            @Html.TextBoxFor(m => m.Email, new { @class = "form-control input-lg" })
+                            @Html.ValidationMessageFor(m => m.Email)
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-12 center separator">
+                            @Html.CheckBoxFor(m => m.IsAdmin) @Html.LabelFor(m => m.IsAdmin)
+                        </div>
+                    </div>
+                    <div class="row buttons" id="box-default">
+                        <div class="col-md-6">
+                            <button type="submit" class="btn btn-success btn-lg"><span class="glyphicon glyphicon-save"></span> Criar Usuário</button>
+                        </div>
+                        <div class="col-md-6">
+                            <button type="button" onclick="location.href='@Url.Action("All","User")'" class="btn btn-default btn-lg"><span class="glyphicon glyphicon-arrow-left"></span> Voltar</button>
+                        </div>
+                    </div>
+                }
+            }
+        </div>
+
+    <!-- Fim Conteúdo da página -->
     </div>
 </div><!-- /.jumbotron -->

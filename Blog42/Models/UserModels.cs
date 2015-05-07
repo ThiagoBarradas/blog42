@@ -50,6 +50,42 @@ namespace Blog42.Models
         public bool Delete { get; set; }
     }
 
+
+    /*
+     * Modelo para criação de Usuário
+     */
+    public class UserNew
+    {
+        [Required]
+        [Display(Name = "Usuário")]
+        [StringLength(20, ErrorMessage = "O campo Usuário deve conter entre 3 e 20 caracteres.", MinimumLength = 3)]
+        public string Username { get; set; }
+
+        [Required]
+        [Display(Name = "Senha")]
+        [StringLength(20, ErrorMessage = "O campo Senha deve conter entre 6 e 20 caracteres.", MinimumLength = 6)]
+        public string Password { get; set; }
+
+        [Required]
+        [Display(Name = "Confirmar Senha")]
+        [Compare("Password", ErrorMessage = "O campo Confirmar Senha deve ser igual ao campo Senha.")]
+        public string ConfirmPassword { get; set; }
+
+        [Required]
+        [Display(Name = "Nome")]
+        [StringLength(100, ErrorMessage = "O campo Nome deve conter entre 3 e 100 caracteres.", MinimumLength = 3)]
+        public string Name { get; set; }
+
+        [Required]
+        [Display(Name = "E-mail")]
+        [EmailAddress(ErrorMessage = "Email inválido!")]
+        [StringLength(100, ErrorMessage = "O campo Email deve conter entre 5 e 100 caracteres.", MinimumLength = 5)]
+        public string Email { get; set; }
+
+        [Display(Name = "Administrador?")]
+        public bool IsAdmin { get; set; }
+    }
+
     /*
      * Modelo completo de Usuário
      */

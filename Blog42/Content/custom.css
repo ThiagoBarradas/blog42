@@ -150,6 +150,7 @@ footer {
     width: 100%;
 }
 
+
 /*
  * Estilo para página Sobre
  */
@@ -185,6 +186,9 @@ footer {
 }
 .right {
     text-align: right;
+}
+.separator {
+    margin: 1em;
 }
 
 /*

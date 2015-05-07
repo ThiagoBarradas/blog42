@@ -31,7 +31,7 @@ namespace Blog42.Controllers
         //
         // POST: /Admin/User/Login
         [HttpPost]
-        [ValidateInput(true)]
+        [ValidateAntiForgeryToken()]
         public ActionResult Login(UserLogin user)
         {
             // Verifica se os dados para Login são válidos e autentica o usuário
@@ -49,7 +49,7 @@ namespace Blog42.Controllers
                 ModelState.AddModelError("", "Usuário e/ou senha incorretos.");
             }
 
-            // retorna a view com os dados de origem recebidos do formulário de Login
+            // retorna a view com os dados do modelo
             return View(user);
         }
 
@@ -75,12 +75,52 @@ namespace Blog42.Controllers
             return View();
         }
 
+        //
+        // GET: /Admin/User/New
         [PermissionFilter(Roles = "Admin")]
         public ActionResult New()
         {
             return View();
         }
 
+        //
+        // GET: /Admin/User/New
+        [HttpPost]
+        [PermissionFilter(Roles = "Admin")]
+        public ActionResult New(UserNew userNew)
+        {
+            // formulário com dados válidos
+            if(ModelState.IsValid) {
+                //Se já existir um usuário com o username escolhido
+                if(userDAO.GetUser(userNew.Username)!=null) 
+                {
+                    // retorna mensagem de erro
+                    ModelState.AddModelError("", "Usuário já existe, escolha outro nome de Usuário.");
+                }
+                else
+                {
+                    // Cria usuário e atribui valores
+                    User user = new User();
+                    user.Username = userNew.Username;
+                    user.Password = CryptHelper.CryptPassword(userNew.Password); //atribui senha criptografada
+                    user.Name = userNew.Name;
+                    user.Email = userNew.Email;
+                    user.IsAdmin = userNew.IsAdmin;
+                    user.IsActive = true; // usuário criado sempre é ativo
+                    user.IsFirstEntry = true; // usuário criado sempre é primeiro acesso
+                    // Se conseguir criar, sinaliza sucesso, senão gera mensagem de erro
+                    if (userDAO.CreateUser(user))
+                        @ViewBag.Success = true;
+                    else
+                        ModelState.AddModelError("", "Ops! Ocorreu um erro durante o processamento. Tente novamente.");
+                }
+            }
+            //retorna view com modelo
+            return View(userNew);
+        }
+
+        //
+        // GET: /Admin/User/Edit/{id}
         [PermissionFilter(Roles = "Author, Admin")]
         public ActionResult Edit(int id)
         {
@@ -118,6 +158,7 @@ namespace Blog42.Controllers
         // POST: /Admin/User/Delete/{id}
         [HttpPost]
         [PermissionFilter(Roles = "Admin")]
+        [ValidateAntiForgeryToken()]
         public ActionResult Delete(UserDelete userDelete)
         {
             // recupera dados do usuário
@@ -153,6 +194,7 @@ namespace Blog42.Controllers
         // POST: /Admin/User/ResetPassword
         [HttpPost]
         [PermissionFilter(Roles = "FirstEntry")]
+        [ValidateAntiForgeryToken]
         public ActionResult ResetPassword(UserResetPassword passwords)
         {
             // Recupera informações originais
@@ -188,6 +230,7 @@ namespace Blog42.Controllers
                         ModelState.AddModelError("", "Ops! Ocorreu um erro durante o processamento. Tente novamente.");
                 }
             }            
+            // Retorna view com modelo
             return View(passwords);
         }
 
