@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using Blog42.Models;
-using Blog42.Helpers;
 
 namespace Blog42.DataAccess
 {
@@ -11,7 +10,8 @@ namespace Blog42.DataAccess
     {
         private Blog42Entities entities;
 
-        public UserDAO() { 
+        public UserDAO() 
+        { 
             // Inicializa o modelo EF
             entities = new Blog42Entities();
         }
@@ -22,16 +22,13 @@ namespace Blog42.DataAccess
          */
         public bool AuthUser(String username, String password)
         {
-            // transforma o password recebido em uma hash MD5 para comparar com a hash armazenada
-            password = CryptHelper.CryptPassword(password);
-
             //Define a query de consulta para a combinação de usuário/senha e para usuários ativos
-            var Query = (from u in entities.User
+            var query = (from u in entities.User
                          where u.Username.Equals(username, StringComparison.OrdinalIgnoreCase) && u.Password == password && u.IsActive
                          select u).SingleOrDefault();
 
             // Retorna true caso recupere um usuário ativo que o username e a senha combinem ou false caso contrário.
-            return (Query != null);
+            return (query != null);
         }
 
         /*
@@ -93,7 +90,7 @@ namespace Blog42.DataAccess
                 // se localizou registrou e recuperou dados, atualiza
                 if (original != null)
                 {
-                    // Atualiza dados
+                    // Atualiza dados e salva
                     original.Username = user.Username;
                     original.Name = user.Name;
                     original.Email = user.Email;
@@ -105,7 +102,7 @@ namespace Blog42.DataAccess
                     // Se ocorrer tudo bem, retorna true
                     return true;
                 }
-                else
+                else // Se não localizou retorna false
                 {
                     return false;
                 }
@@ -124,9 +121,9 @@ namespace Blog42.DataAccess
         {
             try
             {
-                // recebe usuário 
+                // Recebe usuário 
                 var userSelected = entities.User.Find(id);
-                // remove usuário e salva
+                // Remove usuário e salva
                 entities.User.Remove(userSelected);
                 entities.SaveChanges();
                 // Se ocorrer tudo bem, retorna true

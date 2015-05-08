@@ -52,7 +52,7 @@ namespace Blog42.Models
 
 
     /*
-     * Modelo para criação de Usuário
+     * Modelo para view de criação de Usuário
      */
     public class UserNew
     {
@@ -87,11 +87,11 @@ namespace Blog42.Models
     }
 
     /*
-     * Modelo para edição de Usuário
+     * Modelo para view de edição de Usuário
      */
     public class UserEdit
     {
-        public int Id { get; set; }
+        public int UserId { get; set; }
 
         [Display(Name = "Usuário")]
         [StringLength(20, ErrorMessage = "O campo Usuário deve conter entre 3 e 20 caracteres.", MinimumLength = 3)]
@@ -121,46 +121,5 @@ namespace Blog42.Models
 
         [Display(Name = "Ativo?")]
         public bool IsActive { get; set; }
-    }
-
-    /*
-     * Modelo completo de Usuário
-     */
-    public class UserFull
-    {
-        public int Id { get; set; }
-
-        [Required]
-        [Display(Name = "Usuário")]
-        [StringLength(20, ErrorMessage = "O campo Usuário deve conter entre 3 e 20 caracteres.", MinimumLength = 3)]
-        public string Username { get; set; }
-
-        [Required]
-        [Display(Name = "Senha")]
-        [StringLength(20, ErrorMessage = "O campo Senha deve conter entre 6 e 20 caracteres.", MinimumLength = 6)]
-        public string Password { get; set; }
-
-        [Required]
-        [Display(Name = "Nome")]
-        [StringLength(100, ErrorMessage = "O campo Nome deve conter entre 3 e 100 caracteres.", MinimumLength = 3)]
-        public string Name { get; set; }
-
-        [Required]
-        [Display(Name = "E-mail")]
-        [EmailAddress(ErrorMessage = "Email inválido!")]
-        [StringLength(100, ErrorMessage = "O campo Email deve conter entre 5 e 100 caracteres.", MinimumLength = 5)]
-        public string Email { get; set; }
-
-        [Required]
-        [Display(Name = "Administrador")]
-        public bool IsAdmin { get; set; }
-
-        [Required]
-        [Display(Name = "Ativo")]
-        public bool IsActive { get; set; }
-
-        [Required]
-        [Display(Name = "Primeiro Acesso")]
-        public bool IsFirstEntry { get; set; }
     }
 }
