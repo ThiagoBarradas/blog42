@@ -17,7 +17,7 @@ namespace Blog42.DataAccess
         }
 
         /*
-         * Método que verifica se o usuário existe, a senha está correta e é um usuário ativo.
+         * Verifica se o usuário existe, a senha está correta e é um usuário ativo.
          * Se estiver tudo ok, retorna true, caso usuário ou senha incorretos ou usuário inativo, retorna false.
          */
         public bool AuthUser(String username, String password)
@@ -34,7 +34,6 @@ namespace Blog42.DataAccess
         /*
          * Método que retorna um usuário de acordo com seu username
          * Caso não possua nenhum usuário com username, o retorno é null.
-         * 
          */
         public User GetUser(string username)
         {
@@ -48,7 +47,6 @@ namespace Blog42.DataAccess
         /*
          * Método que retorna um usuário de acordo com seu id
          * Caso não possua nenhum usuário com esse id, o retorno é null.
-         * 
          */
         public User GetUser(int id)
         {
@@ -58,7 +56,8 @@ namespace Blog42.DataAccess
         }
 
         /*
-         * Cria um nova registro de usuário
+         * Cria um novo registro de usuário
+         * Recebe um User e retorna um bool informando sucesso
          */
         public bool CreateUser(User user)
         {
@@ -79,6 +78,7 @@ namespace Blog42.DataAccess
 
         /*
          * Atualiza um registro de usuário
+         * Recebe um User e retorna um bool informando sucesso
          */
         public bool UpdateUser(User user)
         {
@@ -87,7 +87,7 @@ namespace Blog42.DataAccess
                 // recebe dados originais
                 var original = entities.User.Find(user.Id);
 
-                // se localizou registrou e recuperou dados, atualiza
+                // se localizou registro e recuperou dados, atualiza
                 if (original != null)
                 {
                     // Atualiza dados e salva
@@ -116,6 +116,7 @@ namespace Blog42.DataAccess
 
         /*
          * Deleta um registro de usuário
+         * Recebe um int (id do usuário) e retorna um bool informando sucesso
          */
         public bool DeleteUser(int id)
         {
@@ -138,6 +139,7 @@ namespace Blog42.DataAccess
 
         /*
          * Seleciona todos os usuários
+         * Recebe uma lista de User
          */
         public List<User> SelectAllUsers()
         {
