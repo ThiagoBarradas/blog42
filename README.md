@@ -8,7 +8,8 @@ Não foi o Zaphod Beeblebrox que o criou, seu criador é um ser terráquio cujo 
 O projeto consiste apenas no estudo e aplicação das tecnologias:
 - C#;
 - .NET 4.5;
-- ASP.MVC;
+- ASP.MVC 4;
+- Entity Framework 5;
 - LocalDB;
 - jQuery;
 - Bootstrap;
