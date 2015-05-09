@@ -3,24 +3,24 @@
 }
 
 <div class="jumbotron">
-    
+
     <!-- Titulo e Menu -->
     @Html.Partial("_PanelTitle")
     @Html.Partial("_PanelTabs")
-    
+
     <div class="tab-content">
-    <!-- Início Conteúdo da página -->
+    <!-- Início Conteúdo da Tab-->
 
     <table class="table table-striped grid-table">
-        @if (@ViewBag.Users.Count == 0)
-        {
+        
+        @if (@ViewBag.Users.Count == 0) { // Se não encontrou registros
             <thead>
                 <tr>
                     <td>Nenhum usuário encontrado.</td>
                 </tr>
             </thead>
         }
-        else
+        else // Se encontrou registros, lista-os
         {
             <thead>
                 <tr>
@@ -47,13 +47,12 @@
                 }
             </tbody>
         }
-       
     </table>
     
     <button type="button" class="btn btn-default btn-lg" onclick="location.href = '@Url.Action("New", "User")'">
         <span class="glyphicon glyphicon-plus"></span> Criar Usuário
     </button>
     
-    <!-- Fim Conteúdo da página -->
+    <!-- Fim Conteúdo da Tab-->
     </div>
 </div><!-- /.jumbotron -->

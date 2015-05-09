@@ -44,10 +44,10 @@ namespace Blog42.Models
     */
     public class UserDelete
     {
-        public int Id { get; set; }
+        public int UserId { get; set; }
         public string Name { get; set; }
         public string Username { get; set; }
-        public bool Delete { get; set; }
+        public bool DeletePosts { get; set; }
     }
 
 

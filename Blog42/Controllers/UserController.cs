@@ -225,7 +225,7 @@ namespace Blog42.Controllers
 
             // Copia as informações recebidas para modelo da página de deleção
             UserDelete userDelete = new UserDelete();
-            userDelete.Id = user.Id;
+            userDelete.UserId = user.Id;
             userDelete.Name = user.Name;
             userDelete.Username = user.Username;
             
@@ -240,7 +240,7 @@ namespace Blog42.Controllers
         public ActionResult Delete(UserDelete userDelete)
         {
             // Recupera informações do usuário a ser deletado
-            User user = userDAO.GetUser(userDelete.Id);
+            User user = userDAO.GetUser(userDelete.UserId);
 
             // Se usuário não encontrado, redireciona para página de erro
             if (user == null)
@@ -252,14 +252,14 @@ namespace Blog42.Controllers
 
             // TODO: Implementar POSTDAO
             // Verifica se usuário que está deletando deseja assumir suas publicações
-            // if (!userDelete.Delete)
+            // if (!userDelete.DeletePosts)
             // {
             //     PostDAO postDAO = new PostDAO(); // Objeto de persistencia de postagens
             //     postDAO.ChangeAuthor(user.Username, User.Identity.Name); // Altera autor das postagens
             // }
 
             // Tenta deletar, se conseguir, sinaliza sucesso, senão, adiciona erro
-            if (userDAO.DeleteUser(userDelete.Id))
+            if (userDAO.DeleteUser(userDelete.UserId))
                 ViewBag.Success = true;
             else
                 ModelState.AddModelError("", "Ops! Ocorreu um erro durante o processamento. Tente novamente.");

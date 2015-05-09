@@ -1,5 +1,4 @@
 ﻿@model Blog42.Models.UserLogin
-
 @{
     ViewBag.Title = "Acesse a galáxia administrativa";
 }
@@ -10,24 +9,26 @@
     </div>
     <div class="content">
         
-        @using (Html.BeginForm())
-        {
-            @Html.AntiForgeryToken()
+        <div id="box-login">
             
-            <div id="box-login">
+            @using (Html.BeginForm()) // Cria formulário
+            {
+                @Html.AntiForgeryToken()
                 @Html.ValidationSummary(true)
+                
                 <div class="form-group">
-                    @Html.LabelFor(m => m.Username) 
+                    @Html.LabelFor(m => m.Username)
                     @Html.TextBoxFor(m => m.Username, new { @class = "form-control input-lg" })
                     @Html.ValidationMessageFor(m => m.Username)
                 </div>
                 <div class="form-group">
-                    @Html.LabelFor(m => m.Password) 
+                    @Html.LabelFor(m => m.Password)
                     @Html.PasswordFor(m => m.Password, new { @class = "form-control input-lg" })
                     @Html.ValidationMessageFor(m => m.Password)
                 </div>
                 <button type="submit" class="btn btn-primary btn-lg">Entrar</button>
-            </div>
-        }
+            }
+        </div><!--/#box-login -->
+
     </div><!-- /.content -->
 </div><!-- /.jumbotron -->
