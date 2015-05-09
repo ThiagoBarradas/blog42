@@ -16,7 +16,7 @@ namespace Blog42.Controllers
          */
         public ActionResult Index()
         {
-             // Cria e inicializa objeto de acesso aos dados das postagens
+            // Cria e inicializa objeto de acesso aos dados das postagens
             PostDAO postDAO = new PostDAO();
             // Recebe todas as postagens
             List<Post> posts = postDAO.SelectAllPosts().ToList<Post>();

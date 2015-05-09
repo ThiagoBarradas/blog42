@@ -58,6 +58,7 @@ footer {
     font-size: 1.2em;
     font-weight: bold;
     margin: 0;
+    color: #428bca;
 }
 .jumbotron .subtitle {
     font-size: 0.7em;
@@ -71,6 +72,18 @@ footer {
     padding: 1em 1em 0.5em 1em;
     margin-bottom: 1em;
     font-size: 0.9em;
+}
+
+/*
+ * Estilo para comentário
+ */
+.box-comment {
+    font-size: 0.8em;
+    margin: -1em;
+    padding: 0.7em;
+}
+.no-resize {
+    resize:vertical;
 }
 
 /*
@@ -190,6 +203,19 @@ footer {
 .separator {
     margin: 1em;
 }
+.separator-only-vertical {
+    margin: 1em 0;
+}
+.separator-bottom {
+    margin-bottom: 1em;
+}
+h1.title-black {
+    text-transform: uppercase;
+    font-size: 2em;
+    font-weight: bold;
+    margin: 0;
+    color: #000;
+}
 
 /*
  * Painel Administrativo
@@ -293,5 +319,22 @@ footer {
       width: 280px;
       height: 350px;
       margin: 0 auto;
+  }
+
+  /*
+   * Estilo para textos
+   */
+  h1.title-black, .title-black, .title {
+    font-size: 1.4em;  
+  }
+
+  /*
+   * Estilo para cada postagem
+   */
+  .jumbotron .subtitle {
+      display: block;
+      width: 100%;
+      margin-top: 0.8em;
+      margin-left: 0.6em;
   }
 }
