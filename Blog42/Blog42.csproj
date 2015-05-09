@@ -186,6 +186,7 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
+    <Compile Include="Helpers\PluralHelper.cs" />
     <Compile Include="Helpers\CryptHelper.cs" />
     <Compile Include="Models\Blog42Model.Context.cs">
       <AutoGen>True</AutoGen>

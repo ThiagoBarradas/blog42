@@ -13,7 +13,7 @@
 
     <table class="table table-striped grid-table">
         
-        @if (@ViewBag.Users.Count == 0) { // Se não encontrou registros
+        @if (ViewBag.Users.Count == 0) { // Se não encontrou registros
             <thead>
                 <tr>
                     <td>Nenhum usuário encontrado.</td>
@@ -30,7 +30,7 @@
                 </tr>
             </thead>
             <tbody>
-                @foreach (var user in @ViewBag.Users)
+                @foreach (var user in ViewBag.Users)
                 {
                     <tr>
                         <td><b class="th">Nome:</b> @user.Name</td>

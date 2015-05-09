@@ -77,8 +77,8 @@ namespace Blog42.DataAccess
          */
         public List<Comment> SelectAllComments()
         {
-            // Recebe todos os comentários ordenados pelo Id
-            var comments = entities.Comment.OrderBy(m => m.Id).ToList<Comment>();
+            // Recebe todos os comentários ordenados pelo Id descendente
+            var comments = entities.Comment.OrderByDescending(m => m.Id).ToList<Comment>();
             return comments;
         }
 
@@ -89,9 +89,9 @@ namespace Blog42.DataAccess
          */
         public List<Comment> SelectCommentsByPost(int postId)
         {
-            // Recebe todos os comentários de um post ordenados pelo id e retorna em lista
+            // Recebe todos os comentários de um post ordenados pelo id descendente e retorna em lista
             var comments = entities.Comment.Where(m => m.PostId == postId)
-                                   .OrderBy(m => m.Id)
+                                   .OrderByDescending(m => m.Id)
                                    .ToList<Comment>();
             return comments;
         }
@@ -102,9 +102,9 @@ namespace Blog42.DataAccess
          */
         public List<Comment> SelectCommentsByAuthor(string username)
         {
-            // Recebe todos os comentários de um usuário ordenados pelo id e retorna em lista
+            // Recebe todos os comentários de um usuário ordenados pelo id descendente e retorna em lista
             var comments = entities.Comment.Where(m => m.Post.User.Username == username)
-                                   .OrderBy(m => m.Id)
+                                   .OrderByDescending(m => m.Id)
                                    .ToList<Comment>();
             return comments;
         }

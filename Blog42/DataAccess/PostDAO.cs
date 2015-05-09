@@ -141,7 +141,7 @@ namespace Blog42.DataAccess
         public List<Post> SelectAllPosts()
         {
             // Recebe todas as postagens ordenadas pelo Id e retorna em lista
-            var posts = entities.Post.OrderBy(m => m.Id).ToList<Post>();
+            var posts = entities.Post.OrderByDescending(m => m.Id).ToList<Post>();
             return posts;
         }
 
@@ -153,7 +153,7 @@ namespace Blog42.DataAccess
         {
             // Recebe todas as postagens de um usuário ordenadas pelo id e retorna em lista
             var posts = entities.Post.Where(m => m.User.Username == username)
-                                   .OrderBy(m => m.Id)
+                                   .OrderByDescending(m => m.Id)
                                    .ToList<Post>();
             return posts;
         }
