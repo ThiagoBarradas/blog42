@@ -1,5 +1,7 @@
-﻿@{
-    ViewBag.Title = "Deletar Comentário";
+﻿@model Blog42.Models.CommentDelete
+@{
+    // Titulo, caso formulário "Deletar Comentário", caso sucesso "Comentário Deletado"
+    ViewBag.Title = (ViewBag.Success == null) ? "Deletar Comentário" : "Comentário Deletado";
 }
 
 <div class="jumbotron">
@@ -9,12 +11,92 @@
     @Html.Partial("_PanelTabs")
 
     <div class="tab-content">
-        <!-- Início Conteúdo da página -->
-        
-        Deletar comentário
-        <br /><br /><br />
-        @ViewBag.Id
+    <!-- Início Conteúdo da Tab-->
 
-        <!-- Fim Conteúdo da página -->
+        <div class="box-title">
+            <h2 class="title">@ViewBag.Title</h2>
+        </div>
+        <div class="content">
+
+        @if (ViewBag.Success != null) // Se obteve sucesso, exibe mensagem
+        {
+            <div class="div-success">
+                <h2 class="msg-success">
+                    <span class="glyphicon glyphicon-ok" aria-hidden="true"></span> Comentário excluído com sucesso!
+                </h2><br />
+                @Html.ActionLink("Ir para a Postagem", "Show", "Post", new { Id = Html.ValueFor(m => m.PostId) }, null)<br />
+                @Html.ActionLink("Ir para listagem de Comentários", "All", "Comment")
+            </div>
+        }
+        else // Senão, monta formulário
+        {
+            <h4 class="separator-only-vertical">Confirma exclusão do comentário? </h4>
+
+            using (Html.BeginForm()) // Cria formulário
+            {
+                @Html.AntiForgeryToken()
+                @Html.ValidationSummary(true)
+
+                @Html.HiddenFor(m => m.CommentId)
+                @Html.HiddenFor(m => m.Author)
+                @Html.HiddenFor(m => m.Email)
+                @Html.HiddenFor(m => m.CreatedAt)
+                @Html.HiddenFor(m => m.Comment)
+                @Html.HiddenFor(m => m.PostId)
+                @Html.HiddenFor(m => m.PostTitle)
+
+                <div class="row">
+                    <div class="col-md-4">
+                        <div class="panel panel-default internal-horizontal-spacing">
+                            <label>Autor:</label>
+                            <p>@Model.Author</p>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="panel panel-default internal-horizontal-spacing">
+                            <label>E-mail:</label>
+                            <p>@Model.Email</p>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="panel panel-default internal-horizontal-spacing">
+                            <label>Criado em:</label>
+                            <p>@Model.CreatedAt.ToString("dd/MM/yyyy") às @Model.CreatedAt.ToString("HH:mm")h</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="panel panel-default internal-horizontal-spacing">
+                            <label>Comentário:</label>
+                            <p>@Model.Comment</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="panel panel-default internal-horizontal-spacing">
+                            <label>Postagem:</label>
+                            <p>@Model.PostTitle</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row buttons" id="box-default">
+                    <div class="col-md-4">
+                        <button type="submit" class="btn btn-success btn-lg"><span class="glyphicon glyphicon-ok"></span> Excluir comentário</button>
+                    </div>
+                    <div class="col-md-4">
+                        <button type="button" onclick="location.href='@Url.Action("Show", "Post", new { Id = Html.ValueFor(m => m.PostId) })'" class="btn btn-default btn-lg"><span class="glyphicon glyphicon-file"></span> Ver Postagem</button>
+                    </div>
+                    <div class="col-md-4">
+                        <button type="button" onclick="location.href='@Url.Action("All","Comment")'" class="btn btn-default btn-lg"><span class="glyphicon glyphicon-th-list"></span> Listagem de Comentários</button>
+                    </div>
+                </div>
+            }
+        }
+        </div><!--/.content-->
+
+    <!-- Fim Conteúdo da Tab -->
     </div>
 </div><!-- /.jumbotron -->

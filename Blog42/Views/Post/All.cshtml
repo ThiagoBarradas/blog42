@@ -3,21 +3,58 @@
 }
 
 <div class="jumbotron">
-    
+
     <!-- Titulo e Menu -->
     @Html.Partial("_PanelTitle")
     @Html.Partial("_PanelTabs")
-    
+
     <div class="tab-content">
-    <!-- Início Conteúdo da página -->
+    <!-- Início Conteúdo da Tab-->
+
+    <table class="table table-striped grid-table">
+        
+        @if (ViewBag.Posts.Count == 0) { // Se não encontrou registros
+            <thead>
+                <tr>
+                    <td>Nenhuma postagem encontrada.</td>
+                </tr>
+            </thead>
+        }
+        else // Se encontrou registros, lista-os
+        {
+            <thead>
+                <tr>
+                    <th>Título</th>
+                    <th>Autor</th>
+                    <th>Criado em</th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var post in ViewBag.Posts)
+                {
+                    <tr>
+                        <td><b class="th">Título:</b> @post.Title</td>
+                        <td><b class="th">Autor:</b> @post.User.Name</td>
+                        <td><b class="th">Criado em:</b> @post.CreatedAt.ToString("dd/MM/yyyy") às @post.CreatedAt.ToString("HH:mm")h</td>
+                        <td class="grid-action">
+                            <button type="button" class="btn btn-default" onclick="location.href = '@Url.Action("Edit", "Post", new { Id = post.Id })'">
+                                <span class="glyphicon glyphicon-pencil"></span>
+                            </button>
+                            <button type="button" class="btn btn-default" onclick="location.href = '@Url.Action("Delete", "Post", new { Id = post.Id })'">
+                                <span class="glyphicon glyphicon-trash"></span>
+                            </button>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        }
+    </table>
     
-            Todos as Postagens
-            <br /><br /><br />
-            @Html.ActionLink("Nova Postagens", "New", "Post")<br />
-            @Html.ActionLink("Editar Postagem 1", "Edit", "Post", new { Id = 1 }, null)<br />
-            @Html.ActionLink("Excluir Postagem 1", "Delete", "Post", new { Id = 1 }, null)<br />
-            @Html.ActionLink("Mostrar Postagem 1", "Show", "Post", new { Id = 1 }, null)<br />
+    <button type="button" class="btn btn-default btn-lg" onclick="location.href = '@Url.Action("New", "Post")'">
+        <span class="glyphicon glyphicon-plus"></span> Publicar postagem
+    </button>
     
-    <!-- Fim Conteúdo da página -->
+    <!-- Fim Conteúdo da Tab-->
     </div>
 </div><!-- /.jumbotron -->

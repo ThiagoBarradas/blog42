@@ -3,18 +3,56 @@
 }
 
 <div class="jumbotron">
-    
+
     <!-- Titulo e Menu -->
     @Html.Partial("_PanelTitle")
     @Html.Partial("_PanelTabs")
-    
+
     <div class="tab-content">
-    <!-- Início Conteúdo da página -->
-    
-            Todos os Comentários
-            <br /><br /><br />
-            @Html.ActionLink("Excluir Comentário 1", "Delete", "Comment", new { Id = 1 }, null)<br />
-    
-    <!-- Fim Conteúdo da página -->
+        <!-- Início Conteúdo da Tab-->
+
+        <table class="table table-striped grid-table">
+
+            @if (ViewBag.Comments.Count == 0)
+            { // Se não encontrou registros
+                <thead>
+                    <tr>
+                        <td>Nenhum comentário encontrado.</td>
+                    </tr>
+                </thead>
+            }
+            else // Se encontrou registros, lista-os
+            {
+                <thead>
+                    <tr>
+                        <th>Postagem</th>
+                        <th>Comentário</th>
+                        <th>Autor</th>
+                        <th>E-mail</th>
+                        <th>Criado em</th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var comment in ViewBag.Comments)
+                    {
+                        <tr>
+                            <td><b class="th">Postagem:</b> @comment.Post.Title</td>
+                            <td><b class="th">Comentário:</b> @comment.Comment1</td>
+                            <td><b class="th">Autor:</b> @comment.Author</td>
+                            <td><b class="th">Email:</b> @comment.Email</td>
+                            <td><b class="th">Criado em:</b> @comment.CreatedAt.ToString("dd/MM/yyyy") às @comment.CreatedAt.ToString("HH:mm")h</td>
+                            <td class="grid-action">
+                                <button type="button" class="btn btn-default" onclick="location.href = '@Url.Action("Delete", "Comment", new { Id = comment.Id })'">
+                                    <span class="glyphicon glyphicon-trash"></span>
+                                </button>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            }
+        </table>
+
+        <!-- Fim Conteúdo da Tab-->
     </div>
 </div><!-- /.jumbotron -->

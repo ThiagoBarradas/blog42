@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web.Mvc;
 using System.Web;
+using System.Web.Security;
 using Blog42.Security;
 using Blog42.DataAccess;
 using Blog42.Models;
@@ -25,14 +26,31 @@ namespace Blog42.Controllers
             if (post == null)
                 return RedirectToAction("Index", "Error");
 
+            // Verifica se existe usuário logado, se existir se pode deletar (sendo admin ou autor da postagem) e sinaliza para view
+            if (Request.IsAuthenticated && (Roles.GetRolesForUser().Contains("Admin") || post.User.Username == User.Identity.Name))
+                ViewBag.canDelete = true;
+
             // Passa postagem para view
             ViewBag.Post = post;
             return View();
         }
 
+        //
+        // GET: /Admin/Post
         [PermissionFilter(Roles = "Author, Admin")]
         public ActionResult All()
         {
+            // Declara listagem de postagens
+            List<Post> posts;
+
+            // Inicializa posts. Se for admin, recupera todas as postagens, senão, apenas do próprio usuário
+            if (Roles.GetRolesForUser().Contains("Admin"))
+                posts = postDAO.SelectAllPosts().ToList<Post>();
+            else
+                posts = postDAO.SelectPostsByAuthor(User.Identity.Name).ToList<Post>();
+            
+            // Passa listagem para view
+            ViewBag.Posts = posts;            
             return View();
         }
 

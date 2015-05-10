@@ -50,7 +50,6 @@ namespace Blog42.Models
         public bool DeletePosts { get; set; }
     }
 
-
     /*
      * Modelo para view de criação de Usuário
      */

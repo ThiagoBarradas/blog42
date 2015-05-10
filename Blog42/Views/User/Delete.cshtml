@@ -1,6 +1,6 @@
 ﻿@model Blog42.Models.UserDelete
 @{
-    // Titulo, caso formulário "Deletar Senha", caso sucesso "Usuário Deletado"
+    // Titulo, caso formulário "Deletar Usuário", caso sucesso "Usuário Deletado"
     ViewBag.Title = (ViewBag.Success == null) ? "Deletar Usuário" : "Usuário Deletado";
 }
 
@@ -29,7 +29,7 @@
         }
         else // Senão, monta formulário
         {
-            <h4>Você está preste a deletar o usuário <b>@Html.ValueFor(m => m.Username) (@Html.ValueFor(m => m.Name))</b>. <br />&nbsp;</h4>
+            <h4>Você está preste a deletar o usuário <b>@Model.Username (@Model.Name)</b>. <br />&nbsp;</h4>
             <h4> O que deseja fazer com suas publicações? </h4>
 
             using (Html.BeginForm()) // Cria formulário

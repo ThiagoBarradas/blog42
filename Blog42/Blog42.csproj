@@ -206,6 +206,7 @@
     <Compile Include="Models\Comment.cs">
       <DependentUpon>Blog42Model.tt</DependentUpon>
     </Compile>
+    <Compile Include="Models\CommentModels.cs" />
     <Compile Include="Models\Post.cs">
       <DependentUpon>Blog42Model.tt</DependentUpon>
     </Compile>

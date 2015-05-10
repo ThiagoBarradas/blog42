@@ -4,7 +4,15 @@
 
 <div class="jumbotron">
     <div class="box-title">
-        <h2 class="title">@ViewBag.Post.Title</h2>
+        <h2 class="title">
+            @ViewBag.Post.Title
+            @if (ViewBag.canDelete != null) // Verifica se insere botão de exclusão na postagem
+            {
+                <button type="button" class="btn btn-default" onclick="location.href = '@Url.Action("Delete", "Post", new { Id = ViewBag.Post.Id })'">
+                    <span class="glyphicon glyphicon-trash"></span>
+                </button>
+            }        
+        </h2>
         <span class="subtitle">
             <span class="glyphicon glyphicon-user" aria-hidden="true"></span>
             @ViewBag.Post.User.Name
@@ -27,7 +35,7 @@
     </div><!-- /.content -->
 
     <div class="content"><!-- content comments-->
-        <a name="comments"></a>
+        <a name="comments" class="link-named">&nbsp;</a>
         <h2 class="title">Comentários (@ViewBag.Post.Comment.Count.ToString())</h2>
 
         @if (ViewBag.Post.Comment.Count == 0) // Se não tiver comentário, exibe mensagem que não tem comentários
@@ -40,13 +48,20 @@
         {
             foreach (var comment in ViewBag.Post.Comment)
             {
-                <a name="comment-@comment.Id"></a>
+                <a name="comment-@comment.Id" class="link-named"></a>
                 <div class="box-comment panel separator-only-vertical">
                     <div>
                         @if (comment.Email == null || comment.Email == "") // Se usuário tiver email cria nome com link para email
                             { <span><b>@comment.Author</b> disse:</span> }
                         else
                             { <span><a class="b" target="_blank" href="@String.Concat("mailto:",comment.Email)">@comment.Author</a> disse:</span> }
+
+                        @if (ViewBag.canDelete != null) // Verifica se insere botão de exclusão no comentário
+                        { 
+                            <button type="button" class="btn btn-default" onclick="location.href = '@Url.Action("Delete", "Comment", new { Id = comment.Id })'">
+                                <span class="glyphicon glyphicon-trash"></span>
+                            </button>
+                        }
                     </div>
                     <div>
                         <i>@comment.Comment1</i>
@@ -55,7 +70,7 @@
             }
 
             <div class="box-comment panel separator-only-vertical">
-                <a name="new-comment"></a>
+                <a name="new-comment" class="link-named"></a>
                 <h1 class="title-black">
                     <span class="glyphicon glyphicon-send"></span>&nbsp; Por Zarquon, Deixe-nos um comentário?
                 </h1>

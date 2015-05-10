@@ -85,6 +85,11 @@ footer {
 .no-resize {
     resize:vertical;
 }
+.link-named {
+    position:relative;
+    float: left; 
+    top: -67px;
+}
 
 /*
  * Mensagem de sucesso
@@ -199,6 +204,9 @@ footer {
 }
 .right {
     text-align: right;
+}
+.internal-horizontal-spacing {
+    padding: 0 0.7em;
 }
 .separator {
     margin: 1em;

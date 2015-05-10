@@ -38,7 +38,7 @@ namespace Blog42.Controllers
             if (ModelState.IsValid && userDAO.AuthUser(userLogin.Username, CryptHelper.CryptPassword(userLogin.Password)))
             {
                 // Autentica o usuário no sistema e redireciona
-                FormsAuthentication.SetAuthCookie(userLogin.Username, false);
+                FormsAuthentication.SetAuthCookie(userLogin.Username.ToLower(), false);
                 return RedirectLogged();
             }
             else if(ModelState.IsValid)
@@ -88,7 +88,7 @@ namespace Blog42.Controllers
         public ActionResult New(UserNew userNew)
         {
             // Verifica se Username é válido e se já existe usuário cadastrado com esse Username.
-            if(ModelState.IsValidField("Username") && userDAO.GetUser(userNew.Username)!=null) 
+            if(ModelState.IsValidField("Username") && userDAO.GetUser(userNew.Username.ToLower())!=null) 
             {
                 // Se existir, adiciona erro
                 ModelState.AddModelError("", "Usuário já existe, escolha outro nome de Usuário.");
@@ -97,7 +97,7 @@ namespace Blog42.Controllers
             {
                 // Cria usuário e atribui valores a novo usuário
                 User user = new User();
-                user.Username = userNew.Username;
+                user.Username = userNew.Username.ToLower();
                 user.Password = CryptHelper.CryptPassword(userNew.Password); //atribui senha criptografada
                 user.Name = userNew.Name;
                 user.Email = userNew.Email;
