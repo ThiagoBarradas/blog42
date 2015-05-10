@@ -250,13 +250,12 @@ namespace Blog42.Controllers
             if (user.Username == User.Identity.Name)
                 return RedirectToAction("All", "User");
 
-            // TODO: Implementar POSTDAO
             // Verifica se usuário que está deletando deseja assumir suas publicações
-            // if (!userDelete.DeletePosts)
-            // {
-            //     PostDAO postDAO = new PostDAO(); // Objeto de persistencia de postagens
-            //     postDAO.ChangeAuthor(user.Username, User.Identity.Name); // Altera autor das postagens
-            // }
+            if (!userDelete.DeletePosts)
+            {
+                PostDAO postDAO = new PostDAO(); // Objeto de persistencia de postagens
+                postDAO.ChangeAuthor(user.Username, User.Identity.Name); // Altera autor das postagens
+            }
 
             // Tenta deletar, se conseguir, sinaliza sucesso, senão, adiciona erro
             if (userDAO.DeleteUser(userDelete.UserId))
