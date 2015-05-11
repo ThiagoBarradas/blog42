@@ -9,6 +9,9 @@
         @Styles.Render("~/Content/bootstrap.min.css")
         @Styles.Render("~/Content/custom.css")
         @Scripts.Render("~/bundles/modernizr")
+        @Scripts.Render("~/bundles/jquery")
+        @Scripts.Render("~/Scripts/bootstrap.min.js")
+        @Scripts.Render("~/Scripts/bootbox.min.js")
     </head>
     <body>
 
@@ -46,9 +49,6 @@
             <p>&copy; @DateTime.Now.Year - Blog 42. @Html.ActionLink("Administração do Blog","Login","User").</p> 
         </footer>
 
-         @Scripts.Render("~/bundles/jquery")
-         @Scripts.Render("~/Scripts/bootstrap.min.js")
-         @Scripts.Render("~/Scripts/jquery.scripts.js")
          @RenderSection("scripts", required: false)
 </body>
 </html>

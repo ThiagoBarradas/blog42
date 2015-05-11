@@ -20,6 +20,12 @@ namespace Blog42
             );
 
             routes.MapRoute(
+                name: "NewComment",
+                url: "NewComment",
+                defaults: new { controller = "Comment", action = "New"}
+            );
+
+            routes.MapRoute(
                 name: "Home",
                 url: "{action}",
                 defaults: new { controller = "Home", action = "Index" }
@@ -31,13 +37,6 @@ namespace Blog42
                 defaults: new { controller = "User", action = "All", id = 0 },
                 constraints: new { id = @"\d+" }
             );
-
-            routes.MapRoute(
-                 name: "NewComment",
-                 url: "NewComment/{id}",
-                 defaults: new { controller = "Comment", action = "New", id = 0 },
-                 constraints: new { id = @"\d+" }
-             );
 
             routes.MapRoute(
                 name: "Comment",

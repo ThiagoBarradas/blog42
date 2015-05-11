@@ -34,10 +34,83 @@ namespace Blog42.Controllers
             return View();
         }
 
-        [HttpPost]
-        public ActionResult New()
+        //
+        // GET: /Comment/ByPost/{id}
+        public ActionResult ByPost(int postId = 0)
         {
-            return View();
+            // Se não for uma requisição feita por qualquer url que contenha "ByPost" e/ou não venha do próprio servidor
+            if (Request.Path.IndexOf("ByPost", StringComparison.OrdinalIgnoreCase) >= 0 || !Request.IsLocal)
+                return RedirectToAction("Index", "Error"); // redireciona para página de erro
+
+            // Declara listagem de comentários
+            List<Comment> comments = commentDAO.SelectCommentsByPost(postId).ToList<Comment>();
+
+            // Verifica se existe usuário logado e algum comentário foi retornado, se existir se pode deletar (sendo admin ou autor da postagem) 
+            if (Request.IsAuthenticated && comments.Count>0 && (Roles.GetRolesForUser().Contains("Admin") || comments[0].Post.User.Username == User.Identity.Name))
+                ViewBag.canDelete = true; // sinaliza para view
+
+            // Passa listagem para view
+            ViewBag.Comments = comments;
+            return PartialView();
+        }
+
+        //
+        // GET: /NewComment
+        // Para requisições Ajax e Local
+        public ActionResult New(int postId = 0)
+        {
+            // Se não for uma requisição feita por qualquer url que contenha "NewComment" e/ou não venha do próprio servidor
+            if (Request.Path.IndexOf("NewComment", StringComparison.OrdinalIgnoreCase)>=0 || !Request.IsLocal)
+                return RedirectToAction("Index", "Error"); // redireciona para página de erro
+
+            // Retorna view parcial passando modelo com Id do post
+            return PartialView(new CommentNew() { PostId = postId });
+        }
+
+        //
+        // POST: /NewComment
+        // Apenas requisições Ajax e Local
+        [HttpPost]
+        public ActionResult New(CommentNew commentNew)
+        {
+            // Se não for uma requisição ajax feita pelo próprio servidor, redireciona para página de erro
+            if (!Request.IsAjaxRequest() || !Request.IsLocal)
+                return RedirectToAction("Index", "Error");
+
+            // Recebe validação de modelo para sinalizar sucesso
+            commentNew.IsSuccess = ModelState.IsValid;
+
+            //Se modelo for válido, retorna mensagem de sucesso
+            if (ModelState.IsValid)
+            {
+                //  Tenta criar comentário e salvar no banco
+                commentNew.IsSuccess = commentDAO.CreateComment(new Comment()
+                {
+                    Author = commentNew.Author,
+                    Email = commentNew.Email,
+                    Comment1 = commentNew.Comment,
+                    PostId = commentNew.PostId
+                });
+                // Se conseguiu criar o comentário, mensagem de sucesso, senão, mensagem de erro
+                if(commentNew.IsSuccess)
+                    commentNew.Message = "Comentário feito com sucesso!!!";
+                else
+                    commentNew.Message = "Eita! Infelizmente algum problema ocorreu por aqui. <br><br>Tenta novamente, vai!";
+            }
+            else // senão, monta mensagem de erro
+            {
+                // Obtem erros
+                var errorList = ModelState.Values.SelectMany(m => m.Errors).Select(e => e.ErrorMessage).ToList();
+                
+                // Monta mensagem de erro em lista
+                string message = "<ul>";
+                foreach (var error in errorList) 
+                    message += "<li>"+error+"</li>";
+                commentNew.Message = message+"</ul>";
+            }            
+
+            // Retorna em Json
+            return Json(commentNew);
         }
 
         // 

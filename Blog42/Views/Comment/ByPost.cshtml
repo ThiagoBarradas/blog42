@@ -1,0 +1,34 @@
+﻿<h2 class="title">Comentários (@ViewBag.Comments.Count.ToString())</h2>
+
+@if (ViewBag.Comments.Count == 0) // Se não tiver comentário, exibe mensagem que não tem comentários
+{
+    <div class="separator-only-vertical">
+        <span>Ér, nenhuma comentário. Acho que ninguém passou por aqui, né?</span>
+    </div>
+}
+else // Se tiver, exibe-os
+{
+    foreach (var comment in ViewBag.Comments)
+    {
+        <a name="comment-@comment.Id" class="link-named"></a>
+        <div class="box-comment panel separator-only-vertical">
+            <div>
+                
+                @if (comment.Email == null || comment.Email == "") // Se usuário tiver email cria nome com link para email
+                    { <span><b>@comment.Author</b> disse em @comment.CreatedAt.ToString("dd/MM/yyyy") às @comment.CreatedAt.ToString("HH:mm")h </span> }
+                else
+                    { <span><a class="b" target="_blank" href="@String.Concat("mailto:",comment.Email)">@comment.Author</a> disse em @comment.CreatedAt.ToString("dd/MM/yyyy") às @comment.CreatedAt.ToString("HH:mm")h </span> }
+
+                @if (ViewBag.canDelete != null) // Verifica se insere botão de exclusão no comentário
+                {
+                    <button type="button" class="btn btn-default" onclick="location.href = '@Url.Action("Delete", "Comment", new { Id = comment.Id })'">
+                        <span class="glyphicon glyphicon-trash"></span>
+                    </button>
+                }
+            </div>
+            <div>
+                <i>@comment.Comment1</i>
+            </div>
+        </div>
+    }
+}

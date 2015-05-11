@@ -307,20 +307,21 @@
       <DependentUpon>Blog42Model.edmx</DependentUpon>
       <LastGenOutput>Blog42Model.cs</LastGenOutput>
     </Content>
-    <None Include="Scripts\jquery-1.9.0.intellisense.js" />
     <Content Include="Images\logo_blog.png" />
     <Content Include="Images\profile.jpg" />
+    <Content Include="Scripts\bootbox.js" />
+    <Content Include="Scripts\bootbox.min.js" />
     <Content Include="Scripts\bootstrap.js" />
     <Content Include="Scripts\bootstrap.min.js" />
-    <Content Include="Scripts\jquery-1.9.0.js" />
-    <Content Include="Scripts\jquery-1.9.0.min.js" />
-    <Content Include="Scripts\jquery-1.9.0.min.map" />
+    <None Include="Scripts\jquery-1.9.1.intellisense.js" />
+    <Content Include="Scripts\jquery-1.9.1.js" />
+    <Content Include="Scripts\jquery-1.9.1.min.js" />
+    <Content Include="Scripts\jquery-1.9.1.min.map" />
     <None Include="Scripts\jquery.validate-vsdoc.js" />
     <Content Include="Scripts\jquery-ui-1.8.24.js" />
     <Content Include="Scripts\jquery-ui-1.8.24.min.js" />
     <Content Include="Scripts\jquery.unobtrusive-ajax.js" />
     <Content Include="Scripts\jquery.unobtrusive-ajax.min.js" />
-    <Content Include="Scripts\jquery.scripts.js" />
     <Content Include="Scripts\jquery.validate.js" />
     <Content Include="Scripts\jquery.validate.min.js" />
     <Content Include="Scripts\jquery.validate.unobtrusive.js" />
@@ -360,6 +361,8 @@
     <Content Include="Views\User\ResetPassword.cshtml" />
     <Content Include="Views\Shared\_PanelTabs.cshtml" />
     <Content Include="Views\Shared\_PanelTitle.cshtml" />
+    <Content Include="Views\Comment\New.cshtml" />
+    <Content Include="Views\Comment\ByPost.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />

@@ -35,6 +35,8 @@ namespace Blog42.DataAccess
         {
             try
             {
+                // Insere momento atual na data/hora de criação
+                comment.CreatedAt = DateTime.Now;
                 // Inseri e salva as alterações
                 entities.Comment.Add(comment);
                 entities.SaveChanges();

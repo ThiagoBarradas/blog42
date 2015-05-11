@@ -35,74 +35,15 @@
     </div><!-- /.content -->
 
     <div class="content"><!-- content comments-->
-        <a name="comments" class="link-named">&nbsp;</a>
-        <h2 class="title">Comentários (@ViewBag.Post.Comment.Count.ToString())</h2>
-
-        @if (ViewBag.Post.Comment.Count == 0) // Se não tiver comentário, exibe mensagem que não tem comentários
-        { 
-            <div class="separator-only-vertical">
-                <span>Ér, nenhuma comentário. Acho que ninguém passou por aqui, né?</span>
-            </div>
-        }
-        else // Se tiver, exibe-os
-        {
-            foreach (var comment in ViewBag.Post.Comment)
-            {
-                <a name="comment-@comment.Id" class="link-named"></a>
-                <div class="box-comment panel separator-only-vertical">
-                    <div>
-                        @if (comment.Email == null || comment.Email == "") // Se usuário tiver email cria nome com link para email
-                            { <span><b>@comment.Author</b> disse:</span> }
-                        else
-                            { <span><a class="b" target="_blank" href="@String.Concat("mailto:",comment.Email)">@comment.Author</a> disse:</span> }
-
-                        @if (ViewBag.canDelete != null) // Verifica se insere botão de exclusão no comentário
-                        { 
-                            <button type="button" class="btn btn-default" onclick="location.href = '@Url.Action("Delete", "Comment", new { Id = comment.Id })'">
-                                <span class="glyphicon glyphicon-trash"></span>
-                            </button>
-                        }
-                    </div>
-                    <div>
-                        <i>@comment.Comment1</i>
-                    </div>
-                </div>
-            }
-
-            <div class="box-comment panel separator-only-vertical">
-                <a name="new-comment" class="link-named"></a>
-                <h1 class="title-black">
-                    <span class="glyphicon glyphicon-send"></span>&nbsp; Por Zarquon, Deixe-nos um comentário?
-                </h1>
-                <hr />
-                <span>A improbabilidade gerada pelo seu comentário após o meu pedido fará bem à nave coração de ouro!</span>
-
-                <div class="row">
-                    <div class="col-md-8">
-                        <label>Nome:</label>
-                        <input type="text" class="form-control input-lg" />
-                    </div>
-                </div>    
-                <div class="row">
-                    <div class="col-md-8">
-                        <label>E-mail: (opcional)</label>
-                        <input type="text" class="form-control input-lg" />
-                    </div>
-                </div>    
-                <div class="row">
-                    <div class="col-md-12">
-                        <label>Comentário:</label>
-                        <textarea type="text" class="form-control input-lg no-resize"></textarea>
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="col-md-12 center">
-                        <button type="button" class="separator-only-vertical btn btn-primary btn-lg">Publicar comentário</button>
-                    </div>
-                </div>    
-
-            </div>
-        }
         
+        <a name="comments" class="link-named">&nbsp; </a>
+        <div id="div-comments">
+            @Html.Action("ByPost", "Comment", new { postId = ViewBag.Post.Id })
+        </div>
+
+        <div id="make-comment">
+            @Html.Action("New", "Comment", new { postId = ViewBag.Post.Id })
+        </div>
+
     </div><!-- /.content -->
 </div><!-- /.jumbotron -->
