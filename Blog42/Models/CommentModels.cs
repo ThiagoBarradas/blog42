@@ -39,7 +39,7 @@ namespace Blog42.Models
 
         [Required]
         [Display(Name = "Comentário")]
-        [StringLength(800, ErrorMessage = "O campo Comentário deve conter entre 3 e 100 caracteres.", MinimumLength = 3)]
+        [StringLength(800, ErrorMessage = "O campo Comentário deve conter entre 3 e 800 caracteres.", MinimumLength = 3)]
         public string Comment { get; set; }
 
         public bool IsSuccess { get; set; }

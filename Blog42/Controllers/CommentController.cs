@@ -39,7 +39,7 @@ namespace Blog42.Controllers
         public ActionResult ByPost(int postId = 0)
         {
             // Se não for uma requisição feita por qualquer url que contenha "ByPost" e/ou não venha do próprio servidor
-            if (Request.Path.IndexOf("ByPost", StringComparison.OrdinalIgnoreCase) >= 0 || !Request.IsLocal)
+            if (!(Request.IsAjaxRequest() || !(Request.Path.IndexOf("ByPost", StringComparison.OrdinalIgnoreCase) >= 0)) || !Request.IsLocal)
                 return RedirectToAction("Index", "Error"); // redireciona para página de erro
 
             // Declara listagem de comentários
@@ -59,8 +59,8 @@ namespace Blog42.Controllers
         // Para requisições Ajax e Local
         public ActionResult New(int postId = 0)
         {
-            // Se não for uma requisição feita por qualquer url que contenha "NewComment" e/ou não venha do próprio servidor
-            if (Request.Path.IndexOf("NewComment", StringComparison.OrdinalIgnoreCase)>=0 || !Request.IsLocal)
+            // Se não for uma requisição feita por qualquer url que contenha "Comment" e/ou não venha do próprio servidor
+            if (Request.Path.IndexOf("Comment", StringComparison.OrdinalIgnoreCase)>=0 || !Request.IsLocal)
                 return RedirectToAction("Index", "Error"); // redireciona para página de erro
 
             // Retorna view parcial passando modelo com Id do post

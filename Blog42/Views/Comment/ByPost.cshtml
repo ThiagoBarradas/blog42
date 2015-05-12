@@ -10,14 +10,14 @@ else // Se tiver, exibe-os
 {
     foreach (var comment in ViewBag.Comments)
     {
-        <a name="comment-@comment.Id" class="link-named"></a>
         <div class="box-comment panel separator-only-vertical">
+            <a name="comment-@comment.Id" class="link-named"></a>
             <div>
-                
+
                 @if (comment.Email == null || comment.Email == "") // Se usuário tiver email cria nome com link para email
-                    { <span><b>@comment.Author</b> disse em @comment.CreatedAt.ToString("dd/MM/yyyy") às @comment.CreatedAt.ToString("HH:mm")h </span> }
+                { <span><b>@comment.Author</b> disse em @comment.CreatedAt.ToString("dd/MM/yyyy") às @comment.CreatedAt.ToString("HH:mm")h </span> }
                 else
-                    { <span><a class="b" target="_blank" href="@String.Concat("mailto:",comment.Email)">@comment.Author</a> disse em @comment.CreatedAt.ToString("dd/MM/yyyy") às @comment.CreatedAt.ToString("HH:mm")h </span> }
+                { <span><a class="b" target="_blank" href="@String.Concat("mailto:",comment.Email)">@comment.Author</a> disse em @comment.CreatedAt.ToString("dd/MM/yyyy") às @comment.CreatedAt.ToString("HH:mm")h </span> }
 
                 @if (ViewBag.canDelete != null) // Verifica se insere botão de exclusão no comentário
                 {
