@@ -1,10 +1,54 @@
-﻿@{
-    ViewBag.Title = "Publicar Postagem";
-    Layout = "~/Views/Shared/_LayoutAdmin.cshtml"; // Layout para páginas do painel de controle administrativo    
+﻿@model Blog42.Models.PostNew
+@{
+    // Titulo, caso formulário "Nova Postagem", caso sucesso "Postagem Publicada"
+    ViewBag.Title = (ViewBag.Success == null) ? "Nova Postagem" : "Postagem Publicada";
+    Layout = "~/Views/Shared/_LayoutAdmin.cshtml"; // Layout para páginas do painel de controle administrativo
 }
 
-Publicar Postagem
-<br /><br /><br />
-@ViewBag.Id
-
-      
+<div class="box-title">
+    <h2 class="title">@ViewBag.Title</h2>
+</div>
+<div class="content ">
+            
+@if (ViewBag.Success != null) // Se obteve sucesso, exibe mensagem
+{
+    <div class="div-success">
+        <h2 class="msg-success">
+            <span class="glyphicon glyphicon-ok" aria-hidden="true"></span> Postagem publicada com sucesso!
+        </h2>
+        <br />
+        @Html.ActionLink("Voltar para listagem de Postagens", "All", "Post")
+    </div>
+}
+else // Senão, monta formulário
+{
+    using (Html.BeginForm()) // Cria formulário
+    {
+        @Html.AntiForgeryToken()
+        @Html.ValidationSummary(true)
+            
+        <div class="row">
+            <div class="col-md-12">
+                @Html.LabelFor(m => m.Title)
+                @Html.TextBoxFor(m => m.Title, new { @class = "form-control input-lg" })
+                @Html.ValidationMessageFor(m => m.Title)
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-12">
+                @Html.LabelFor(m => m.Content)
+                @Html.TextAreaFor(m => m.Content, new { @class = "form-control input-lg" })
+                @Html.ValidationMessageFor(m => m.Content)
+            </div>
+        </div>
+        <div class="row buttons" id="box-default">
+            <div class="col-md-6 separator-only-vertical">
+                <button type="submit" class="btn btn-success btn-lg"><span class="glyphicon glyphicon-save"></span> Publicar Postagem</button>
+            </div>
+            <div class="col-md-6 separator-only-vertical">
+                <button type="button" onclick="location.href='@Url.Action("All","Post")'" class="btn btn-default btn-lg"><span class="glyphicon glyphicon-arrow-left"></span> Voltar</button>
+            </div>
+        </div>
+    }
+}
+</div><!--/.content-->

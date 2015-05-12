@@ -213,6 +213,7 @@
     <Compile Include="Models\User.cs">
       <DependentUpon>Blog42Model.tt</DependentUpon>
     </Compile>
+    <Compile Include="Models\PostModels.cs" />
     <Compile Include="Models\UserModels.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Security\PermissionFilter.cs" />
@@ -351,7 +352,10 @@
     <Content Include="Views\Post\All.cshtml" />
     <Content Include="Views\Post\Delete.cshtml" />
     <Content Include="Views\Post\Edit.cshtml" />
-    <Content Include="Views\Post\New.cshtml" />
+    <Content Include="Views\Post\New.cshtml">
+      <SubType>
+      </SubType>
+    </Content>
     <Content Include="Views\Post\Show.cshtml" />
     <Content Include="Views\User\All.cshtml" />
     <Content Include="Views\User\Delete.cshtml" />

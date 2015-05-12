@@ -54,10 +54,44 @@ namespace Blog42.Controllers
             return View();
         }
 
+        //
+        // GET: /Admin/New
         [PermissionFilter(Roles = "Author, Admin")]
         public ActionResult New()
         {
             return View();
+        }
+
+        //
+        // POST: /Admin/New
+        [HttpPost]
+        [PermissionFilter(Roles = "Author, Admin")]
+        [ValidateAntiForgeryToken()]
+        public ActionResult New(PostNew postNew)
+        {
+            if (ModelState.IsValid) // Se não existir Username cadastrado e dados do formulário forem válidos
+            {
+                // Recupera usuário atual
+                UserDAO userDAO = new UserDAO();
+                User user = userDAO.GetUser(User.Identity.Name);
+
+                // Se não conseguiu recuperar usuário, página de erro
+                if (user == null)
+                    return RedirectToAction("Index", "Error");
+
+                // Cria usuário e atribui valores a novo usuário
+                Post post = new Post();
+                post.Title = postNew.Title;
+                post.Content = postNew.Content;
+                post.CreatedBy = user.Id;
+
+                // Tenta persistir novo usuário, se conseguir sinaliza sucesso para a view, senão, adiciona mensagem de erro
+                if (postDAO.CreatePost(post))
+                    ViewBag.Success = true;
+                else
+                    ModelState.AddModelError("", "Ops! Ocorreu um erro durante o processamento. Tente novamente.");
+            }
+            return View(postNew);
         }
 
         [PermissionFilter(Roles = "Author, Admin")]
