@@ -364,6 +364,7 @@
     <Content Include="Views\Shared\_PanelTitle.cshtml" />
     <Content Include="Views\Comment\New.cshtml" />
     <Content Include="Views\Comment\ByPost.cshtml" />
+    <Content Include="Views\Shared\_LayoutAdmin.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />

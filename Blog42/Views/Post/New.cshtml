@@ -1,19 +1,10 @@
 ﻿@{
     ViewBag.Title = "Publicar Postagem";
+    Layout = "~/Views/Shared/_LayoutAdmin.cshtml"; // Layout para páginas do painel de controle administrativo    
 }
 
-<div class="jumbotron">
+Publicar Postagem
+<br /><br /><br />
+@ViewBag.Id
 
-    <!-- Titulo e Menu -->
-    @Html.Partial("_PanelTitle")
-    @Html.Partial("_PanelTabs")
-
-    <div class="tab-content">
-        <!-- Início Conteúdo da página -->
-        Publicar Postagem
-        <br /><br /><br />
-        @ViewBag.Id
-
-        <!-- Fim Conteúdo da página -->
-    </div>
-</div><!-- /.jumbotron -->
+      

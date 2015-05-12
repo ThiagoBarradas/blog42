@@ -2,65 +2,53 @@
 @{
     // Titulo, caso formulário "Deletar Usuário", caso sucesso "Usuário Deletado"
     ViewBag.Title = (ViewBag.Success == null) ? "Deletar Usuário" : "Usuário Deletado";
+    Layout = "~/Views/Shared/_LayoutAdmin.cshtml"; // Layout para páginas do painel de controle administrativo
 }
 
-<div class="jumbotron">
+<div class="box-title">
+    <h2 class="title">@ViewBag.Title</h2>
+</div>
+<div class="content">
 
-    <!-- Titulo e Menu -->
-    @Html.Partial("_PanelTitle")
-    @Html.Partial("_PanelTabs")
-
-    <div class="tab-content">
-    <!-- Início Conteúdo da Tab-->
-
-        <div class="box-title">
-            <h2 class="title">@ViewBag.Title</h2>
-        </div>
-        <div class="content">
-
-        @if (ViewBag.Success != null) // Se obteve sucesso, exibe mensagem
-        {
-            <div class="div-success">
-                <h2 class="msg-success">
-                    <span class="glyphicon glyphicon-ok" aria-hidden="true"></span> Usuário excluído com sucesso!
-                </h2><br />
-                @Html.ActionLink("Voltar para listagem de Usuários", "All", "User")
-            </div>
-        }
-        else // Senão, monta formulário
-        {
-            <h4>Você está preste a deletar o usuário <b>@Model.Username (@Model.Name)</b>. <br />&nbsp;</h4>
-            <h4> O que deseja fazer com suas publicações? </h4>
-
-            using (Html.BeginForm()) // Cria formulário
-            {
-                @Html.AntiForgeryToken()
-                @Html.ValidationSummary(true)
-            
-                @Html.HiddenFor(m => m.UserId)
-                @Html.HiddenFor(m => m.Name)
-                @Html.HiddenFor(m => m.Username)
-                
-                <div class="row p">
-                    @Html.RadioButtonFor(m => m.DeletePosts, "false", new { @checked = "checked" }) Tornar-me autor das suas publicações.
-                </div>
-                <div class="row p">
-                    @Html.RadioButtonFor(m => m.DeletePosts, "true") Excluir todas as publicações.
-                </div>
-                <br />
-
-                <div class="row buttons" id="box-default">
-                    <div class="col-md-6">
-                        <button type="submit" class="btn btn-success btn-lg"><span class="glyphicon glyphicon-ok"></span> Excluir usuário</button>
-                    </div>
-                    <div class="col-md-6">
-                        <button type="button" onclick="location.href='@Url.Action("All","User")'" class="btn btn-danger btn-lg"><span class="glyphicon glyphicon-remove"></span> Decidir depois</button>
-                    </div>
-                </div>
-            }
-        }
-        </div><!--/.content-->
-
-    <!-- Fim Conteúdo da Tab -->
+@if (ViewBag.Success != null) // Se obteve sucesso, exibe mensagem
+{
+    <div class="div-success">
+        <h2 class="msg-success">
+            <span class="glyphicon glyphicon-ok" aria-hidden="true"></span> Usuário excluído com sucesso!
+        </h2><br />
+        @Html.ActionLink("Voltar para listagem de Usuários", "All", "User")
     </div>
-</div><!-- /.jumbotron -->
+}
+else // Senão, monta formulário
+{
+    <h4>Você está preste a deletar o usuário <b>@Model.Username (@Model.Name)</b>. <br />&nbsp;</h4>
+    <h4> O que deseja fazer com suas publicações? </h4>
+
+    using (Html.BeginForm()) // Cria formulário
+    {
+        @Html.AntiForgeryToken()
+        @Html.ValidationSummary(true)
+            
+        @Html.HiddenFor(m => m.UserId)
+        @Html.HiddenFor(m => m.Name)
+        @Html.HiddenFor(m => m.Username)
+                
+        <div class="row p">
+            @Html.RadioButtonFor(m => m.DeletePosts, "false", new { @checked = "checked" }) Tornar-me autor das suas publicações.
+        </div>
+        <div class="row p">
+            @Html.RadioButtonFor(m => m.DeletePosts, "true") Excluir todas as publicações.
+        </div>
+        <br />
+
+        <div class="row buttons" id="box-default">
+            <div class="col-md-6">
+                <button type="submit" class="btn btn-success btn-lg"><span class="glyphicon glyphicon-ok"></span> Excluir usuário</button>
+            </div>
+            <div class="col-md-6">
+                <button type="button" onclick="location.href='@Url.Action("All","User")'" class="btn btn-danger btn-lg"><span class="glyphicon glyphicon-remove"></span> Decidir depois</button>
+            </div>
+        </div>
+    }
+}
+</div><!--/.content-->

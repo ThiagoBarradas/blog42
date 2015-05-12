@@ -1,58 +1,48 @@
 ﻿@{
     ViewBag.Title = "Usuários";
+    Layout = "~/Views/Shared/_LayoutAdmin.cshtml"; // Layout para páginas do painel de controle administrativo
 }
 
-<div class="jumbotron">
-
-    <!-- Titulo e Menu -->
-    @Html.Partial("_PanelTitle")
-    @Html.Partial("_PanelTabs")
-
-    <div class="tab-content">
-    <!-- Início Conteúdo da Tab-->
-
-    <table class="table table-striped grid-table">
+<table class="table table-striped grid-table">
         
-        @if (ViewBag.Users.Count == 0) { // Se não encontrou registros
-            <thead>
+    @if (ViewBag.Users.Count == 0) { // Se não encontrou registros
+        <thead>
+            <tr>
+                <td>Nenhum usuário encontrado.</td>
+            </tr>
+        </thead>
+    }
+    else // Se encontrou registros, lista-os
+    {
+        <thead>
+            <tr>
+                <th>Nome</th>
+                <th>Usuário</th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var user in ViewBag.Users)
+            {
                 <tr>
-                    <td>Nenhum usuário encontrado.</td>
+                    <td><b class="th">Nome:</b> @user.Name</td>
+                    <td><b class="th">Usuário:</b> @user.Username</td>
+                    <td class="grid-action">
+                        <button type="button" class="btn btn-default" onclick="location.href = '@Url.Action("Edit", "User", new { Id = user.Id })'">
+                            <span class="glyphicon glyphicon-pencil"></span>
+                        </button>
+                        <button type="button" class="btn btn-default" onclick="location.href = '@Url.Action("Delete", "User", new { Id = user.Id })'">
+                            <span class="glyphicon glyphicon-trash"></span>
+                        </button>
+                    </td>
                 </tr>
-            </thead>
-        }
-        else // Se encontrou registros, lista-os
-        {
-            <thead>
-                <tr>
-                    <th>Nome</th>
-                    <th>Usuário</th>
-                    <th></th>
-                </tr>
-            </thead>
-            <tbody>
-                @foreach (var user in ViewBag.Users)
-                {
-                    <tr>
-                        <td><b class="th">Nome:</b> @user.Name</td>
-                        <td><b class="th">Usuário:</b> @user.Username</td>
-                        <td class="grid-action">
-                            <button type="button" class="btn btn-default" onclick="location.href = '@Url.Action("Edit", "User", new { Id = user.Id })'">
-                                <span class="glyphicon glyphicon-pencil"></span>
-                            </button>
-                            <button type="button" class="btn btn-default" onclick="location.href = '@Url.Action("Delete", "User", new { Id = user.Id })'">
-                                <span class="glyphicon glyphicon-trash"></span>
-                            </button>
-                        </td>
-                    </tr>
-                }
-            </tbody>
-        }
-    </table>
+            }
+        </tbody>
+    }
+</table>
     
-    <button type="button" class="btn btn-default btn-lg" onclick="location.href = '@Url.Action("New", "User")'">
-        <span class="glyphicon glyphicon-plus"></span> Criar Usuário
-    </button>
+<button type="button" class="btn btn-default btn-lg" onclick="location.href = '@Url.Action("New", "User")'">
+    <span class="glyphicon glyphicon-plus"></span> Criar Usuário
+</button>
     
-    <!-- Fim Conteúdo da Tab-->
-    </div>
-</div><!-- /.jumbotron -->
+    

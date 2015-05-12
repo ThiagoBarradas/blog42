@@ -2,101 +2,90 @@
 @{
     // Titulo, caso formulário "Alterar Usuário", caso sucesso "Usuário Alterado"
     ViewBag.Title = (ViewBag.Success == null) ? "Alterar Usuário" : "Usuário Alterado";
+    Layout = "~/Views/Shared/_LayoutAdmin.cshtml"; // Layout para páginas do painel de controle administrativo
 }
 
-<div class="jumbotron">
-
-    <!-- Titulo e Menu -->
-    @Html.Partial("_PanelTitle")
-    @Html.Partial("_PanelTabs")
-
-    <div class="tab-content">
-    <!-- Início Conteúdo da Tab -->
        
-         <div class="box-title">
-            <h2 class="title">@ViewBag.Title</h2>
-        </div>
-        <div class="content">
+<div class="box-title">
+    <h2 class="title">@ViewBag.Title</h2>
+</div>
+<div class="content">
            
-        @if (ViewBag.Success != null) // Se obteve sucesso, exibe mensagem
-        {
-        <div class="div-success">
-            <h2 class="msg-success">
-                <span class="glyphicon glyphicon-ok" aria-hidden="true"></span> Usuário alterado com sucesso!
-            </h2>
-            <br />
-            @if (ViewBag.EditMyself == null) // Verifica o link de retorno que será criado
-                { @Html.ActionLink("Voltar para listagem de Usuários", "All", "User") }
-            else
-                { @Html.ActionLink("Voltar para início do Painel Administrativo", "All", "Post") }
-        </div>
-        }
-        else // Senão, monta formulário
-        {
-            using (Html.BeginForm()) // Cria formulário 
-            {
-                @Html.AntiForgeryToken()
-                @Html.ValidationSummary(true)
+@if (ViewBag.Success != null) // Se obteve sucesso, exibe mensagem
+{
+<div class="div-success">
+    <h2 class="msg-success">
+        <span class="glyphicon glyphicon-ok" aria-hidden="true"></span> Usuário alterado com sucesso!
+    </h2>
+    <br />
+    @if (ViewBag.EditMyself == null) // Verifica o link de retorno que será criado
+        { @Html.ActionLink("Voltar para listagem de Usuários", "All", "User") }
+    else
+        { @Html.ActionLink("Voltar para início do Painel Administrativo", "All", "Post") }
+</div>
+}
+else // Senão, monta formulário
+{
+    using (Html.BeginForm()) // Cria formulário 
+    {
+        @Html.AntiForgeryToken()
+        @Html.ValidationSummary(true)
 
-                @Html.HiddenFor(m => m.UserId)
-                <div class="row">
-                    <div class="col-md-4">
-                        @Html.LabelFor(m => m.Username)
-                        @Html.TextBoxFor(m => m.Username, new { @class = "form-control input-lg", @readonly = "readonly" })
-                    </div>
-                    <div class="col-md-4 form-group">
-                        @Html.LabelFor(m => m.Password)
-                        @Html.PasswordFor(m => m.Password, new { @class = "form-control input-lg" })
-                        @Html.ValidationMessageFor(m => m.Password)
-                    </div>
-                    <div class="col-md-4 form-group">
-                        @Html.LabelFor(m => m.ConfirmPassword)
-                        @Html.PasswordFor(m => m.ConfirmPassword, new { @class = "form-control input-lg" })
-                        @Html.ValidationMessageFor(m => m.ConfirmPassword)
-                    </div>
+        @Html.HiddenFor(m => m.UserId)
+        <div class="row">
+            <div class="col-md-4">
+                @Html.LabelFor(m => m.Username)
+                @Html.TextBoxFor(m => m.Username, new { @class = "form-control input-lg", @readonly = "readonly" })
+            </div>
+            <div class="col-md-4 form-group">
+                @Html.LabelFor(m => m.Password)
+                @Html.PasswordFor(m => m.Password, new { @class = "form-control input-lg" })
+                @Html.ValidationMessageFor(m => m.Password)
+            </div>
+            <div class="col-md-4 form-group">
+                @Html.LabelFor(m => m.ConfirmPassword)
+                @Html.PasswordFor(m => m.ConfirmPassword, new { @class = "form-control input-lg" })
+                @Html.ValidationMessageFor(m => m.ConfirmPassword)
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-6 form-group">
+                @Html.LabelFor(m => m.Name)
+                @Html.TextBoxFor(m => m.Name, new { @class = "form-control input-lg" })
+                @Html.ValidationMessageFor(m => m.Name)
+            </div>
+            <div class="col-md-6 form-group">
+                @Html.LabelFor(m => m.Email)
+                @Html.TextBoxFor(m => m.Email, new { @class = "form-control input-lg" })
+                @Html.ValidationMessageFor(m => m.Email)
+            </div>
+        </div>
+        <div class="row separator">
+            @if (ViewBag.EditMyself == null) // Se não estiver editando a si mesmo, mostra campos avançados
+            {
+                <div class="col-md-6 center">
+                    @Html.CheckBoxFor(m => m.IsActive) @Html.LabelFor(m => m.IsActive)
                 </div>
-                <div class="row">
-                    <div class="col-md-6 form-group">
-                        @Html.LabelFor(m => m.Name)
-                        @Html.TextBoxFor(m => m.Name, new { @class = "form-control input-lg" })
-                        @Html.ValidationMessageFor(m => m.Name)
-                    </div>
-                    <div class="col-md-6 form-group">
-                        @Html.LabelFor(m => m.Email)
-                        @Html.TextBoxFor(m => m.Email, new { @class = "form-control input-lg" })
-                        @Html.ValidationMessageFor(m => m.Email)
-                    </div>
-                </div>
-                <div class="row separator">
-                    @if (ViewBag.EditMyself == null) // Se não estiver editando a si mesmo, mostra campos avançados
-                    {
-                        <div class="col-md-6 center">
-                            @Html.CheckBoxFor(m => m.IsActive) @Html.LabelFor(m => m.IsActive)
-                        </div>
-                        <div class="col-md-6 center">
-                            @Html.CheckBoxFor(m => m.IsAdmin) @Html.LabelFor(m => m.IsAdmin)
-                        </div>
-                    }
-                </div>
-                <div class="row buttons" id="box-default">
-                    <div class="col-md-6">
-                        <button type="submit" class="btn btn-success btn-lg"><span class="glyphicon glyphicon-save"></span> Alterar Dados</button>
-                    </div>
-                    <div class="col-md-6">
-                        @if (ViewBag.EditMyself == null) // Verifica o link de retorno que será criado
-                        {
-                            <button type="button" onclick="location.href='@Url.Action("All","User")'" class="btn btn-default btn-lg"><span class="glyphicon glyphicon-arrow-left"></span> Voltar</button>
-                        }
-                        else
-                        {
-                            <button type="button" onclick="location.href='@Url.Action("All","Post")" class="btn btn-default btn-lg"><span class="glyphicon glyphicon-arrow-left"></span> Voltar</button>
-                        }
-                    </div>
+                <div class="col-md-6 center">
+                    @Html.CheckBoxFor(m => m.IsAdmin) @Html.LabelFor(m => m.IsAdmin)
                 </div>
             }
-        }
-        </div><!--/.content-->
-
-    <!-- Fim Conteúdo da Tab -->
-    </div>
-</div><!-- /.jumbotron -->
+        </div>
+        <div class="row buttons" id="box-default">
+            <div class="col-md-6">
+                <button type="submit" class="btn btn-success btn-lg"><span class="glyphicon glyphicon-save"></span> Alterar Dados</button>
+            </div>
+            <div class="col-md-6">
+                @if (ViewBag.EditMyself == null) // Verifica o link de retorno que será criado
+                {
+                    <button type="button" onclick="location.href='@Url.Action("All","User")'" class="btn btn-default btn-lg"><span class="glyphicon glyphicon-arrow-left"></span> Voltar</button>
+                }
+                else
+                {
+                    <button type="button" onclick="location.href='@Url.Action("All","Post")" class="btn btn-default btn-lg"><span class="glyphicon glyphicon-arrow-left"></span> Voltar</button>
+                }
+            </div>
+        </div>
+    }
+}
+</div><!--/.content-->
