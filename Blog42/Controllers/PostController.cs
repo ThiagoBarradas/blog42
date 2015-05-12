@@ -101,11 +101,49 @@ namespace Blog42.Controllers
             return View();
         }
 
+        //
+        // GET: /Admin/Post/Delete/{id}
         [PermissionFilter(Roles = "Author, Admin")]
         public ActionResult Delete(int id)
         {
-            ViewBag.Id = id;
-            return View();
+            // Recupera informações do post a ser deletado
+            Post post = postDAO.GetPost(id);
+
+            // Se post não encontrado, ou usuário não tem permissão para deletar redireciona para página de erro 
+            if (post == null || !(Roles.GetRolesForUser().Contains("Admin") || post.User.Username == User.Identity.Name))
+                return RedirectToAction("Index", "Error");
+
+            // Copia as informações recebidas para modelo da página de deleção
+            PostDelete postDelete = new PostDelete();
+            postDelete.PostId = post.Id;
+            postDelete.Title = post.Title;
+            postDelete.CreatedBy = post.User.Name;
+            postDelete.CreatedAt = post.CreatedAt;
+
+            return View(postDelete);
+        }
+
+        //
+        // POST: /Admin/Post/Delete/{id}
+        [HttpPost]
+        [PermissionFilter(Roles = "Author, Admin")]
+        [ValidateAntiForgeryToken()]
+        public ActionResult Delete(PostDelete postDelete)
+        {
+            // Recupera informações do post a ser deletado
+            Post post = postDAO.GetPost(postDelete.PostId);
+
+            // Se post não encontrado, ou usuário não tem permissão para deletar redireciona para página de erro 
+            if (post == null || !(Roles.GetRolesForUser().Contains("Admin") || post.User.Username == User.Identity.Name))
+                return RedirectToAction("Index", "Error");
+
+            // Tenta deletar, se conseguir, sinaliza sucesso, senão, adiciona erro
+            if (postDAO.DeletePost(postDelete.PostId))
+                ViewBag.Success = true;
+            else
+                ModelState.AddModelError("", "Ops! Ocorreu um erro durante o processamento. Tente novamente.");
+
+            return View(postDelete);
         }
     }
 }
