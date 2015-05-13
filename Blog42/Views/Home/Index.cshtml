@@ -40,7 +40,7 @@ else // Se encontrou postagem, lista-as
                 </span>
             </div>
             <div class="content">
-                @post.Content
+                @Html.Raw(@post.Content)
             </div><!-- /.content -->
         </div><!-- /.jumbotron -->
     }
