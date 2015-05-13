@@ -35,4 +35,23 @@ namespace Blog42.Models
         [StringLength(8000, ErrorMessage = "O campo Postagem deve conter entre 3 e 8000 caracteres.", MinimumLength = 6)]
         public string Content { get; set; }
     }
+
+
+    /*
+     * Modelo para view de edição de postagem
+     */
+    public class PostEdit
+    {
+        [Required]
+        [Display(Name = "Título")]
+        [StringLength(100, ErrorMessage = "O campo Título deve conter entre 3 e 100 caracteres.", MinimumLength = 3)]
+        public string Title { get; set; }
+
+        [Required]
+        [Display(Name = "Postagem")]
+        [StringLength(8000, ErrorMessage = "O campo Postagem deve conter entre 3 e 8000 caracteres.", MinimumLength = 6)]
+        public string Content { get; set; }
+
+        public bool ChangeAuthor { get; set; }
+    }
 }
