@@ -66,6 +66,7 @@ namespace Blog42.Controllers
         // POST: /Admin/New
         [HttpPost]
         [PermissionFilter(Roles = "Author, Admin")]
+        [ValidateInput(false)]
         [ValidateAntiForgeryToken()]
         public ActionResult New(PostNew postNew)
         {
@@ -94,6 +95,8 @@ namespace Blog42.Controllers
             return View(postNew);
         }
 
+        //
+        //GET: /Admin/Post/Edit/{id}
         [PermissionFilter(Roles = "Author, Admin")]
         public ActionResult Edit(int id)
         {

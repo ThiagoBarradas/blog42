@@ -24,6 +24,13 @@ else // Senão, monta formulário
 {
     using (Html.BeginForm()) // Cria formulário
     {
+
+        // Usa recursos do CKEDitor para criar um editor html no textarea da postagem
+        @Scripts.Render("~/Content/ckeditor/ckeditor.js")
+        @Scripts.Render("~/Content/ckfinder/ckfinder.js")
+        @Scripts.Render("~/Content/ckeditor/adapters/jquery.js")
+
+
         @Html.AntiForgeryToken()
         @Html.ValidationSummary(true)
             
@@ -37,7 +44,7 @@ else // Senão, monta formulário
         <div class="row">
             <div class="col-md-12">
                 @Html.LabelFor(m => m.Content)
-                @Html.TextAreaFor(m => m.Content, new { @class = "form-control input-lg" })
+                @Html.TextAreaFor(m => m.Content, new { @class = "form-control input-lg textarea-big", id="txtPost" })
                 @Html.ValidationMessageFor(m => m.Content)
             </div>
         </div>
@@ -49,6 +56,12 @@ else // Senão, monta formulário
                 <button type="button" onclick="location.href='@Url.Action("All","Post")'" class="btn btn-default btn-lg"><span class="glyphicon glyphicon-arrow-left"></span> Voltar</button>
             </div>
         </div>
+    
+        
+        @Scripts.Render("~/Scripts/initCKEditorCKFinder.js") // Inicializa CkEditor e CkFinder pelo id do textArea
+        <script>
+            init("txtPost");
+        </script>
     }
 }
 </div><!--/.content-->

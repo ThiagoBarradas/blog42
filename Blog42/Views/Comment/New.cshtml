@@ -1,0 +1,45 @@
+﻿@model Blog42.Models.CommentNew
+<div class="box-comment panel separator-only-vertical">
+
+    <!-- Inclui script que permite comentar via ajax -->
+    @Scripts.Render("~/Scripts/commentNew.js")
+    
+    <script>
+        // Inicializa componente para que possa ser utilizado indicando a postagem que receberá o comentário
+        // E a Url para buscar todos os comentários
+        initCommentNew(@Model.PostId, "@Url.Action("ByPost", "Comment", new { postId = Model.PostId } )");
+    </script>
+
+    <a name="new-comment" class="link-named"></a>
+        
+    <h1 class="title-black">
+        <span class="glyphicon glyphicon-send"></span>&nbsp; Por Zarquon, Deixe-nos um comentário?
+    </h1>
+    <hr />
+    <span>A improbabilidade gerada pelo seu comentário após o meu pedido fará bem à nave coração de ouro!</span>
+
+    <div class="row">
+        <div class="col-md-8">
+            @Html.LabelFor(m => m.Author)
+            @Html.TextBoxFor(m => m.Author, new { @class = "form-control input-lg", id = "input-author"})
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-8">
+            @Html.LabelFor(m => m.Email)
+            @Html.TextBoxFor(m => m.Email, new { @class = "form-control input-lg", id = "input-email" })
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-12">
+            @Html.LabelFor(m => m.Comment)
+            @Html.TextAreaFor(m => m.Comment, new { @class = "form-control input-lg", id = "input-comment" })
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-12 center">
+            <button type="button" id="submit-comment" class="separator-only-vertical btn btn-primary btn-lg">Publicar Comentário</button>
+        </div>
+    </div>
+
+</div>

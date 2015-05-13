@@ -8,6 +8,9 @@
             @ViewBag.Post.Title
             @if (ViewBag.canDelete != null) // Verifica se insere botão de exclusão na postagem
             {
+                <button type="button" class="btn btn-default" onclick="location.href = '@Url.Action("Edit", "Post", new { Id = ViewBag.Post.Id })'">
+                    <span class="glyphicon glyphicon-pencil"></span>
+                </button>
                 <button type="button" class="btn btn-default" onclick="location.href = '@Url.Action("Delete", "Post", new { Id = ViewBag.Post.Id })'">
                     <span class="glyphicon glyphicon-trash"></span>
                 </button>

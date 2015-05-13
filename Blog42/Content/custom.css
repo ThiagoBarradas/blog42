@@ -167,7 +167,9 @@ footer {
 #box-login .btn, #box-reset .btn, #box-default .btn {
     width: 100%;
 }
-
+.textarea-big {
+    min-height: 10em;
+}
 
 /*
  * Estilo para página Sobre
