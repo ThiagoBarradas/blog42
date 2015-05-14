@@ -1,19 +1,81 @@
-﻿@{
-    ViewBag.Title = "Editar Postagem";
+﻿@model Blog42.Models.PostEdit
+@{
+    // Titulo, caso formulário "Atualizar Postagem", caso sucesso "Postagem Atualizada"
+    ViewBag.Title = (ViewBag.Success == null) ? "Atualizar Postagem" : "Postagem Atualizada";
+    Layout = "~/Views/Shared/_LayoutAdmin.cshtml"; // Layout para páginas do painel de controle administrativo
 }
 
-<div class="jumbotron">
-
-    <!-- Titulo e Menu -->
-    @Html.Partial("_PanelTitle")
-    @Html.Partial("_PanelTabs")
-
-    <div class="tab-content">
-        <!-- Início Conteúdo da página -->
-        Editar Postagem
-        <br /><br /><br />
-        @ViewBag.Id
-
-        <!-- Fim Conteúdo da página -->
+<div class="box-title">
+    <h2 class="title">@ViewBag.Title</h2>
+</div>
+<div class="content ">
+            
+@if (ViewBag.Success != null) // Se obteve sucesso, exibe mensagem
+{
+    <div class="div-success">
+        <h2 class="msg-success">
+            <span class="glyphicon glyphicon-ok" aria-hidden="true"></span> Postagem atualizada com sucesso!
+        </h2>
+        <br />
+        @Html.ActionLink("Ir para Postagem", "Show", "Post", new { id = Model.PostId }, null )<br />
+        @Html.ActionLink("Ir para listagem de Postagens", "All", "Post")
     </div>
-</div><!-- /.jumbotron -->
+}
+else // Senão, monta formulário
+{
+    using (Html.BeginForm()) // Cria formulário
+    {
+
+        // Usa recursos do CKEDitor para criar um editor html no textarea da postagem
+        @Scripts.Render("~/Content/ckeditor/ckeditor.js")
+        @Scripts.Render("~/Content/ckfinder/ckfinder.js")
+        @Scripts.Render("~/Content/ckeditor/adapters/jquery.js")
+
+
+        @Html.AntiForgeryToken()
+        @Html.ValidationSummary(true)
+
+        @Html.HiddenFor(m => m.PostId)
+                
+        <div class="row">
+            <div class="col-md-12">
+                @Html.LabelFor(m => m.Title)
+                @Html.TextBoxFor(m => m.Title, new { @class = "form-control input-lg" })
+                @Html.ValidationMessageFor(m => m.Title)
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-12">
+                @Html.LabelFor(m => m.Content)
+                @Html.TextAreaFor(m => m.Content, new { @class = "form-control input-lg textarea-big", id="txtPost" })
+                @Html.ValidationMessageFor(m => m.Content)
+            </div>
+        </div>
+        if (ViewBag.EditMyPost == null) // Se não estiver editando uma postagem própria
+        { 
+        <div class="row">
+            <div class="col-md-12 center separator">
+                @Html.CheckBoxFor(m => m.ChangeAuthor) @Html.LabelFor(m => m.ChangeAuthor)
+            </div>
+        </div>
+        }
+        <div class="row buttons" id="box-default">
+            <div class="col-md-4 separator-only-vertical">
+                <button type="submit" class="btn btn-success btn-lg"><span class="glyphicon glyphicon-ok"></span> Atualizar postagem</button>
+            </div>
+            <div class="col-md-4 separator-only-vertical">
+                <button type="button" onclick="location.href='@Url.Action("Show", "Post", new { Id = Model.PostId })'" class="btn btn-default btn-lg"><span class="glyphicon glyphicon-file"></span> Ver Postagem</button>
+            </div>
+            <div class="col-md-4 separator-only-vertical">
+                <button type="button" onclick="location.href='@Url.Action("All","Post")'" class="btn btn-default btn-lg"><span class="glyphicon glyphicon-th-list"></span> Listagem de Postagem</button>
+            </div>
+        </div>
+
+
+        @Scripts.Render("~/Scripts/initCKEditorCKFinder.js") // Inicializa CkEditor e CkFinder pelo id do textArea
+        <script>
+            init("txtPost");
+        </script>
+    }
+}
+</div><!--/.content-->

@@ -22,20 +22,23 @@
         </span>
         <span class="subtitle">
             <span class="glyphicon glyphicon-calendar" aria-hidden="true"></span>
-            @ViewBag.Post.CreatedAt.ToString("dd/MM/yyyy")
+            @ViewBag.Post.CreatedAt.ToString("dd/MM/yyyy") às @ViewBag.Post.CreatedAt.ToString("HH:mm")h
         </span>
-        <span class="subtitle">
-            <span class="glyphicon glyphicon-time" aria-hidden="true"></span>
-            @ViewBag.Post.CreatedAt.ToString("HH:mm")
-        </span>
+        @if (ViewBag.Post.LastUpdateAt != null)
+        {
+            <span class="subtitle">
+                <i>Atualizado em  @ViewBag.Post.LastUpdateAt.ToString("dd/MM/yyyy") às @ViewBag.Post.LastUpdateAt.ToString("HH:mm")h</i>
+            </span>
+        }
         <span class="subtitle">
             <span class="glyphicon glyphicon-comment" aria-hidden="true"></span>
             @ViewBag.Post.Comment.Count.ToString() @Blog42.Helpers.PluralHelper.SimplePluralize("comentário", ViewBag.Post.Comment.Count)
         </span>
     </div>
-    <div class="content"><!-- content post-->
+    <div class="content post"><!-- content post-->
         @Html.Raw(ViewBag.Post.Content)
     </div><!-- /.content -->
+    <div class="clearfix separator-bottom"></div>
 
     <div class="content"><!-- content comments-->
         

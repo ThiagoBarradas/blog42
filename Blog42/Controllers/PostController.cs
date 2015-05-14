@@ -86,9 +86,12 @@ namespace Blog42.Controllers
                 post.Content = postNew.Content;
                 post.CreatedBy = user.Id;
 
-                // Tenta persistir novo usuário, se conseguir sinaliza sucesso para a view, senão, adiciona mensagem de erro
+                // Tenta persistir novo usuário, se conseguir sinaliza sucesso e passa id do post para a view, senão, adiciona mensagem de erro
                 if (postDAO.CreatePost(post))
+                {
                     ViewBag.Success = true;
+                    ViewBag.PostId = post.Id;
+                }
                 else
                     ModelState.AddModelError("", "Ops! Ocorreu um erro durante o processamento. Tente novamente.");
             }
@@ -100,8 +103,76 @@ namespace Blog42.Controllers
         [PermissionFilter(Roles = "Author, Admin")]
         public ActionResult Edit(int id)
         {
-            ViewBag.Id = id;
-            return View();
+            // Cria variavel de modelo que será passado a view
+            PostEdit postEdit = new PostEdit();
+
+            // Recupera informações do post 
+            Post post = postDAO.GetPost(id); 
+
+            // Se post não encontrado, redireciona para página de erro
+            if (post == null)
+                return RedirectToAction("Index", "Error");
+
+            // Copia as informações recebidas para modelo da página de edição
+            postEdit.PostId = post.Id;
+            postEdit.Title = post.Title;
+            postEdit.Content = post.Content;
+            postEdit.ChangeAuthor = false;
+
+            // Se estiver editando seu próprio post, sinaliza
+            if (post.User.Username == User.Identity.Name)
+                ViewBag.EditMyPost = true;
+            else if (!Roles.GetRolesForUser().Contains("Admin")) // Se não tiver editando próprio post e não for admin, redireciona para página de erro
+                return RedirectToAction("Index", "Error");
+
+            return View(postEdit);
+        }
+
+         //
+        //GET: /Admin/Post/Edit/{id}
+        [HttpPost]
+        [PermissionFilter(Roles = "Author, Admin")]
+        [ValidateInput(false)]
+        [ValidateAntiForgeryToken]
+        public ActionResult Edit(PostEdit postEdit)
+        {
+            // Recupera informações do post 
+            Post post = postDAO.GetPost(postEdit.PostId);
+
+            // Se post não encontrado, redireciona para página de erro
+            if (post == null)
+                return RedirectToAction("Index", "Error");
+
+            // Se estiver editando seu próprio post, sinaliza
+            if (post.User.Username == User.Identity.Name)
+                ViewBag.EditMyPost = true;
+            else if (!Roles.GetRolesForUser().Contains("Admin")) // Se não tiver editando próprio post e não for admin, redireciona para página de erro
+                return RedirectToAction("Index", "Error");
+
+            // Se dados do formulário são válidos, tenta editar
+            if (ModelState.IsValid)
+            {
+                // Atribui novos valores a usuário editado
+                post.Title = postEdit.Title;
+                post.Content = postEdit.Content;
+                post.LastUpdateAt = DateTime.Now;
+
+                // Verifica se é para alterar o autor para ele mesmo
+                if (postEdit.ChangeAuthor)
+                {
+                    // Inicializa objeto de persistencia de usuário e recupera dados do usuário atual
+                    UserDAO userDAO = new UserDAO();
+                    User user = userDAO.GetUser(User.Identity.Name);
+                    post.CreatedBy = user.Id;
+                }
+
+                // Tenta editar, se conseguir, sinaliza sucesso, senão, adiciona erro
+                if (postDAO.UpdatePost(post))
+                    ViewBag.Success = true;
+                else
+                    ModelState.AddModelError("", "Ops! Ocorreu um erro durante o processamento. Tente novamente.");
+            }
+            return View(postEdit);
         }
 
         //

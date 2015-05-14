@@ -24,7 +24,7 @@ namespace Blog42.Models
         public string Content { get; set; }
         public System.DateTime CreatedAt { get; set; }
         public int CreatedBy { get; set; }
-        public System.DateTime LastUpdateAt { get; set; }
+        public Nullable<System.DateTime> LastUpdateAt { get; set; }
     
         public virtual ICollection<Comment> Comment { get; set; }
         public virtual User User { get; set; }

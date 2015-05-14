@@ -280,7 +280,7 @@ h1.title-black {
 /* 
  * Responsivo 
  */
-@media screen and (max-width: 640px) {
+@media screen and (max-width: 992px) {
    
    /*
     * Painel Administrativo
@@ -346,5 +346,13 @@ h1.title-black {
       width: 100%;
       margin-top: 0.8em;
       margin-left: 0.6em;
+  }
+  .post img, .post table, .post div {
+      width: 100% !important;
+      height: auto !important;
+      float: none;
+  }
+  .post img {
+      display: block !important;
   }
 }

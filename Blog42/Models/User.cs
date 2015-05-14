@@ -27,7 +27,7 @@ namespace Blog42.Models
         public bool IsAdmin { get; set; }
         public bool IsActive { get; set; }
         public bool IsFirstEntry { get; set; }
-
+    
         public virtual ICollection<Post> Post { get; set; }
     }
 }

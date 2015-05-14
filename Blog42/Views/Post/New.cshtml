@@ -17,7 +17,8 @@
             <span class="glyphicon glyphicon-ok" aria-hidden="true"></span> Postagem publicada com sucesso!
         </h2>
         <br />
-        @Html.ActionLink("Voltar para listagem de Postagens", "All", "Post")
+        @Html.ActionLink("Ir para Postagem", "Show", "Post", new { id = ViewBag.PostId }, null)<br />
+        @Html.ActionLink("Ir para listagem de Postagens", "All", "Post")
     </div>
 }
 else // Senão, monta formulário

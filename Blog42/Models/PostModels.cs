@@ -42,6 +42,8 @@ namespace Blog42.Models
      */
     public class PostEdit
     {
+        public int PostId { get; set; }
+
         [Required]
         [Display(Name = "Título")]
         [StringLength(100, ErrorMessage = "O campo Título deve conter entre 3 e 100 caracteres.", MinimumLength = 3)]
@@ -52,6 +54,7 @@ namespace Blog42.Models
         [StringLength(8000, ErrorMessage = "O campo Postagem deve conter entre 3 e 8000 caracteres.", MinimumLength = 6)]
         public string Content { get; set; }
 
+        [Display(Name = "Me tornar autor da postagem?")]
         public bool ChangeAuthor { get; set; }
     }
 }

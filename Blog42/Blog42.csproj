@@ -1184,7 +1184,6 @@
     <Content Include="Views\Comment\Delete.cshtml" />
     <Content Include="Views\Post\All.cshtml" />
     <Content Include="Views\Post\Delete.cshtml" />
-    <Content Include="Views\Post\Edit.cshtml" />
     <Content Include="Views\Post\New.cshtml">
       <SubType>
       </SubType>
@@ -1202,6 +1201,7 @@
     <Content Include="Views\Comment\New.cshtml" />
     <Content Include="Views\Comment\ByPost.cshtml" />
     <Content Include="Views\Shared\_LayoutAdmin.cshtml" />
+    <Content Include="Views\Post\Edit.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
