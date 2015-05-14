@@ -30,6 +30,8 @@ else // Senão, monta formulário
         @Scripts.Render("~/Content/ckeditor/ckeditor.js")
         @Scripts.Render("~/Content/ckfinder/ckfinder.js")
         @Scripts.Render("~/Content/ckeditor/adapters/jquery.js")
+        //Script para pré visualização da postagem
+        @Scripts.Render("~/Scripts/previewPost.js")
 
 
         @Html.AntiForgeryToken()
@@ -40,7 +42,7 @@ else // Senão, monta formulário
         <div class="row">
             <div class="col-md-12">
                 @Html.LabelFor(m => m.Title)
-                @Html.TextBoxFor(m => m.Title, new { @class = "form-control input-lg" })
+                @Html.TextBoxFor(m => m.Title, new { @class = "form-control input-lg", id="txtTitle" })
                 @Html.ValidationMessageFor(m => m.Title)
             </div>
         </div>
@@ -55,26 +57,33 @@ else // Senão, monta formulário
         { 
         <div class="row">
             <div class="col-md-12 center separator">
-                @Html.CheckBoxFor(m => m.ChangeAuthor) @Html.LabelFor(m => m.ChangeAuthor)
+                @Html.CheckBoxFor(m => m.ChangeAuthor, new { id = "cbxChangeAuthor" }) @Html.LabelFor(m => m.ChangeAuthor)
             </div>
         </div>
         }
         <div class="row buttons" id="box-default">
-            <div class="col-md-4 separator-only-vertical">
+            <div class="col-md-3 separator-only-vertical">
                 <button type="submit" class="btn btn-success btn-lg"><span class="glyphicon glyphicon-ok"></span> Atualizar postagem</button>
             </div>
-            <div class="col-md-4 separator-only-vertical">
+            <div class="col-md-3 separator-only-vertical">
+                <button type="button" id="preview" class="btn btn-default btn-lg"><span class="glyphicon glyphicon-eye-open"></span> Pré Visualização</button>
+            </div>
+            <div class="col-md-3 separator-only-vertical">
                 <button type="button" onclick="location.href='@Url.Action("Show", "Post", new { Id = Model.PostId })'" class="btn btn-default btn-lg"><span class="glyphicon glyphicon-file"></span> Ver Postagem</button>
             </div>
-            <div class="col-md-4 separator-only-vertical">
-                <button type="button" onclick="location.href='@Url.Action("All","Post")'" class="btn btn-default btn-lg"><span class="glyphicon glyphicon-th-list"></span> Listagem de Postagem</button>
+            <div class="col-md-3 separator-only-vertical">
+                <button type="button" onclick="location.href='@Url.Action("All","Post")'" class="btn btn-default btn-lg"><span class="glyphicon glyphicon-th-list"></span> Postagens</button>
             </div>
         </div>
 
-
         @Scripts.Render("~/Scripts/initCKEditorCKFinder.js") // Inicializa CkEditor e CkFinder pelo id do textArea
         <script>
-            init("txtPost");
+            // Aplica modo de edição no textarea informado
+            initCKin("txtPost");
+            // Atribui função de preview ao botão correspondente
+            $("#preview").click(function () {
+                previewPost(@Model.PostId, "txtTitle", "txtPost", "cbxChangeAuthor")
+            });
         </script>
     }
 }

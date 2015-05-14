@@ -36,7 +36,7 @@ namespace Blog42.Controllers
 
         //
         // GET: /Comment/ByPost/{id}
-        public ActionResult ByPost(int postId = 0)
+        public ActionResult ByPost(bool? preview, int postId = 0)
         {
             // Se não for uma requisição feita por qualquer url que contenha "ByPost" e/ou não venha do próprio servidor
             if (!(Request.IsAjaxRequest() || !(Request.Path.IndexOf("ByPost", StringComparison.OrdinalIgnoreCase) >= 0)) || !Request.IsLocal)
@@ -46,7 +46,7 @@ namespace Blog42.Controllers
             List<Comment> comments = commentDAO.SelectCommentsByPost(postId).ToList<Comment>();
 
             // Verifica se existe usuário logado e algum comentário foi retornado, se existir se pode deletar (sendo admin ou autor da postagem) 
-            if (Request.IsAuthenticated && comments.Count>0 && (Roles.GetRolesForUser().Contains("Admin") || comments[0].Post.User.Username == User.Identity.Name))
+            if (Request.IsAuthenticated && comments.Count>0 && (Roles.GetRolesForUser().Contains("Admin") || comments[0].Post.User.Username == User.Identity.Name) && preview==null)
                 ViewBag.canDelete = true; // sinaliza para view
 
             // Passa listagem para view

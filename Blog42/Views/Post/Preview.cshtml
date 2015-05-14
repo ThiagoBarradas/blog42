@@ -1,0 +1,44 @@
+﻿@{
+    ViewBag.Title = ViewBag.Post.Title;
+}
+
+
+<div id="thisPreview"> ISTO É UMA PRÉ VISUALIZAÇÃO</div>
+<div class="jumbotron">
+    <div class="box-title">
+        <h2 class="title">
+            @ViewBag.Post.Title
+        </h2>
+        <span class="subtitle">
+            <span class="glyphicon glyphicon-user" aria-hidden="true"></span>
+            @ViewBag.Post.User.Name
+        </span>
+        <span class="subtitle">
+            <span class="glyphicon glyphicon-calendar" aria-hidden="true"></span>
+            @ViewBag.Post.CreatedAt.ToString("dd/MM/yyyy") às @ViewBag.Post.CreatedAt.ToString("HH:mm")h
+        </span>
+        @if (ViewBag.Post.LastUpdateAt != null)
+        {
+            <span class="subtitle">
+                <i>Atualizado em  @ViewBag.Post.LastUpdateAt.ToString("dd/MM/yyyy") às @ViewBag.Post.LastUpdateAt.ToString("HH:mm")h</i>
+            </span>
+        }
+        <span class="subtitle">
+            <span class="glyphicon glyphicon-comment" aria-hidden="true"></span>
+            @ViewBag.Post.Comment.Count.ToString() @Blog42.Helpers.PluralHelper.SimplePluralize("comentário", ViewBag.Post.Comment.Count)
+        </span>
+    </div>
+    <div class="content post"><!-- content post-->
+        @Html.Raw(ViewBag.Post.Content)
+    </div><!-- /.content -->
+    <div class="clearfix separator-bottom"></div>
+
+    <div class="content"><!-- content comments-->
+        
+        <a name="comments" class="link-named">&nbsp; </a>
+        <div id="div-comments">
+            @Html.Action("ByPost", "Comment", new { postId = ViewBag.Post.Id, preview = true })
+        </div>
+
+    </div><!-- /.content -->
+</div><!-- /.jumbotron -->

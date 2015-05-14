@@ -55,7 +55,61 @@ namespace Blog42.Controllers
         }
 
         //
-        // GET: /Admin/New
+        // GET: /Admin/Post/Preview
+        [HttpPost]
+        [PermissionFilter(Roles = "Author, Admin")]
+        [ValidateInput(false)]
+        public ActionResult Preview(int postId, string title, string content, bool changeAuthor)
+        {
+            // Declara variaveis locais
+            Post post;
+            
+            // Cria objeto de persistencia de usuário e recupera dados do usuário
+            UserDAO userDAO = new UserDAO();
+            User user = userDAO.GetUser(User.Identity.Name);
+
+            // Verifica se recebeu usuário, senão redireciona para página de erro
+            if (user == null)
+                return RedirectToAction("Index", "Error");
+
+            // Verifica se é pré visualização na criação ou na edição
+            if (postId > 0)
+            {
+                // Recebe post original
+                post = postDAO.GetPost(postId);
+                
+                // Verifica se conseguiu receber post, se não recebeu, redireciona para página de erro
+                if (post == null)
+                    return RedirectToAction("Index", "Error");
+                
+                // Se admin quer mudar o autor para si mesmo, ele altera na edição também
+                if(changeAuthor)
+                    post.User = user;
+
+                // Atualiza data de modificação
+                post.LastUpdateAt = DateTime.Now;
+
+            }
+            else
+            {
+                // Cria post vazio
+                post = new Post();
+                // Atualiza data de modificação e usuário autor
+                post.CreatedAt = DateTime.Now;
+                post.User = user;
+            }
+
+            // altera propriedades em comum
+            post.Title = title;
+            post.Content = content;            
+
+            // Passa post para a view
+            ViewBag.Post = post;
+            return View();
+        }
+
+        //
+        // GET: /Admin/Post/New
         [PermissionFilter(Roles = "Author, Admin")]
         public ActionResult New()
         {
@@ -63,7 +117,7 @@ namespace Blog42.Controllers
         }
 
         //
-        // POST: /Admin/New
+        // POST: /Admin/Post/New
         [HttpPost]
         [PermissionFilter(Roles = "Author, Admin")]
         [ValidateInput(false)]

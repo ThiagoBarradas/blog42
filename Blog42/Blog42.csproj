@@ -1147,6 +1147,7 @@
     <Content Include="Content\ckfinder\skins\v1\skin.js" />
     <Content Include="Content\ckfinder\skins\v1\uipanel.css" />
     <Content Include="Content\ckfinder\translations.txt" />
+    <Content Include="Scripts\previewPost.js" />
     <Content Include="Scripts\initCKEditorCKFinder.js" />
     <Content Include="Scripts\commentNew.js" />
     <Content Include="Scripts\jquery-1.9.1.js" />
@@ -1202,6 +1203,7 @@
     <Content Include="Views\Comment\ByPost.cshtml" />
     <Content Include="Views\Shared\_LayoutAdmin.cshtml" />
     <Content Include="Views\Post\Edit.cshtml" />
+    <Content Include="Views\Post\Preview.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />

@@ -2,6 +2,7 @@
  * CSS customizado para completação do bootstrap e layout
  */
 
+
 /*
  * Define tamanho mínimo para layout responsivo
  */
@@ -89,6 +90,25 @@ footer {
     position: relative;
     float: left; 
     top: -67px;
+}
+
+/*
+ * Aviso de pré visualização em preview de post
+ */
+#thisPreview {
+    position: fixed;
+    color: #fff;
+    width: 380px;
+    height: 60px;
+    padding: 20px;
+    text-align: center;
+    font-weight: bold;
+    top: 200px;
+    right: 0;
+    z-index: 1100;
+    background: rgba(0, 0, 0, 0.5);
+    transform: rotate(45deg); 
+    transform-origin: bottom right;
 }
 
 /*
@@ -378,4 +398,20 @@ h1.title-black {
 	  bottom: 0;
       right: 0;
   }  
+
+  /*
+   * Aviso de pré visualização em preview de post
+   */
+  #thisPreview {
+      width: 300px;
+      height: 40px;
+      padding: 10px;
+      font-size: 12px;
+      top: 160px;
+      right: -10px;
+      z-index: 1100;
+      background: rgba(0, 0, 0, 0.5);
+      transform: rotate(45deg); 
+      transform-origin: bottom right;
+  }
 }

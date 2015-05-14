@@ -6,7 +6,7 @@
  */
 
 // Inicializa editor passando parametros de id do textarea
-function init(id)
+function initCKin(id)
 {
     
     // inicializa editor

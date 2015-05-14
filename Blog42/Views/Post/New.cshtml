@@ -30,7 +30,8 @@ else // Senão, monta formulário
         @Scripts.Render("~/Content/ckeditor/ckeditor.js")
         @Scripts.Render("~/Content/ckfinder/ckfinder.js")
         @Scripts.Render("~/Content/ckeditor/adapters/jquery.js")
-
+        //Script para pré visualização da postagem
+        @Scripts.Render("~/Scripts/previewPost.js")
 
         @Html.AntiForgeryToken()
         @Html.ValidationSummary(true)
@@ -38,7 +39,7 @@ else // Senão, monta formulário
         <div class="row">
             <div class="col-md-12">
                 @Html.LabelFor(m => m.Title)
-                @Html.TextBoxFor(m => m.Title, new { @class = "form-control input-lg" })
+                @Html.TextBoxFor(m => m.Title, new { @class = "form-control input-lg", id="txtTitle" })
                 @Html.ValidationMessageFor(m => m.Title)
             </div>
         </div>
@@ -50,18 +51,28 @@ else // Senão, monta formulário
             </div>
         </div>
         <div class="row buttons" id="box-default">
-            <div class="col-md-6 separator-only-vertical">
+            <div class="col-md-4 separator-only-vertical">
                 <button type="submit" class="btn btn-success btn-lg"><span class="glyphicon glyphicon-save"></span> Publicar Postagem</button>
             </div>
-            <div class="col-md-6 separator-only-vertical">
-                <button type="button" onclick="location.href='@Url.Action("All","Post")'" class="btn btn-default btn-lg"><span class="glyphicon glyphicon-arrow-left"></span> Voltar</button>
+            <div class="col-md-4 separator-only-vertical">
+                <button type="button" id="preview" class="btn btn-default btn-lg"><span class="glyphicon glyphicon-eye-open"></span> Pré Visualização</button>
+            </div>
+            <div class="col-md-4 separator-only-vertical">
+                <button type="button" onclick="location.href='@Url.Action("All","Post")'" class="btn btn-default btn-lg"><span class="glyphicon glyphicon-arrow-left"></span> Listagem de Postagem</button>
             </div>
         </div>
     
-        
-        @Scripts.Render("~/Scripts/initCKEditorCKFinder.js") // Inicializa CkEditor e CkFinder pelo id do textArea
+        // importa inicializador do CkEditor e CkFinder pelo id do textArea
+        @Scripts.Render("~/Scripts/initCKEditorCKFinder.js") 
         <script>
-            init("txtPost");
+        $(document).ready(function () { 
+            // Aplica modo de edição no textarea informado
+            initCKin("txtPost");
+            // Atribui função de preview ao botão correspondente
+            $("#preview").click(function () {
+                previewPost(0, "txtTitle", "txtPost", "")
+            });
+        });
         </script>
     }
 }
