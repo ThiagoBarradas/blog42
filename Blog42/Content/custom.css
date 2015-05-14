@@ -348,11 +348,34 @@ h1.title-black {
       margin-left: 0.6em;
   }
   .post img, .post table, .post div {
-      width: 100% !important;
+      max-width: 100% !important;
       height: auto !important;
-      float: none;
+      float: none !important;
+  }
+  .post table, .post iframe {
+      width: 100% !important;
+  }
+  .post table tr, .post td, .post tbody, .post thead, .post tfoot {
+      width: auto !important;
   }
   .post img {
       display: block !important;
+      margin: 0.4em auto !important;
   }
+  .post iframe{
+	  position: relative !important;
+	  width: 100% !important;
+  }
+  .post iframe:before{
+	  content: "";
+	  display: block;
+	  padding-top: 75%;
+  }
+  .post iframe:after {
+      position:  absolute;
+	  top: 0;
+	  left: 0;
+	  bottom: 0;
+      right: 0;
+  }  
 }
