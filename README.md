@@ -13,6 +13,10 @@ O projeto consiste apenas no estudo e aplicação das tecnologias:
 - LocalDB;
 - jQuery;
 - Bootstrap;
+- Bootbox;
+- CKEditor;
+- CKFinder;
+- PagedList;
 - Unit Tests;
 - Versionamento com GitHub;
 
