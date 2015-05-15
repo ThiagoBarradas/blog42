@@ -38,8 +38,8 @@ namespace Blog42.Controllers
         // GET: /Comment/ByPost/{id}
         public ActionResult ByPost(bool? preview, int postId = 0)
         {
-            // Se não for uma requisição feita por qualquer url que contenha "ByPost" e/ou não venha do próprio servidor
-            if (!(Request.IsAjaxRequest() || !(Request.Path.IndexOf("ByPost", StringComparison.OrdinalIgnoreCase) >= 0)) || !Request.IsLocal)
+            // Se não for uma requisição feita via ajax ou uma view parcial requisitada localmente, redireciona para erro
+            if (!(Request.IsAjaxRequest() || ControllerContext.IsChildAction) || !Request.IsLocal)
                 return RedirectToAction("Index", "Error"); // redireciona para página de erro
 
             // Declara listagem de comentários
@@ -56,31 +56,34 @@ namespace Blog42.Controllers
 
         //
         // GET: /NewComment
-        // Para requisições Ajax e Local
+        [ChildActionOnly]
         public ActionResult New(int postId = 0)
         {
-            // Se não for uma requisição feita por qualquer url que contenha "Comment" e/ou não venha do próprio servidor
-            if (Request.Path.IndexOf("Comment", StringComparison.OrdinalIgnoreCase)>=0 || !Request.IsLocal)
-                return RedirectToAction("Index", "Error"); // redireciona para página de erro
-
             // Retorna view parcial passando modelo com Id do post
             return PartialView(new CommentNew() { PostId = postId });
         }
 
         //
         // POST: /NewComment
-        // Apenas requisições Ajax e Local
         [HttpPost]
-        public ActionResult New(CommentNew commentNew)
+        public ActionResult New(CommentNew commentNew, bool? preview)
         {
+            // Se for preview (preview é feita via POST, cai aqui), retorna formulário
+            if (preview != null)
+            {
+                ViewBag.IsPreview = true; // Sinaliza View
+                ModelState.Clear(); // Remove erros do form
+                return New(0); // Retorna método GET
+            }
+
             // Se não for uma requisição ajax feita pelo próprio servidor, redireciona para página de erro
-            if (!Request.IsAjaxRequest() || !Request.IsLocal)
+            if (!(Request.IsAjaxRequest() && Request.IsLocal))
                 return RedirectToAction("Index", "Error");
 
             // Recebe validação de modelo para sinalizar sucesso
             commentNew.IsSuccess = ModelState.IsValid;
 
-            //Se modelo for válido, retorna mensagem de sucesso
+            // Se modelo for válido, retorna mensagem de sucesso
             if (ModelState.IsValid)
             {
                 //  Tenta criar comentário e salvar no banco

@@ -1,15 +1,17 @@
 ﻿@model Blog42.Models.CommentNew
 <div class="box-comment panel separator-only-vertical">
 
-    <!-- Inclui script que permite comentar via ajax -->
-    @Scripts.Render("~/Scripts/commentNew.js")
+    @if (ViewBag.IsPreview==null) // Se recebeu um ID válido
+    {
+        <!-- Inclui script que permite comentar via ajax -->
+        @Scripts.Render("~/Scripts/commentNew.js")
+        <script>
+            // Inicializa componente para que possa ser utilizado indicando a postagem que receberá o comentário
+            // E a Url para buscar todos os comentários
+            initCommentNew(@Model.PostId, "@Url.Action("ByPost", "Comment", new { postId = Model.PostId } )");
+        </script>
+    }
     
-    <script>
-        // Inicializa componente para que possa ser utilizado indicando a postagem que receberá o comentário
-        // E a Url para buscar todos os comentários
-        initCommentNew(@Model.PostId, "@Url.Action("ByPost", "Comment", new { postId = Model.PostId } )");
-    </script>
-
     <a name="new-comment" class="link-named"></a>
         
     <h1 class="title-black">

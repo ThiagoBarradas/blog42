@@ -33,6 +33,7 @@ function previewPost(_postId, _idTitle, _idContent, _idChangeAuthor) {
     form.children("input[name=content]").val(content);
     form.children("input[name=changeAuthor]").val(changeAuthor);
 
-    // submete form e visualiza preview
-    form.submit();    
+    win = window.open(null, "preview"); // Cria nova janela
+    win.focus(); // Atribui foco
+    form.submit(); // Submete formulário e enfim, abre preview
 }

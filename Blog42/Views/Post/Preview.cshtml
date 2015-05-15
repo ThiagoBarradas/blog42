@@ -40,5 +40,15 @@
             @Html.Action("ByPost", "Comment", new { postId = ViewBag.Post.Id, preview = true })
         </div>
 
+        <div id="make-comment">
+            @Html.Action("New", "Comment", new { postId = ViewBag.Post.Id, preview = true })
+        </div>
+
+        <script>
+            // Remove links da página
+            $('a').click(function () { return false; });
+        </script>    
+    
+
     </div><!-- /.content -->
 </div><!-- /.jumbotron -->
