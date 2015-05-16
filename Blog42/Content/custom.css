@@ -32,7 +32,7 @@ body {
 /* 
  * Customização background do menu principal hover
  */
-#navbar ul li:hover {
+#navbar ul li.menu:hover {
     background: #ced0ff;
 }
 
@@ -303,6 +303,24 @@ h1.title-black {
     margin: 0;
 }
 
+/*
+ * Barra de busca
+ */
+.search {
+    padding: 8px 10px;
+}
+#search-box {
+    position: relative;
+}
+#search-box .form-control {
+    padding-right: 30px;
+}
+#search-box .form-control + .glyphicon {
+    position: absolute;
+    right: 0;
+    font-size: 16px;
+    padding: 8px 27px;
+}
 
 /* 
  * Responsivo menor que 992px

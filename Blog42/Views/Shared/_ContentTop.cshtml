@@ -1,0 +1,36 @@
+﻿<nav class="navbar navbar-default navbar-fixed-top">
+    <div class="container">
+        <div class="navbar-header">
+
+            <!-- Menu responsivo -->
+            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+                <span class="sr-only">Navegação pelo menu</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+
+            @Html.ActionLink("Blog 42", "Index", "Home", null, new { @class = "logo" })
+        </div>
+
+        <!-- menu principal -->
+        <div id="navbar" class="navbar-collapse collapse">
+            <ul class="nav navbar-nav navbar-right">
+                <li class="search">
+                    <div id="search-box">
+                        <form role="form">
+                            @{  // Define palavra de busca se exitir
+                                string search = (ViewBag.search != null) ? ViewBag.search : "";    
+                            }
+                            <input type="text" name="search" value="@search" placeholder="Pesquisar no blog" class="form-control" />
+                            <span class="glyphicon glyphicon-search"></span>
+                        </form>
+                    </div>
+                </li>
+                <li class="menu">@Html.ActionLink("Início", "Index", "Home")</li>
+                <li class="menu">@Html.ActionLink("Sobre", "Sobre", "Home")</li>
+                <li class="menu">@Html.ActionLink("Contato", "Contato", "Home")</li>
+            </ul>
+        </div><!-- /navbar -->
+    </div>
+</nav>

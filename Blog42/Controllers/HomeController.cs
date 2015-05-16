@@ -15,14 +15,23 @@ namespace Blog42.Controllers
          * Início - Postagens
          * GET: /
          */
-        public ActionResult Index(int? page)
+        [ValidateInput(false)]
+        public ActionResult Index(int? page, string search)
         {            
             // Cria e inicializa objeto de acesso aos dados das postagens
             PostDAO postDAO = new PostDAO();
             // Recebe todas as postagens
             IQueryable<Post> posts = postDAO.SelectAllPosts().AsQueryable();
-            // Cria modelo com paginação de 5 itens por página
-            IPagedList<Post> model = posts.ToPagedList(page ?? 1, 5);
+            
+            // Cria modelo com paginação de 5 itens por página e, se tiver filtro de busca, aplica
+            IPagedList<Post> model = !string.IsNullOrEmpty(search) ?
+                                        posts.Where(m => m.Title.ToLower().Contains(search.ToLower()) 
+                                                    || m.Content.ToLower().Contains(search.ToLower()))
+                                                    .ToPagedList(page ?? 1, 5) :
+                                        posts.ToPagedList(page ?? 1, 5);
+            
+            // Armazena busca para passar para view
+            ViewBag.search = search;
             
             // Se página inválida
             if (page != null && page > 1 && model.Count == 0)

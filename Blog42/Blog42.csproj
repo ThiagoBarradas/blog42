@@ -1211,6 +1211,9 @@
     <Content Include="Views\Shared\_LayoutAdmin.cshtml" />
     <Content Include="Views\Post\Edit.cshtml" />
     <Content Include="Views\Post\Preview.cshtml" />
+    <Content Include="Views\Shared\_ContentTop.cshtml" />
+    <Content Include="Views\Shared\_ContentBottom.cshtml" />
+    <Content Include="Views\Shared\_ContentHead.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />

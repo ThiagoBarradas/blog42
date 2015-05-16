@@ -4,13 +4,23 @@
     ViewBag.Title = "Postagens";
 }
 
-@if (Model.Count == 0)
-{ // Se não encontrou registros
+@if (ViewBag.search != null && ViewBag.search != "") // Se foi feita uma busca por postagens
+{  
+    // Altera o título
+    ViewBag.Title = "Resultados para: " + ViewBag.search;
+    
+    <div class="jumbotron center">
+        <span>Exibindo resultados para: <i><b>@ViewBag.search</b></i></span>
+    </div>
+}
+
+@if (Model.Count == 0) // Se não encontrou registros
+{ 
     
     <div class="jumbotron">
         <div class="col-md-12 center">
             <h2 class="separator b">Ooooooh noooouuuu!</h2>
-            <h3 class="separator">Infelizmente ainda não temos postagens :( </h3>
+            <h3 class="separator">Infelizmente nada foi encontrado :( </h3>
         </div>    
     </div>
 
@@ -56,7 +66,7 @@ else // Se encontrou postagem, lista-as
     if (Model.HasNextPage || Model.HasPreviousPage)
     {
         <div class="center separator-bottom">
-            @Html.PagedListPager(Model, (page) => Url.Action("Index", new { page = page }), PagedListRenderOptions.OnlyShowFivePagesAtATime)
+            @Html.PagedListPager(Model, (page) => Url.Action("Index", new { page = page, search = @ViewBag.search }), PagedListRenderOptions.OnlyShowFivePagesAtATime)
         </div>
     }
 }
