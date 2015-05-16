@@ -2,71 +2,59 @@
 @model PagedList.IPagedList<Blog42.Models.Post>
 @{
     ViewBag.Title = "Postagens";
+    Layout = "~/Views/Shared/_LayoutAdmin.cshtml"; // Layout para páginas do painel de controle administrativo
 }
 
-<div class="jumbotron">
-
-    <!-- Titulo e Menu -->
-    @Html.Partial("_PanelTitle")
-    @Html.Partial("_PanelTabs")
-
-    <div class="tab-content">
-    <!-- Início Conteúdo da Tab-->
-
-    <table class="table table-striped grid-table">
+<table class="table table-striped grid-table">
         
-        @if (Model.Count == 0) { // Se não encontrou registros
-            <thead>
-                <tr>
-                    <td>Nenhuma postagem encontrada.</td>
-                </tr>
-            </thead>
-        }
-        else // Se encontrou registros, lista-os
-        {
-            <thead>
-                <tr>
-                    <th>Título</th>
-                    <th>Autor</th>
-                    <th>Criado em</th>
-                    <th></th>
-                </tr>
-            </thead>
-            <tbody>
-                @foreach (var post in Model)
-                {
-                    <tr>
-                        <td><b class="th">Título:</b> @post.Title</td>
-                        <td><b class="th">Autor:</b> @post.User.Name</td>
-                        <td><b class="th">Criado em:</b> @post.CreatedAt.ToString("dd/MM/yyyy") às @post.CreatedAt.ToString("HH:mm")h</td>
-                        <td class="grid-action">
-                            <button type="button" class="btn btn-default" onclick="location.href = '@Url.Action("Edit", "Post", new { Id = post.Id })'">
-                                <span class="glyphicon glyphicon-pencil"></span>
-                            </button>
-                            <button type="button" class="btn btn-default" onclick="location.href = '@Url.Action("Delete", "Post", new { Id = post.Id })'">
-                                <span class="glyphicon glyphicon-trash"></span>
-                            </button>
-                        </td>
-                    </tr>
-                }
-            </tbody>
-        }
-    </table>
-    
-    <div class="row pagination-panel-control">
-        <div class="col-md-8">
-            @if (Model.HasNextPage || Model.HasPreviousPage) // Insere paginação
+    @if (Model.Count == 0) { // Se não encontrou registros
+        <thead>
+            <tr>
+                <td>Nenhuma postagem encontrada.</td>
+            </tr>
+        </thead>
+    }
+    else // Se encontrou registros, lista-os
+    {
+        <thead>
+            <tr>
+                <th>Título</th>
+                <th>Autor</th>
+                <th>Criado em</th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var post in Model)
             {
-                @Html.PagedListPager(Model, (page) => Url.Action("All", new { page = page }), PagedListRenderOptions.OnlyShowFivePagesAtATime)
+                <tr>
+                    <td><b class="th">Título:</b> @post.Title</td>
+                    <td><b class="th">Autor:</b> @post.User.Name</td>
+                    <td><b class="th">Criado em:</b> @post.CreatedAt.ToString("dd/MM/yyyy") às @post.CreatedAt.ToString("HH:mm")h</td>
+                    <td class="grid-action">
+                        <button type="button" class="btn btn-default" onclick="location.href = '@Url.Action("Edit", "Post", new { Id = post.Id })'">
+                            <span class="glyphicon glyphicon-pencil"></span>
+                        </button>
+                        <button type="button" class="btn btn-default" onclick="location.href = '@Url.Action("Delete", "Post", new { Id = post.Id })'">
+                            <span class="glyphicon glyphicon-trash"></span>
+                        </button>
+                    </td>
+                </tr>
             }
-        </div>
-        <div class="col-md-4 separator-bottom right">
-            <button type="button" class="btn btn-default btn-lg" onclick="location.href = '@Url.Action("New", "Post")'">
-                <span class="glyphicon glyphicon-plus"></span> Publicar postagem
-            </button>
-        </div>
+        </tbody>
+    }
+</table>
+    
+<div class="row pagination-panel-control">
+    <div class="col-md-8">
+        @if (Model.HasNextPage || Model.HasPreviousPage) // Insere paginação
+        {
+            @Html.PagedListPager(Model, (page) => Url.Action("All", new { page = page }), PagedListRenderOptions.OnlyShowFivePagesAtATime)
+        }
     </div>
-
-    <!-- Fim Conteúdo da Tab-->
+    <div class="col-md-4 separator-bottom right">
+        <button type="button" class="btn btn-default btn-lg" onclick="location.href = '@Url.Action("New", "Post")'">
+            <span class="glyphicon glyphicon-plus"></span> Publicar postagem
+        </button>
     </div>
-</div><!-- /.jumbotron -->
+</div>
