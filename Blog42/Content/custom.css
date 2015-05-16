@@ -296,9 +296,16 @@ h1.title-black {
     vertical-align: middle;
 }
 
+/*
+ * Paginação no painel administrativo
+ */
+.col-md-8 .pagination {
+    margin: 0;
+}
+
 
 /* 
- * Responsivo 
+ * Responsivo menor que 992px
  */
 @media screen and (max-width: 992px) {
    
@@ -414,4 +421,14 @@ h1.title-black {
       transform: rotate(45deg); 
       transform-origin: bottom right;
   }
+
+  /*
+   * Paginação no painel administrativo
+   */
+  .pagination-panel-control .col-md-4,
+  .pagination-panel-control .col-md-6,
+  .pagination-panel-control .col-md-8
+   {
+      text-align: center;
+   }
 }

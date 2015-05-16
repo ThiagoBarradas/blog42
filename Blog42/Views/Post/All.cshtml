@@ -1,4 +1,6 @@
-﻿@{
+﻿@using PagedList.Mvc
+@model PagedList.IPagedList<Blog42.Models.Post>
+@{
     ViewBag.Title = "Postagens";
 }
 
@@ -13,7 +15,7 @@
 
     <table class="table table-striped grid-table">
         
-        @if (ViewBag.Posts.Count == 0) { // Se não encontrou registros
+        @if (Model.Count == 0) { // Se não encontrou registros
             <thead>
                 <tr>
                     <td>Nenhuma postagem encontrada.</td>
@@ -31,7 +33,7 @@
                 </tr>
             </thead>
             <tbody>
-                @foreach (var post in ViewBag.Posts)
+                @foreach (var post in Model)
                 {
                     <tr>
                         <td><b class="th">Título:</b> @post.Title</td>
@@ -51,10 +53,21 @@
         }
     </table>
     
-    <button type="button" class="btn btn-default btn-lg" onclick="location.href = '@Url.Action("New", "Post")'">
-        <span class="glyphicon glyphicon-plus"></span> Publicar postagem
-    </button>
-    
+        <div class="row pagination-panel-control">
+            <div class="col-md-8">
+                @if (Model.HasNextPage || Model.HasPreviousPage) // Insere paginação
+                {
+                    @Html.PagedListPager(Model, (page) => Url.Action("All", new { page = page }), PagedListRenderOptions.OnlyShowFivePagesAtATime)
+                }
+            </div>
+            <div class="col-md-4 separator-bottom right">
+                <button type="button" class="btn btn-default btn-lg" onclick="location.href = '@Url.Action("New", "Post")'">
+                    <span class="glyphicon glyphicon-plus"></span> Publicar postagem
+                </button>
+            </div>
+            
+        </div>
+
     <!-- Fim Conteúdo da Tab-->
     </div>
 </div><!-- /.jumbotron -->

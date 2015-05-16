@@ -55,7 +55,7 @@ else // Se encontrou postagem, lista-as
     // Insere paginação
     if (Model.HasNextPage || Model.HasPreviousPage)
     {
-        <div class="center">
+        <div class="center separator-bottom">
             @Html.PagedListPager(Model, (page) => Url.Action("Index", new { page = page }), PagedListRenderOptions.OnlyShowFivePagesAtATime)
         </div>
     }

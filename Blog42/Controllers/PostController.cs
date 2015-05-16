@@ -4,6 +4,7 @@ using System.Linq;
 using System.Web.Mvc;
 using System.Web;
 using System.Web.Security;
+using PagedList;
 using Blog42.Security;
 using Blog42.DataAccess;
 using Blog42.Models;
@@ -38,20 +39,25 @@ namespace Blog42.Controllers
         //
         // GET: /Admin/Post
         [PermissionFilter(Roles = "Author, Admin")]
-        public ActionResult All()
+        public ActionResult All(int? page)
         {
             // Declara listagem de postagens
-            List<Post> posts;
+            IQueryable<Post> posts;
 
             // Inicializa posts. Se for admin, recupera todas as postagens, senão, apenas do próprio usuário
             if (Roles.GetRolesForUser().Contains("Admin"))
-                posts = postDAO.SelectAllPosts().ToList<Post>();
+                posts = postDAO.SelectAllPosts().AsQueryable();
             else
-                posts = postDAO.SelectPostsByAuthor(User.Identity.Name).ToList<Post>();
-            
-            // Passa listagem para view
-            ViewBag.Posts = posts;            
-            return View();
+                posts = postDAO.SelectPostsByAuthor(User.Identity.Name).AsQueryable();
+
+            // Cria modelo com paginação de 10 itens por página
+            IPagedList<Post> model = posts.ToPagedList(page ?? 1, 10);
+
+            // Se página inválida
+            if (page != null && page > 1 && model.Count == 0)
+                return RedirectToAction("All", "Post"); //Redireciona para pagina de todas as postagens
+
+            return View(model);
         }
 
         //
