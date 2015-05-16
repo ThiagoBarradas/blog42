@@ -53,20 +53,19 @@
         }
     </table>
     
-        <div class="row pagination-panel-control">
-            <div class="col-md-8">
-                @if (Model.HasNextPage || Model.HasPreviousPage) // Insere paginação
-                {
-                    @Html.PagedListPager(Model, (page) => Url.Action("All", new { page = page }), PagedListRenderOptions.OnlyShowFivePagesAtATime)
-                }
-            </div>
-            <div class="col-md-4 separator-bottom right">
-                <button type="button" class="btn btn-default btn-lg" onclick="location.href = '@Url.Action("New", "Post")'">
-                    <span class="glyphicon glyphicon-plus"></span> Publicar postagem
-                </button>
-            </div>
-            
+    <div class="row pagination-panel-control">
+        <div class="col-md-8">
+            @if (Model.HasNextPage || Model.HasPreviousPage) // Insere paginação
+            {
+                @Html.PagedListPager(Model, (page) => Url.Action("All", new { page = page }), PagedListRenderOptions.OnlyShowFivePagesAtATime)
+            }
         </div>
+        <div class="col-md-4 separator-bottom right">
+            <button type="button" class="btn btn-default btn-lg" onclick="location.href = '@Url.Action("New", "Post")'">
+                <span class="glyphicon glyphicon-plus"></span> Publicar postagem
+            </button>
+        </div>
+    </div>
 
     <!-- Fim Conteúdo da Tab-->
     </div>

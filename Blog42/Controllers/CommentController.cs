@@ -4,6 +4,7 @@ using System.Linq;
 using System.Web.Mvc;
 using System.Web;
 using System.Web.Security;
+using PagedList;
 using Blog42.Security;
 using Blog42.DataAccess;
 using Blog42.Models;
@@ -18,20 +19,25 @@ namespace Blog42.Controllers
         //
         // GET: /Admin/Comment/
         [PermissionFilter(Roles = "Author, Admin")]
-        public ActionResult All()
+        public ActionResult All(int? page)
         {
             // Declara listagem de comentários
-            List<Comment> comments;
+            IQueryable<Comment> comments;
 
             // Inicializa posts. Se for admin, recupera todos os comentários, senão, apenas dos posts do próprio usuário
             if (Roles.GetRolesForUser().Contains("Admin"))
-                comments = commentDAO.SelectAllComments().ToList<Comment>();
+                comments = commentDAO.SelectAllComments().AsQueryable();
             else
-                comments = commentDAO.SelectCommentsByAuthor(User.Identity.Name).ToList<Comment>();
+                comments = commentDAO.SelectCommentsByAuthor(User.Identity.Name).AsQueryable();
 
-            // Passa listagem para view
-            ViewBag.Comments = comments;
-            return View();
+            // Cria modelo com paginação de 10 itens por página
+            IPagedList<Comment> model = comments.ToPagedList(page ?? 1, 10);
+
+            // Se página inválida
+            if (page != null && page > 1 && model.Count == 0)
+                return RedirectToAction("All", "Comment"); // Redireciona para pagina de todos os comentários
+
+            return View(model);
         }
 
         //

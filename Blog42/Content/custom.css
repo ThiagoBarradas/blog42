@@ -432,3 +432,19 @@ h1.title-black {
       text-align: center;
    }
 }
+
+/* 
+ * Responsivo menor que 480px
+ */
+@media screen and (max-width: 480px) {
+  /*
+   * Paginação no painel administrativo
+   */
+  .pagination-panel-control li {
+      display: none;
+  }
+  .pagination-panel-control li.PagedList-skipToPrevious,
+  .pagination-panel-control li.PagedList-skipToNext {
+      display: inline;  
+  }
+}
