@@ -1,8 +1,10 @@
-﻿@{
+﻿@using PagedList.Mvc
+@model PagedList.IPagedList<Blog42.Models.Post>
+@{
     ViewBag.Title = "Postagens";
 }
 
-@if (ViewBag.Posts.Count == 0)
+@if (Model.Count == 0)
 { // Se não encontrou registros
     
     <div class="jumbotron">
@@ -15,7 +17,7 @@
 }
 else // Se encontrou postagem, lista-as
 {
-    foreach (var post in ViewBag.Posts) // insere as postagens
+    foreach (var post in Model) // insere as postagens
     {
         <div class="jumbotron">
             <div class="box-title">
@@ -30,8 +32,10 @@ else // Se encontrou postagem, lista-as
                 </span>
                 @if (post.LastUpdateAt != null)
                 {
+                    string date = @Convert.ToDateTime(post.LastUpdateAt).ToString("dd/MM/yyyy");
+                    string time = @Convert.ToDateTime(post.LastUpdateAt).ToString("HH:mm")+"h";
                     <span class="subtitle">
-                        <i>Atualizado em  @post.LastUpdateAt.ToString("dd/MM/yyyy") às @post.LastUpdateAt.ToString("HH:mm")h</i>
+                        <i>Atualizado em  @date às @time</i>
                     </span>
                 }
                 <span class="subtitle">
@@ -46,5 +50,13 @@ else // Se encontrou postagem, lista-as
             </div><!-- /.content -->
             <div class="clearfix separator-bottom"></div>
         </div><!-- /.jumbotron -->
+    }
+
+    // Insere paginação
+    if (Model.HasNextPage || Model.HasPreviousPage)
+    {
+        <div class="center">
+            @Html.PagedListPager(Model, (page) => Url.Action("Index", new { page = page }), PagedListRenderOptions.OnlyShowFivePagesAtATime)
+        </div>
     }
 }

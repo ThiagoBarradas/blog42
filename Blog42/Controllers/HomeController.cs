@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
+using PagedList;
 using Blog42.Models;
 using Blog42.DataAccess;
 
@@ -14,15 +15,20 @@ namespace Blog42.Controllers
          * Início - Postagens
          * GET: /
          */
-        public ActionResult Index()
-        {
+        public ActionResult Index(int? page)
+        {            
             // Cria e inicializa objeto de acesso aos dados das postagens
             PostDAO postDAO = new PostDAO();
             // Recebe todas as postagens
-            List<Post> posts = postDAO.SelectAllPosts().ToList<Post>();
-            // Passa listagem para view
-            ViewBag.Posts = posts;
-            return View();
+            IQueryable<Post> posts = postDAO.SelectAllPosts().AsQueryable();
+            // Cria modelo com paginação de 5 itens por página
+            IPagedList<Post> model = posts.ToPagedList(page ?? 1, 5);
+            
+            // Se página inválida
+            if (page != null && page > 1 && model.Count == 0)
+                return RedirectToAction("Index", "Home"); //Redireciona para o início
+
+            return View(model);
         }
         
         /*
