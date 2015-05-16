@@ -4,6 +4,7 @@ using System.Linq;
 using System.Web.Mvc;
 using System.Web;
 using System.Web.Security;
+using PagedList;
 using Blog42.DataAccess;
 using Blog42.Models;
 using Blog42.Security;
@@ -61,15 +62,21 @@ namespace Blog42.Controllers
         //
         // GET: /Admin/User/
         [PermissionFilter(Roles = "Admin")]
-        public ActionResult All()
+        public ActionResult All(int? page)
         {
             // Recebe todos os usuários, exceto o que está solicitando atual
-            List<User> users = userDAO.SelectAllUsers()
+            IQueryable<User> users = userDAO.SelectAllUsers()
                                       .Where(u => u.Username != User.Identity.Name)
-                                      .ToList();
-            // Passa listagem para view
-            ViewBag.Users = users;
-            return View();
+                                      .AsQueryable();
+
+            // Cria modelo com paginação de 10 itens por página
+            IPagedList<User> model = users.ToPagedList(page ?? 1, 10);
+
+            // Se página inválida
+            if (page != null && page > 1 && model.Count == 0)
+                return RedirectToAction("All", "User"); // Redireciona para pagina de listagem de todos os usuários
+
+            return View(model);
         }
 
         //

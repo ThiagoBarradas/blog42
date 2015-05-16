@@ -1,11 +1,13 @@
-﻿@{
+﻿@using PagedList.Mvc
+@model PagedList.IPagedList<Blog42.Models.User>
+@{
     ViewBag.Title = "Usuários";
     Layout = "~/Views/Shared/_LayoutAdmin.cshtml"; // Layout para páginas do painel de controle administrativo
 }
 
 <table class="table table-striped grid-table">
         
-    @if (ViewBag.Users.Count == 0) { // Se não encontrou registros
+    @if (Model.Count == 0) { // Se não encontrou registros
         <thead>
             <tr>
                 <td>Nenhum usuário encontrado.</td>
@@ -22,7 +24,7 @@
             </tr>
         </thead>
         <tbody>
-            @foreach (var user in ViewBag.Users)
+            @foreach (var user in Model)
             {
                 <tr>
                     <td><b class="th">Nome:</b> @user.Name</td>
@@ -41,8 +43,18 @@
     }
 </table>
     
-<button type="button" class="btn btn-default btn-lg" onclick="location.href = '@Url.Action("New", "User")'">
-    <span class="glyphicon glyphicon-plus"></span> Criar Usuário
-</button>
+<div class="row pagination-panel-control">
+    <div class="col-md-8">
+        @if (Model.HasNextPage || Model.HasPreviousPage) // Insere paginação
+        {
+            @Html.PagedListPager(Model, (page) => Url.Action("All", new { page = page }), PagedListRenderOptions.OnlyShowFivePagesAtATime)
+        }
+    </div>
+    <div class="col-md-4 separator-bottom right">
+        <button type="button" class="btn btn-default btn-lg" onclick="location.href = '@Url.Action("New", "User")'">
+            <span class="glyphicon glyphicon-plus"></span> Criar usuário
+        </button>
+    </div>
+</div>
     
     
