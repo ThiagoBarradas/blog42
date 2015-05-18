@@ -74,6 +74,35 @@ footer {
     margin-bottom: 1em;
     font-size: 0.9em;
 }
+.post h1, .post h2, .post h3, .post h4, .post h5, .post h6, .post h7 {
+    font-weight: bold;
+    margin: 0.3em 0;
+}
+.post h1 {
+    font-size: 2em;
+}
+.post h2 {
+    font-size: 1.8em;
+}
+.post h3 {
+    font-size: 1.6em;
+}
+.post h4 {
+    font-size: 1.4em;
+}
+.post h5 {
+    font-size: 1.2em;
+}
+.post h6 {
+    font-size: 1.1em;
+}
+.post h7 {
+    font-size: 1.0em;
+}
+.post iframe {
+    background-color: #555;
+}
+
 
 /*
  * Estilo para comentário
