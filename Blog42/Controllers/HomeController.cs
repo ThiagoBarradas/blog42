@@ -18,6 +18,10 @@ namespace Blog42.Controllers
         [ValidateInput(false)]
         public ActionResult Index(int? page, string search)
         {            
+            // Verifica se página recebida menor que o mínimo (1), se for, atribui o valor mínimo
+            if ((page ?? 1) < 1)
+                page = 1;
+
             // Cria e inicializa objeto de acesso aos dados das postagens
             PostDAO postDAO = new PostDAO();
             // Recebe todas as postagens
@@ -31,11 +35,11 @@ namespace Blog42.Controllers
                                         posts.ToPagedList(page ?? 1, 5);
             
             // Armazena busca para passar para view
-            ViewBag.search = search;
+            ViewBag.search = search ?? "";
             
             // Se página inválida
             if (page != null && page > 1 && model.Count == 0)
-                return RedirectToAction("Index", "Home"); //Redireciona para o início
+                return RedirectToAction("Index", "Home", new { page = 1 }); //Redireciona para o início
 
             return View(model);
         }
