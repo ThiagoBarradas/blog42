@@ -123,12 +123,17 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Common\GeneralSetup.cs" />
+    <Compile Include="Common\MockRoleProvider.cs" />
+    <Compile Include="Controllers\CommentControllerTest.cs" />
+    <Compile Include="Helpers\PermissionHelper.cs" />
     <Compile Include="Helpers\RequestHelper.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Controllers\HomeControllerTest.cs" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="App.config" />
+    <Content Include="App.config">
+      <SubType>Designer</SubType>
+    </Content>
     <Content Include="Test_Data\Blog42.mdf">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>

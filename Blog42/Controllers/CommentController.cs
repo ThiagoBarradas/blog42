@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Web.Mvc;
+using System.Web.Mvc;   
 using System.Web;
 using System.Web.Security;
 using PagedList;
@@ -21,6 +21,10 @@ namespace Blog42.Controllers
         [PermissionFilter(Roles = "Author, Admin")]
         public ActionResult All(int? page)
         {
+            // Verifica se página recebida menor que o mínimo (1), se for, atribui o valor mínimo
+            if ((page ?? 1) < 1)
+                page = 1;
+
             // Declara listagem de comentários
             IQueryable<Comment> comments;
 
@@ -35,7 +39,7 @@ namespace Blog42.Controllers
 
             // Se página inválida
             if (page != null && page > 1 && model.Count == 0)
-                return RedirectToAction("All", "Comment"); // Redireciona para pagina de todos os comentários
+                return RedirectToAction("All", "Comment", new { page = 1 }); // Redireciona para pagina de todos os comentários
 
             return View(model);
         }
@@ -66,7 +70,7 @@ namespace Blog42.Controllers
         public ActionResult New(int postId = 0)
         {
             // Retorna view parcial passando modelo com Id do post
-            return PartialView(new CommentNew() { PostId = postId });
+            return PartialView(new CommentNew() { PostId = ((postId<0)? 0 : postId) });
         }
 
         //
@@ -83,7 +87,7 @@ namespace Blog42.Controllers
             }
 
             // Se não for uma requisição ajax feita pelo próprio servidor, redireciona para página de erro
-            if (!(Request.IsAjaxRequest() && Request.IsLocal))
+            if (!(Request.IsAjaxRequest() && Request.IsLocal && Request.HttpMethod=="POST"))
                 return RedirectToAction("Index", "Error");
 
             // Recebe validação de modelo para sinalizar sucesso
