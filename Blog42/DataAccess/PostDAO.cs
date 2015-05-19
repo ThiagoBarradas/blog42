@@ -10,9 +10,11 @@ namespace Blog42.DataAccess
     {
         private Blog42Entities entities;
 
-        public PostDAO() 
-        { 
-            // Inicializa o modelo EF
+        public PostDAO() {}
+
+        // Inicializa entity
+        private void Init()
+        {
             entities = new Blog42Entities();
         }
 
@@ -22,6 +24,7 @@ namespace Blog42.DataAccess
          */
         public Post GetPost(int id)
         {
+            Init(); // Atualiza antes de executar operação
             // Captura os dados do comentário e retorna
             var post = entities.Post.Find(id);
             return post;
@@ -33,6 +36,7 @@ namespace Blog42.DataAccess
          */
         public bool CreatePost(Post post)
         {
+            Init(); // Atualiza antes de executar operação
             try
             {
                 // Atribui o momento atual como data/hora de criação
@@ -56,6 +60,7 @@ namespace Blog42.DataAccess
          */
         public bool UpdatePost(Post post)
         {
+            Init(); // Atualiza antes de executar operação
             try
             {
                 // recebe dados originais
@@ -90,6 +95,7 @@ namespace Blog42.DataAccess
         */
         public bool ChangeAuthor(string usernameFrom, string usernameTo)
         {
+            Init(); // Atualiza antes de executar operação
             try
             {
                 // Recebe dados do usuário de destino
@@ -117,6 +123,7 @@ namespace Blog42.DataAccess
          */
         public bool DeletePost(int id)
         {
+            Init(); // Atualiza antes de executar operação
             try
             {
                 // Recebe comentário
@@ -140,6 +147,7 @@ namespace Blog42.DataAccess
          */
         public List<Post> SelectAllPosts()
         {
+            Init(); // Atualiza antes de executar operação
             // Recebe todas as postagens ordenadas pelo Id e retorna em lista
             var posts = entities.Post.OrderByDescending(m => m.Id).ToList<Post>();
             return posts;
@@ -151,6 +159,7 @@ namespace Blog42.DataAccess
          */
         public List<Post> SelectPostsByAuthor(string username)
         {
+            Init(); // Atualiza antes de executar operação
             // Recebe todas as postagens de um usuário ordenadas pelo id e retorna em lista
             var posts = entities.Post.Where(m => m.User.Username == username)
                                    .OrderByDescending(m => m.Id)

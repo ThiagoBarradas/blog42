@@ -10,9 +10,11 @@ namespace Blog42.DataAccess
     {
         private Blog42Entities entities;
 
-        public UserDAO() 
-        { 
-            // Inicializa o modelo EF
+        public UserDAO() { }
+
+        // Inicializa entity
+        private void Init()
+        {
             entities = new Blog42Entities();
         }
 
@@ -22,6 +24,7 @@ namespace Blog42.DataAccess
          */
         public bool AuthUser(String username, String password)
         {
+            Init(); // Atualiza antes de executar operação
             //Define a query de consulta para a combinação de usuário/senha e para usuários ativos
             var query = (from u in entities.User
                          where u.Username.Equals(username, StringComparison.OrdinalIgnoreCase) && u.Password == password && u.IsActive
@@ -37,6 +40,7 @@ namespace Blog42.DataAccess
          */
         public User GetUser(string username)
         {
+            Init(); // Atualiza antes de executar operação
             // captura os dados do usuário e retorna
             User user =  (from u in entities.User
                          where u.Username == username
@@ -50,6 +54,7 @@ namespace Blog42.DataAccess
          */
         public User GetUser(int id)
         {
+            Init(); // Atualiza antes de executar operação
             // captura os dados do usuário e retorna
             var user = entities.User.Find(id);
             return user;
@@ -61,6 +66,7 @@ namespace Blog42.DataAccess
          */
         public bool CreateUser(User user)
         {
+            Init(); // Atualiza antes de executar operação
             try
             {
                 // Inseri e salva as alterações
@@ -82,6 +88,7 @@ namespace Blog42.DataAccess
          */
         public bool UpdateUser(User user)
         {
+            Init(); // Atualiza antes de executar operação
             try
             {
                 // recebe dados originais
@@ -120,6 +127,7 @@ namespace Blog42.DataAccess
          */
         public bool DeleteUser(int id)
         {
+            Init(); // Atualiza antes de executar operação
             try
             {
                 // Recebe usuário 
@@ -143,6 +151,7 @@ namespace Blog42.DataAccess
          */
         public List<User> SelectAllUsers()
         {
+            Init(); // Atualiza antes de executar operação
             // Recebe todos os usuários ordenados pelo nome e retorna em lista
             var users = entities.User.OrderBy(m => m.Name).ToList<User>();
             return users;

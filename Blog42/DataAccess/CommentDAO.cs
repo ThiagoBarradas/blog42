@@ -10,9 +10,11 @@ namespace Blog42.DataAccess
     {
         private Blog42Entities entities;
 
-        public CommentDAO() 
-        { 
-            // Inicializa o modelo EF
+        public CommentDAO() { }
+
+        // Inicializa entity
+        private void Init()
+        {
             entities = new Blog42Entities();
         }
 
@@ -22,6 +24,7 @@ namespace Blog42.DataAccess
          */
         public Comment GetComment(int id)
         {
+            Init(); // Atualiza antes de executar operação
             // Captura os dados do comentário e retorna
             var comment = entities.Comment.Find(id);
             return comment;
@@ -33,6 +36,7 @@ namespace Blog42.DataAccess
          */
         public bool CreateComment(Comment comment)
         {
+            Init(); // Atualiza antes de executar operação
             try
             {
                 // Insere momento atual na data/hora de criação
@@ -56,6 +60,7 @@ namespace Blog42.DataAccess
          */
         public bool DeleteComment(int id)
         {
+            Init(); // Atualiza antes de executar operação
             try
             {
                 // Recebe comentário
@@ -79,6 +84,7 @@ namespace Blog42.DataAccess
          */
         public List<Comment> SelectAllComments()
         {
+            Init(); // Atualiza antes de executar operação
             // Recebe todos os comentários ordenados pelo Id descendente
             var comments = entities.Comment.OrderByDescending(m => m.Id).ToList<Comment>();
             return comments;
@@ -91,6 +97,7 @@ namespace Blog42.DataAccess
          */
         public List<Comment> SelectCommentsByPost(int postId)
         {
+            Init(); // Atualiza antes de executar operação
             // Recebe todos os comentários de um post ordenados pelo id descendente e retorna em lista
             var comments = entities.Comment.Where(m => m.PostId == postId)
                                    .OrderByDescending(m => m.Id)
@@ -104,6 +111,7 @@ namespace Blog42.DataAccess
          */
         public List<Comment> SelectCommentsByAuthor(string username)
         {
+            Init(); // Atualiza antes de executar operação
             // Recebe todos os comentários de um usuário ordenados pelo id descendente e retorna em lista
             var comments = entities.Comment.Where(m => m.Post.User.Username == username)
                                    .OrderByDescending(m => m.Id)

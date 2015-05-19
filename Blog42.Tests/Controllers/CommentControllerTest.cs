@@ -6,6 +6,7 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using PagedList;
 using Moq;
 using Blog42;
+using Blog42.DataAccess;
 using Blog42.Models;
 using Blog42.Controllers;
 using Blog42.Tests.Helpers;
@@ -45,6 +46,7 @@ namespace Blog42.Tests.Controllers
 
             // Tem que receber um resultado em Json
             Assert.IsInstanceOfType(result, typeof(JsonResult));
+
             // Converte o Json para objeto do tipo de modelo de criação e tem que ter a flag IsSuccess como true
             commentNew = ((result as JsonResult).Data as CommentNew);
             Assert.IsTrue(commentNew.IsSuccess);
@@ -154,15 +156,63 @@ namespace Blog42.Tests.Controllers
             Assert.AreEqual(1, int.Parse(redirect.RouteValues["page"].ToString()));
         }
 
-        // Testa se usuário não logado consegue acessar
+        // Testa se usuário author consegue deletar postagem de outro usuario, nao pode
         [TestMethod]
-        public void UserAccess_HttpUnauthorized_CommentAll() {
-            AuthorizationContext authorizationContext = RequestHelper.BuildHttpContext() as AuthorizationContext;    
-            Security.PermissionFilter permissionFilter = new Security.PermissionFilter();
-            permissionFilter.OnAuthorization(authorizationContext);
+        public void AuthorTryDeleteInPostAnotherAuthor_CommentDelete() {
+            // Cria contexto e autentica usuario Author
+            controller.ControllerContext = RequestHelper.BuildHttpContext(RequestHelper.TypeRequest.Author);
 
-            //Tem que ser uma requisição não autorizada
-            Assert.IsInstanceOfType(authorizationContext.Result,typeof(HttpUnauthorizedResult));
+            // Cria postagem para outro usuario e insere comentario que sera testado na deleção
+            UserDAO userDAO = new UserDAO();
+            User user = new User() { Username = "Teste", Email = "Teste@teste.com", Name = "Teste", Password = "123456", IsActive = true, IsAdmin = false };
+            userDAO.CreateUser(user);
+
+            PostDAO postDAO = new PostDAO();
+            Post post = new Post() { CreatedBy = user.Id, Content = "Teste", Title = "Teste"};
+            postDAO.CreatePost(post);
+            
+            CommentDAO commentDAO = new CommentDAO();
+            Comment comment = new Comment() { Author = "Teste",Comment1 = "Teste", PostId = post.Id};
+            commentDAO.CreateComment(comment);
+
+            // Tenta deletar
+            RedirectToRouteResult result = controller.Delete(new CommentDelete() { CommentId = comment.Id }) as RedirectToRouteResult;
+            
+            // Checa se comentário ainda existe
+            Assert.IsNotNull(commentDAO.GetComment(comment.Id));
+
+            // Verifica se foi redirecionado para página de erro
+            Assert.AreEqual("Error",result.RouteValues["controller"].ToString());
+            Assert.AreEqual("Index", result.RouteValues["action"].ToString());
+        }
+
+        // Testa se usuário author consegue deletar postagem na propria postagem, tem que poder
+        [TestMethod]
+        public void AuthorCanDeleteCommentInYourPost_CommentDelete()
+        {
+            // Cria contexto e autentica usuario Author
+            controller.ControllerContext = RequestHelper.BuildHttpContext(RequestHelper.TypeRequest.Author);
+
+            // Cria postagem para outro usuario e insere comentario que sera testado na deleção
+            UserDAO userDAO = new UserDAO();
+            User user = userDAO.GetUser(PermissionHelper.getNameAuthor());
+            
+            PostDAO postDAO = new PostDAO();
+            Post post = new Post() { CreatedBy = user.Id, Content = "Teste", Title = "Teste" };
+            postDAO.CreatePost(post);
+            
+            CommentDAO commentDAO = new CommentDAO();
+            Comment comment = new Comment() { Author = "Teste", Comment1 = "Teste", PostId = post.Id };
+            commentDAO.CreateComment(comment);
+
+            // Tenta deletar
+            ViewResult result = controller.Delete(new CommentDelete() { CommentId = comment.Id }) as ViewResult;
+
+            // Verifica view recebeu sucesso
+            Assert.IsNotNull(result.ViewBag.Success);
+
+            // Checa se comentário foi deletado
+            Assert.IsNull(commentDAO.GetComment(comment.Id));
         }
     }
 }
