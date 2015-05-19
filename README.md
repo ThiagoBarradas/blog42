@@ -17,6 +17,7 @@ O projeto consiste apenas no estudo e aplicação das tecnologias:
 - CKEditor;
 - CKFinder;
 - PagedList;
+- Moq;
 - Unit Tests;
 - Versionamento com GitHub;
 
