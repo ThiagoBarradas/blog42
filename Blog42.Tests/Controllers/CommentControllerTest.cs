@@ -125,7 +125,7 @@ namespace Blog42.Tests.Controllers
         [TestMethod]
         public void AdminCanDeleteCommentInPostAnotherAuthor_CommentDelete()
         {
-            // Cria contexto e autentica usuario Author
+            // Cria contexto e autentica usuario admin
             controller.ControllerContext = RequestHelper.BuildHttpContext(RequestHelper.TypeRequest.Admin);
 
             // Cria postagem para outro usuario e insere comentario que sera testado na deleção

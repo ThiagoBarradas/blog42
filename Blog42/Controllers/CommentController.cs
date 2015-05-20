@@ -11,6 +11,7 @@ using Blog42.Models;
 
 namespace Blog42.Controllers
 {
+    [ValidateInput(false)]
     public class CommentController : Controller
     {
         // Cria e inicializa objeto de acesso aos dados dos comentários

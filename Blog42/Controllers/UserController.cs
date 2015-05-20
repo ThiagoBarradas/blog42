@@ -12,6 +12,7 @@ using Blog42.Helpers;
 
 namespace Blog42.Controllers
 {
+    [ValidateInput(false)]
     public class UserController : Controller
     {
         // Cria e inicializa objeto de acesso aos dados

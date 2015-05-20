@@ -11,6 +11,7 @@ using Blog42.Models;
 
 namespace Blog42.Controllers
 {
+    [ValidateInput(false)]
     public class PostController : Controller
     {
         // Cria e inicializa objeto de acesso aos dados das postagens
@@ -68,7 +69,6 @@ namespace Blog42.Controllers
         // GET: /Admin/Post/Preview
         [HttpPost]
         [PermissionFilter(Roles = "Author, Admin")]
-        [ValidateInput(false)]
         public ActionResult Preview(int postId, string title, string content, bool changeAuthor)
         {
             // Declara variaveis locais
@@ -130,7 +130,6 @@ namespace Blog42.Controllers
         // POST: /Admin/Post/New
         [HttpPost]
         [PermissionFilter(Roles = "Author, Admin")]
-        [ValidateInput(false)]
         [ValidateAntiForgeryToken()]
         public ActionResult New(PostNew postNew)
         {
@@ -196,7 +195,6 @@ namespace Blog42.Controllers
         //GET: /Admin/Post/Edit/{id}
         [HttpPost]
         [PermissionFilter(Roles = "Author, Admin")]
-        [ValidateInput(false)]
         [ValidateAntiForgeryToken]
         public ActionResult Edit(PostEdit postEdit)
         {
