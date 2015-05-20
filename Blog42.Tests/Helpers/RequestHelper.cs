@@ -79,6 +79,9 @@ namespace Blog42.Tests.Helpers
                 var principal = new GenericPrincipal(fakeIdentity, null);
                 // Altera no contexto
                 context.Setup(t => t.User).Returns(principal);
+
+                // Seta (fake) usuário atual 
+                PermissionHelper.SetCurrentUsername((type.Contains(TypeRequest.Admin)) ? PermissionHelper.getNameAdmin() : PermissionHelper.getNameAuthor());
             }
             else
             {
@@ -86,6 +89,9 @@ namespace Blog42.Tests.Helpers
                 var principal = new GenericPrincipal(fakeIdentity, null);
                 // Altera no contexto
                 context.Setup(t => t.User).Returns(principal);
+                
+                // Seta (fake) usuário atual 
+                PermissionHelper.SetCurrentUsername(String.Empty);
             }
 
             // Atribui parâmetros para request que será definida no contexto

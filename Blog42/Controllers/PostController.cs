@@ -41,6 +41,10 @@ namespace Blog42.Controllers
         [PermissionFilter(Roles = "Author, Admin")]
         public ActionResult All(int? page)
         {
+            // Verifica se página recebida menor que o mínimo (1), se for, atribui o valor mínimo
+            if ((page ?? 1) < 1)
+                page = 1;
+            
             // Declara listagem de postagens
             IQueryable<Post> posts;
 
@@ -55,7 +59,7 @@ namespace Blog42.Controllers
 
             // Se página inválida
             if (page != null && page > 1 && model.Count == 0)
-                return RedirectToAction("All", "Post"); //Redireciona para pagina de todas as postagens
+                return RedirectToAction("All", "Post", new { page = 1 }); //Redireciona para pagina de todas as postagens
 
             return View(model);
         }
@@ -266,6 +270,8 @@ namespace Blog42.Controllers
         {
             // Recupera informações do post a ser deletado
             Post post = postDAO.GetPost(postDelete.PostId);
+
+            var roles = Roles.GetRolesForUser();
 
             // Se post não encontrado, ou usuário não tem permissão para deletar redireciona para página de erro 
             if (post == null || !(Roles.GetRolesForUser().Contains("Admin") || post.User.Username == User.Identity.Name))

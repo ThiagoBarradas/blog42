@@ -82,10 +82,12 @@ namespace Blog42.Tests.Common
 
         public override string[] GetRolesForUser(string username)
         {
+            username = Helpers.PermissionHelper.GetCurrentUsername();
+
             if (username == null || username == "")
             {
                 FormsAuthentication.SignOut();
-                return new string[] { "" };
+                return new string[0];
             }
 
             User user = Users.FirstOrDefault(u => u.Username == username);

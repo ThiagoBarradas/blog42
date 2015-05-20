@@ -19,6 +19,8 @@ namespace Blog42.Tests.Controllers
             controller = new HomeController();
         }
 
+        #region SearchTests
+
         // Testa pesquisa com valor nulo
         [TestMethod]
         public void Search_Null_HomeIndex()
@@ -32,6 +34,10 @@ namespace Blog42.Tests.Controllers
             // Testa se a busca é vazia
             Assert.AreEqual(search, "");
         }
+
+        #endregion
+
+        #region PaginationTests
 
         // Testa paginação com valor nulo
         [TestMethod]
@@ -73,6 +79,8 @@ namespace Blog42.Tests.Controllers
             Assert.AreEqual(redirect.RouteValues["action"], "Index");
             Assert.AreEqual(1, int.Parse(redirect.RouteValues["page"].ToString()));
         }
+
+        #endregion
     }
 
 }

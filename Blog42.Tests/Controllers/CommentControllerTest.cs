@@ -18,21 +18,15 @@ namespace Blog42.Tests.Controllers
     public class CommentControllerTest : Common.GeneralSetup
     {
         private CommentController controller;
-        private CommentNew commentNew;
 
         // Inicializa controller para testes
         [TestInitialize]
         public void Setup()
         {
             controller = new CommentController();
-            commentNew = new CommentNew() // Cria modelo para criação com dados válidos
-            {
-                Author = "Autor Teste",
-                Email = "Teste@gmail.com",
-                Comment = "Comentário Teste",
-                PostId = 1
-            };
         }
+
+        #region CreateTests
 
         // Testa criação de comentário, request via Ajax POST e Local
         [TestMethod]
@@ -40,6 +34,9 @@ namespace Blog42.Tests.Controllers
         {
             // Atribui o contexto passando flags de Ajax, Post e Local
             controller.ControllerContext = RequestHelper.BuildHttpContext(RequestHelper.TypeRequest.Ajax, RequestHelper.TypeRequest.Post, RequestHelper.TypeRequest.Local);
+
+            // Cria novo commentariopara postagem 1 (já existete no banco de testes)
+            CommentNew commentNew = new CommentNew() { Author = "Teste" , Comment = "Teste" , PostId = 1 };
 
             // Executa action passando modelo e, null para indicar que não é pre visualização
             var result = controller.New(commentNew, null);
@@ -50,6 +47,11 @@ namespace Blog42.Tests.Controllers
             // Converte o Json para objeto do tipo de modelo de criação e tem que ter a flag IsSuccess como true
             commentNew = ((result as JsonResult).Data as CommentNew);
             Assert.IsTrue(commentNew.IsSuccess);
+            
+            // Verifica se objeto foi criado
+            CommentDAO commentDAO = new CommentDAO();
+            var comments = commentDAO.SelectCommentsByPost(1);
+            Assert.AreEqual("Teste", comments[0].Author);
         }
 
         // Testa criação de comentário, via Ajax GET e Local
@@ -58,6 +60,9 @@ namespace Blog42.Tests.Controllers
         {
             // Atribui o contexto passando apenas flag de request ajax e local (method padrão GET)
             controller.ControllerContext = RequestHelper.BuildHttpContext(RequestHelper.TypeRequest.Ajax, RequestHelper.TypeRequest.Local);
+
+            // Cria novo commentariopara postagem 1 (já existete no banco de testes)
+            CommentNew commentNew = new CommentNew() { Author = "Teste", Comment = "Teste", PostId = 1 };
 
             // Executa action passando modelo e, null para indicar que não é pre visualização
             RedirectToRouteResult redirect = (RedirectToRouteResult)controller.New(commentNew, null);
@@ -77,6 +82,9 @@ namespace Blog42.Tests.Controllers
             // Atribui o contexto passando apenas flag de request ajax e post (requisição não é local, apenas quando criado passando TypeRequest.Local)
             controller.ControllerContext = RequestHelper.BuildHttpContext(RequestHelper.TypeRequest.Ajax, RequestHelper.TypeRequest.Post);
 
+            // Cria novo commentariopara postagem 1 (já existete no banco de testes)
+            CommentNew commentNew = new CommentNew() { Author = "Teste", Comment = "Teste", PostId = 1 };
+
             // Executa action passando modelo e, null para indicar que não é pre visualização
             RedirectToRouteResult redirect = (RedirectToRouteResult)controller.New(commentNew, null);
 
@@ -94,7 +102,10 @@ namespace Blog42.Tests.Controllers
         {
             // Atribui o contexto passando apenas flag de request post e local (padrão requisição ajax)
             controller.ControllerContext = RequestHelper.BuildHttpContext(RequestHelper.TypeRequest.Post, RequestHelper.TypeRequest.Local);
-            
+
+            // Cria novo commentariopara postagem 1 (já existete no banco de testes)
+            CommentNew commentNew = new CommentNew() { Author = "Teste", Comment = "Teste", PostId = 1 };
+
             // Executa action passando modelo e, null para indicar que não é pre visualização
             RedirectToRouteResult redirect = (RedirectToRouteResult)controller.New(commentNew, null);
 
@@ -106,7 +117,105 @@ namespace Blog42.Tests.Controllers
             Assert.AreEqual("Error", redirect.RouteValues["controller"].ToString());
         }
 
-        // Testes de Paginação
+        #endregion
+       
+        #region DeleteTests
+
+        // Testa se usuário admin consegue deletar comentário de postagem de outro usuario, nao pode
+        [TestMethod]
+        public void AdminCanDeleteCommentInPostAnotherAuthor_CommentDelete()
+        {
+            // Cria contexto e autentica usuario Author
+            controller.ControllerContext = RequestHelper.BuildHttpContext(RequestHelper.TypeRequest.Admin);
+
+            // Cria postagem para outro usuario e insere comentario que sera testado na deleção
+            UserDAO userDAO = new UserDAO();
+            
+            User user = new User() { Username = "Teste", Email = "Teste@teste.com", Name = "Teste", Password = "123456", IsActive = true, IsAdmin = false };
+            if (!userDAO.CreateUser(user)) user = userDAO.GetUser("Teste");
+
+            PostDAO postDAO = new PostDAO();
+            Post post = new Post() { CreatedBy = user.Id, Content = "Teste", Title = "Teste" };
+            postDAO.CreatePost(post);
+
+            CommentDAO commentDAO = new CommentDAO();
+            Comment comment = new Comment() { Author = "Teste", Comment1 = "Teste", PostId = post.Id };
+            commentDAO.CreateComment(comment);
+
+            // Tenta deletar
+            var _result = controller.Delete(new CommentDelete() { CommentId = comment.Id });
+            ViewResult result = _result as ViewResult;
+
+            // Verifica view recebeu sucesso
+            Assert.IsNotNull(result.ViewBag.Success);
+
+            // Checa se comentário foi deletado
+            Assert.IsNull(commentDAO.GetComment(comment.Id));
+        }
+
+        // Testa se usuário author consegue deletar comentário de postagem de outro usuario, nao pode
+        [TestMethod]
+        public void AuthorCantDeleteCommentInPostAnotherAuthor_CommentDelete() {
+            // Cria contexto e autentica usuario Author
+            controller.ControllerContext = RequestHelper.BuildHttpContext(RequestHelper.TypeRequest.Author);
+
+            // Cria postagem para outro usuario e insere comentario que sera testado na deleção
+            UserDAO userDAO = new UserDAO();
+            User user = new User() { Username = "Teste", Email = "Teste@teste.com", Name = "Teste", Password = "123456", IsActive = true, IsAdmin = false };
+            if (!userDAO.CreateUser(user)) user = userDAO.GetUser("Teste");
+
+            PostDAO postDAO = new PostDAO();
+            Post post = new Post() { CreatedBy = user.Id, Content = "Teste", Title = "Teste"};
+            postDAO.CreatePost(post);
+            
+            CommentDAO commentDAO = new CommentDAO();
+            Comment comment = new Comment() { Author = "Teste",Comment1 = "Teste", PostId = post.Id};
+            commentDAO.CreateComment(comment);
+
+            // Tenta deletar
+            var _result = controller.Delete(new CommentDelete() { CommentId = comment.Id });
+            RedirectToRouteResult result = _result as RedirectToRouteResult;
+            
+            // Checa se comentário ainda existe
+            Assert.IsNotNull(commentDAO.GetComment(comment.Id));
+
+            // Verifica se foi redirecionado para página de erro
+            Assert.AreEqual("Error",result.RouteValues["controller"].ToString());
+            Assert.AreEqual("Index", result.RouteValues["action"].ToString());
+        }
+
+        // Testa se usuário author consegue deletar postagem na propria postagem, tem que poder
+        [TestMethod]
+        public void AuthorCanDeleteCommentInYourPost_CommentDelete()
+        {
+            // Cria contexto e autentica usuario Author
+            controller.ControllerContext = RequestHelper.BuildHttpContext(RequestHelper.TypeRequest.Author);
+
+            // Cria postagem para outro usuario e insere comentario que sera testado na deleção
+            UserDAO userDAO = new UserDAO();
+            User user = userDAO.GetUser(PermissionHelper.getNameAuthor());
+            
+            PostDAO postDAO = new PostDAO();
+            Post post = new Post() { CreatedBy = user.Id, Content = "Teste", Title = "Teste" };
+            postDAO.CreatePost(post);
+            
+            CommentDAO commentDAO = new CommentDAO();
+            Comment comment = new Comment() { Author = "Teste", Comment1 = "Teste", PostId = post.Id };
+            commentDAO.CreateComment(comment);
+
+            // Tenta deletar
+            ViewResult result = controller.Delete(new CommentDelete() { CommentId = comment.Id }) as ViewResult;
+
+            // Verifica view recebeu sucesso
+            Assert.IsNotNull(result.ViewBag.Success);
+
+            // Checa se comentário foi deletado
+            Assert.IsNull(commentDAO.GetComment(comment.Id));
+        }
+
+        #endregion
+
+        #region PaginationTests
 
         // Testa paginação com valor nulo
         [TestMethod]
@@ -156,63 +265,6 @@ namespace Blog42.Tests.Controllers
             Assert.AreEqual(1, int.Parse(redirect.RouteValues["page"].ToString()));
         }
 
-        // Testa se usuário author consegue deletar postagem de outro usuario, nao pode
-        [TestMethod]
-        public void AuthorTryDeleteInPostAnotherAuthor_CommentDelete() {
-            // Cria contexto e autentica usuario Author
-            controller.ControllerContext = RequestHelper.BuildHttpContext(RequestHelper.TypeRequest.Author);
-
-            // Cria postagem para outro usuario e insere comentario que sera testado na deleção
-            UserDAO userDAO = new UserDAO();
-            User user = new User() { Username = "Teste", Email = "Teste@teste.com", Name = "Teste", Password = "123456", IsActive = true, IsAdmin = false };
-            userDAO.CreateUser(user);
-
-            PostDAO postDAO = new PostDAO();
-            Post post = new Post() { CreatedBy = user.Id, Content = "Teste", Title = "Teste"};
-            postDAO.CreatePost(post);
-            
-            CommentDAO commentDAO = new CommentDAO();
-            Comment comment = new Comment() { Author = "Teste",Comment1 = "Teste", PostId = post.Id};
-            commentDAO.CreateComment(comment);
-
-            // Tenta deletar
-            RedirectToRouteResult result = controller.Delete(new CommentDelete() { CommentId = comment.Id }) as RedirectToRouteResult;
-            
-            // Checa se comentário ainda existe
-            Assert.IsNotNull(commentDAO.GetComment(comment.Id));
-
-            // Verifica se foi redirecionado para página de erro
-            Assert.AreEqual("Error",result.RouteValues["controller"].ToString());
-            Assert.AreEqual("Index", result.RouteValues["action"].ToString());
-        }
-
-        // Testa se usuário author consegue deletar postagem na propria postagem, tem que poder
-        [TestMethod]
-        public void AuthorCanDeleteCommentInYourPost_CommentDelete()
-        {
-            // Cria contexto e autentica usuario Author
-            controller.ControllerContext = RequestHelper.BuildHttpContext(RequestHelper.TypeRequest.Author);
-
-            // Cria postagem para outro usuario e insere comentario que sera testado na deleção
-            UserDAO userDAO = new UserDAO();
-            User user = userDAO.GetUser(PermissionHelper.getNameAuthor());
-            
-            PostDAO postDAO = new PostDAO();
-            Post post = new Post() { CreatedBy = user.Id, Content = "Teste", Title = "Teste" };
-            postDAO.CreatePost(post);
-            
-            CommentDAO commentDAO = new CommentDAO();
-            Comment comment = new Comment() { Author = "Teste", Comment1 = "Teste", PostId = post.Id };
-            commentDAO.CreateComment(comment);
-
-            // Tenta deletar
-            ViewResult result = controller.Delete(new CommentDelete() { CommentId = comment.Id }) as ViewResult;
-
-            // Verifica view recebeu sucesso
-            Assert.IsNotNull(result.ViewBag.Success);
-
-            // Checa se comentário foi deletado
-            Assert.IsNull(commentDAO.GetComment(comment.Id));
-        }
+        #endregion
     }
 }

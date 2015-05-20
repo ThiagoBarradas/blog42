@@ -11,6 +11,7 @@ namespace Blog42.Tests.Helpers
     class PermissionHelper
     {
         private static MockRoleProvider mock = Roles.Provider as MockRoleProvider;
+        private static string currentUser = "";
 
         // Retorna provider
         public static void Init()
@@ -24,7 +25,8 @@ namespace Blog42.Tests.Helpers
             mock.CreateRole("Admin");
             mock.CreateRole("Author");
             mock.AddUsersToRoles(new string[] { "arthur" }, new string[] { "Author" });
-            mock.AddUsersToRoles(new string[] { "marvin" }, new string[] { "Admin", "Author" });
+            mock.AddUsersToRoles(new string[] { "marvin" }, new string[] { "Author" });
+            mock.AddUsersToRoles(new string[] { "marvin" }, new string[] { "Admin" });
         }
 
         // Retorna nome de author para testes
@@ -37,6 +39,18 @@ namespace Blog42.Tests.Helpers
         public static string getNameAdmin()
         {
             return "marvin";
+        }
+
+        // Retorna nome usuário atual
+        public static string GetCurrentUsername()
+        {
+            return currentUser;
+        }
+
+        // altera nome de usuário atual
+        public static void SetCurrentUsername(string username)
+        {
+            currentUser = username;
         }
     }
 }

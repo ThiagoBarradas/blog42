@@ -124,6 +124,7 @@
   <ItemGroup>
     <Compile Include="Common\GeneralSetup.cs" />
     <Compile Include="Common\MockRoleProvider.cs" />
+    <Compile Include="Controllers\PostControllerTest.cs" />
     <Compile Include="Controllers\CommentControllerTest.cs" />
     <Compile Include="Helpers\PermissionHelper.cs" />
     <Compile Include="Helpers\RequestHelper.cs" />
